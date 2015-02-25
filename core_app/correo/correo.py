@@ -48,7 +48,7 @@ class myCorreo:
 
         # Construimos el mensaje simple
         mensaje = MIMEText("""Correo electronico de pruebas
-        Verificacion de envio exitosa. No contestar""")
+        Verificacion de envio exitosa. Por favor No contestar""")
         mensaje['From']="mysmarthome4101@gmail.com"
         mensaje['To']="jhonyt37@gmail.com"
         mensaje['Subject']="Correo de pruebas"
