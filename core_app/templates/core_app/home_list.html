@@ -18,7 +18,7 @@
 		{% if info.inmuebles %}
 		<thead>
           <tr>
-            <th>Id</th>
+            <!--<th>Id</th>-->
             <th>Nombre</th>
             <th>Estado</th>
           </tr>
@@ -27,15 +27,17 @@
         
 			{% for inmueble in info.inmuebles %}
 			<tr>
-	    		<td style="text-align:center" width="10%">
+	    		<!--<td style="text-align:center" width="10%">
 	    			{{inmueble.id}}
-	    		</td>
-	    		<td>
+	    		</td>-->
+	    		<td class="ger-td-status-{{inmueble.estado}}">
 	    			<a href="?inmueble_id={{inmueble.id}}">{{inmueble.nombre}}</a>
 	    		</td>
-	    		<td width="20%">
+	    		<td class="ger-td-status-{{inmueble.estado}}" width="20%">
 	    			<div align="center">
-	    				{{inmueble.estado}}
+	    				<div align="center">
+			    			<div class="ger-status ger-status-{{inmueble.estado}}"></div>
+		    			</div>
 	    			</div>
 	    		</td>
 	    	</tr>
@@ -66,7 +68,7 @@
 		{% if info.elementos %}
 		<thead>
           <tr>
-            <th>Id</th>
+            <!--<th>Id</th>-->
             <th>Nombre</th>
             <th>Estado</th>
           </tr>
@@ -75,15 +77,25 @@
         
 			{% for elemento in info.elementos %}
 			<tr>
-	    		<td style="text-align:center" width="10%">
+	    		<!--<td style="text-align:center" width="10%">
 	    			{{elemento.id}}
+	    		</td>-->
+	    		<td class="ger-td-status-{{elemento.estado}}">
+	    			<a class="ger-a-status-{{elemento.estado}} href="">{{elemento.nombre}}</a>
 	    		</td>
-	    		<td>
-	    			<a href="">{{elemento.nombre}}</a>
-	    		</td>
-	    		<td width="20%">
+	    		<td width="20%" class="ger-td-status-{{elemento.estado}}">
 	    			<div align="center">
-	    				{{elemento.estado}}
+		    			{% if elemento.estado == 0 %}
+		    				<div class="ger-status ger-status-0"></div>
+		    			{% else %}
+		    				{% if elemento.estado == 1 %}
+		    					<div class="ger-status ger-status-1"></div>
+		    				{% else %}
+		    					{% if elemento.estado == 2 %}
+		    						<div class="ger-status ger-status-2"></div>
+		    					{% endif %}
+		    				{% endif %}
+		    			{% endif %}
 	    			</div>
 	    		</td>
 	    	</tr>
