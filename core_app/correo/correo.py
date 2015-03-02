@@ -34,18 +34,18 @@ class myCorreo:
         
         mailServer.login(self.mensaje['From'],"zvjktuetqawucpqk")
 
-        miMensaje = MIMEText("Correo electronico geenrado por el activo " + activo +
+        miMensaje = MIMEText("Correo electronico generado por el activo " + activo +
         ". Verificacion de envio exitosa. Por favor No contestar")
         miMensaje['From']=self.mensaje['From']
         miMensaje['To']=destinatario
 
         print("enviado a : "+ miMensaje['To'])
 
-        if tipo_alarma == "1":
+        if tipo_alarma == "2":
             miMensaje['Subject']="Alerta critica registrada"
-        elif tipo_alarma == "2":
+        elif tipo_alarma == "1":
             miMensaje['Subject']="Alerta de Seguridad registrada"
-        elif tipo_alarma == "3":
+        elif tipo_alarma == "0":
             miMensaje['Subject']="Notificacion de evento registrado"
         
         #print (mailServer.ehlo())

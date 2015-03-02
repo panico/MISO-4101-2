@@ -57,13 +57,18 @@ WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+NAME_DB='mysmarthome'
+USER_DB = 'postgres'
+PWD_DB = '000000'
+HOST_DB = 'localhost'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mysmarthome',
-        'USER': 'postgres',
-        'PASSWORD': '000000',
-        'HOST': 'localhost',
+        'NAME': NAME_DB,
+        'USER': USER_DB,
+        'PASSWORD': PWD_DB,
+        'HOST': HOST_DB,
         'PORT': '5432',
     }
 }
