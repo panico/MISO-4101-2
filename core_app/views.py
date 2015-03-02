@@ -35,5 +35,5 @@ class HomeListView(ListView):
                 primer_inmueble = inmuebles[0]
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id)
-        
+#        print (resultado.keys())  
         return resultado
