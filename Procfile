@@ -1,1 +1,1 @@
-web: gunicorn AP_Agenda.wsgi --log-file -
+web: gunicorn MySmartHome.wsgi --log-file -
