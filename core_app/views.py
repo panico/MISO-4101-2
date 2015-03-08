@@ -71,11 +71,6 @@ class HomeListView(ListView):
             else:
                 primer_inmueble = inmuebles[0]
                 resultado['elementos'] = Elemento.objects.all().filter(
-#<<<<<<< HEAD
-#                     inmueble_id = primer_inmueble.id, user_id = user.id)
-#        print (resultado.keys())  
-#=======
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
         
-#>>>>>>> 064cbb584d0c77c5f40d76684eeb989f1e151227
         return resultado
