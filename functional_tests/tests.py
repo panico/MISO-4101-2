@@ -4,10 +4,9 @@ from django.contrib.auth.models import User
 from django.core import mail
 from core_app import views
 from core_app.models import Inmueble, Elemento
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-#from asyncio.windows_events import NULL
+
 # Create your tests here.
 class LoginTest(TestCase):
     username = 'hernan'
@@ -39,11 +38,6 @@ class LoginTest(TestCase):
         #Se verifica que se tenga acceso al inicio de la app
         response = self.client.get('/app/')
         self.assertEqual(response.status_code, 200)
-    
-#    def test_HomeList(self):
-        #inmueb = self. self.assertEqual(1+1,3)
-        #resultado = views.HomeListView.get_queryset
-#        print (resultado)
         
     #Método que se ejecuta al final de cada uno de los métodos de prueba   
     def tearDown(self):
