@@ -6,6 +6,9 @@ from core_app import views
 urlpatterns = patterns('',
     # ex: /app/
     url(r'^$', login_required(views.HomeListView.as_view()), name='home_list'),
-    
-    url(r'^correo/$', login_required(views.CorreoListView.as_view(template_name='app_list.html')), name='correo_list'),                           
+    # ex: /grupo/
+    url(r'^correo/$', login_required(views.HomeListView.as_view(template_name='core_app/correo_index.html')), name='correo_index'),
+    url(r'^correo/envio/$', login_required(views.CorreoView.as_view(template_name='core_app/correo_detail.html')), name='correo_envio'),
+    #url(r'^$', login_required(views.HomeListView.as_view()), name='home_list'),                           
+
 )
