@@ -92,7 +92,6 @@
 		 	background-size: 50%;
 		 }
 
-
 		button.red {
     	width:120px; height:50px;
     		background-color: red;
@@ -104,22 +103,48 @@
 		button.green {
     		background-color: #16FA0F;
 		}
-		 /*Ger*/
-		 .panel.panel-info, .jumbotron, table.table.table-striped.table-bordered.table-condensed.form_table{
+		/*Ger*/
+		tr{
+		 	background: black;
+		}
+		.panel.panel-info, .jumbotron, table.table.table-striped.table-bordered.table-condensed.form_table{
 			-webkit-box-shadow: 0 0 2px 2px #757575;
 			box-shadow: 0 0 2px 2px #757575;
 		}
 		.container.clase-general{
 			background: url('http://xdesktopwallpapers.com/wp-content/uploads/2012/07/White%20Background%20in%20Home%20Theater%20Room.jpg') no-repeat;
+			
 		}
-		.ger-td-status-2 {
+		.panel-heading{
+			background: black !important;
+		}
+		.panel-heading .panel-title{
+			color: white;
+		}
+		.ger-logout, .ger-logout:hover {
+			color: white;
+		}
+		.ger-logout{
+			background: rgb(209, 208, 204);
+			padding: 5px;
+			border-radius: 5px;
+		}
+		/*.ger-td-status-2 {
 			background: #F42626 !important;
 		}
 		.ger-a-status-2, .ger-a-status-2:hover, .ger-a-status-2:visited{
 			color: white;
+		}*/
+		.ger-td-status-0, .ger-td-status-1, .ger-td-status-2{
+			background-color: #F6F5F1 !important;
 		}
+		.ger-td-status-0 a, .ger-td-status-1 a, .ger-td-status-2 a{
+			padding-left: 5px;
+			font-size: 22px;
+		}
+		
 		.ger-status{
-			width: 5em;
+			width: 2em;
 			height: 2em;
 			border-radius: 1em;
 			border-width: 2px !important;
@@ -128,23 +153,23 @@
 		}
 		.ger-status-0 {
 			background: #f8ffe8; /* Old browsers */
-			background: -moz-linear-gradient(top,  #f8ffe8 0%, #e3f5ab 27%, #b7df2d 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8ffe8), color-stop(27%,#e3f5ab), color-stop(100%,#b7df2d)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 27%,#b7df2d 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 27%,#b7df2d 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 27%,#b7df2d 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #f8ffe8 0%,#e3f5ab 27%,#b7df2d 100%); /* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8ffe8', endColorstr='#b7df2d',GradientType=0 ); /* IE6-9 */
+			background: -moz-linear-gradient(top, #f8ffe8 0%, #8ffc1b 90%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8ffe8), color-stop(90%,#8ffc1b)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #f8ffe8 0%,#8ffc1b 90%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #f8ffe8 0%,#8ffc1b 90%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #f8ffe8 0%,#8ffc1b 90%); /* IE10+ */
+			background: linear-gradient(to bottom, #f8ffe8 0%,#8ffc1b 90%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8ffe8', endColorstr='#8ffc1b',GradientType=0 ); /* IE6-9 */
 		}
 		.ger-status-1 {
 			background: #fefcea; /* Old browsers */
-			background: -moz-linear-gradient(top,  #fefcea 0%, #f1da36 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefcea), color-stop(100%,#f1da36)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #fefcea 0%,#f1da36 100%); /* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#f1da36',GradientType=0 ); /* IE6-9 */
+			background: -moz-linear-gradient(top, #fefcea 0%, #f7f700 63%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefcea), color-stop(63%,#f7f700)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #fefcea 0%,#f7f700 63%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #fefcea 0%,#f7f700 63%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #fefcea 0%,#f7f700 63%); /* IE10+ */
+			background: linear-gradient(to bottom, #fefcea 0%,#f7f700 63%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#f7f700',GradientType=0 ); /* IE6-9 */
 		}
 		.ger-status-2 {
 			background: #ff3019; /* Old browsers */
@@ -167,9 +192,9 @@
 	<div class="container clase-general">
 		{% if user.is_authenticated %}
 			<div>
-				<a href="/logout" style="float:right; display:inline-block;margin:20px">
+				<a class="ger-logout" href="/logout" style="float:right; display:inline-block;margin:20px">
 					<img border="0" height="40" width="40" alt="Crear nueva agenda"
-						src="http://www.iconarchive.com/download/i77841/custom-icon-design/pretty-office-11/logout.ico">
+						src="http://www.iconarchive.com/download/i77841/custom-icon-design/pretty-office-11/logout.ico"> Log Out
 				</a>
 			</div>
 		{% endif %}
