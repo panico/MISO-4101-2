@@ -92,7 +92,6 @@
 		 	background-size: 50%;
 		 }
 
-
 		button.red {
     	width:120px; height:50px;
     		background-color: red;
@@ -104,11 +103,11 @@
 		button.green {
     		background-color: #16FA0F;
 		}
-		 /*Ger*/
-		 tr{
+		/*Ger*/
+		tr{
 		 	background: black;
-		 }
-		 .panel.panel-info, .jumbotron, table.table.table-striped.table-bordered.table-condensed.form_table{
+		}
+		.panel.panel-info, .jumbotron, table.table.table-striped.table-bordered.table-condensed.form_table{
 			-webkit-box-shadow: 0 0 2px 2px #757575;
 			box-shadow: 0 0 2px 2px #757575;
 		}
@@ -116,12 +115,34 @@
 			background: url('http://xdesktopwallpapers.com/wp-content/uploads/2012/07/White%20Background%20in%20Home%20Theater%20Room.jpg') no-repeat;
 			
 		}
-		.ger-td-status-2 {
+		.panel-heading{
+			background: black !important;
+		}
+		.panel-heading .panel-title{
+			color: white;
+		}
+		.ger-logout, .ger-logout:hover {
+			color: white;
+		}
+		.ger-logout{
+			background: rgb(209, 208, 204);
+			padding: 5px;
+			border-radius: 5px;
+		}
+		/*.ger-td-status-2 {
 			background: #F42626 !important;
 		}
 		.ger-a-status-2, .ger-a-status-2:hover, .ger-a-status-2:visited{
 			color: white;
+		}*/
+		.ger-td-status-0, .ger-td-status-1, .ger-td-status-2{
+			background-color: #F6F5F1 !important;
 		}
+		.ger-td-status-0 a, .ger-td-status-1 a, .ger-td-status-2 a{
+			padding-left: 5px;
+			font-size: 22px;
+		}
+		
 		.ger-status{
 			width: 2em;
 			height: 2em;
@@ -171,9 +192,9 @@
 	<div class="container clase-general">
 		{% if user.is_authenticated %}
 			<div>
-				<a href="/logout" style="float:right; display:inline-block;margin:20px">
+				<a class="ger-logout" href="/logout" style="float:right; display:inline-block;margin:20px">
 					<img border="0" height="40" width="40" alt="Crear nueva agenda"
-						src="http://www.iconarchive.com/download/i77841/custom-icon-design/pretty-office-11/logout.ico">
+						src="http://www.iconarchive.com/download/i77841/custom-icon-design/pretty-office-11/logout.ico"> Log Out
 				</a>
 			</div>
 		{% endif %}
