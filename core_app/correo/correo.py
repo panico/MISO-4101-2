@@ -9,54 +9,51 @@ import mimetypes
 
  
 class myCorreo:
-    def enviarLocal(self):
-        remitente = "Desde gnucita <jhonyt37@gmail.com>" 
-        destinatario = "Mama de Gnucita <jhonyt37@gmail.com>" 
-        asunto = "E-mal HTML enviado desde Python" 
-        mensaje = """Hola!<br/> <br/> 
-    	Este es un <b>e-mail</b> enviando desde <b>Python</b> 
-        """	 
-        email = """From: %s 
-        To: %s 
-        MIME-Version: 1.0 
-        Content-type: text/html 
-        Subject: %s 	 
-        %s
-        """ % (remitente, destinatario, asunto, mensaje) 
-        try: 
-            smtp = smtplib.SMTP('localhost') 
-            smtp.sendmail(remitente, destinatario, email) 
-            print ("Correo enviado" )
-        except: 
-            print ("""Error: el mensaje no pudo enviarse. 
-            Compruebe que sendmail se encuentra instalado en su sistema""")
 
-    def enviarGmail(self):
+# Construimos el mensaje simple
+    mensaje = MIMEText("""Correo electronico de pruebas
+    Verificacion de envio exitosa. Por favor No contestar""")
+    mensaje['From']="mysmarthome4101@gmail.com"
+    mensaje['To']="jhonyt37@gmail.com"
+    mensaje['Subject']="Correo de pruebas"
+
+    def setRemitente(self,remitente):
+        self.mensaje['From']=remitente
+
+    def setDestinatario(self,dest):
+        self.mensaje['To']=dest
+
+    def enviarGmail(self,tipo_alarma,destinatario,activo):
         
+        miMensaje= self.mensaje
         mailServer = smtplib.SMTP('smtp.gmail.com',587)
-        
-        mailServer.ehlo()
-        
+        mailServer.ehlo()        
         mailServer.starttls()
         
         mailServer.ehlo()
         
-        mailServer.login("mysmarthome4101@gmail.com","zvjktuetqawucpqk")
+        mailServer.login(self.mensaje['From'],"zvjktuetqawucpqk")
+
+        miMensaje = MIMEText("Correo electronico generado por el activo " + activo +
+        ". Verificacion de envio exitosa. Por favor No contestar")
+        miMensaje['From']=self.mensaje['From']
+        miMensaje['To']=destinatario
+
+        print("enviado a : "+ miMensaje['To'])
+
+        if tipo_alarma == "2":
+            miMensaje['Subject']="Alerta critica registrada"
+        elif tipo_alarma == "1":
+            miMensaje['Subject']="Alerta de Seguridad registrada"
+        elif tipo_alarma == "0":
+            miMensaje['Subject']="Notificacion de evento registrado"
         
-
-        print (mailServer.ehlo())
-
-        # Construimos el mensaje simple
-        mensaje = MIMEText("""Correo electronico de pruebas
-        Verificacion de envio exitosa. No contestar""")
-        mensaje['From']="mysmarthome4101@gmail.com"
-        mensaje['To']="jhonyt37@gmail.com"
-        mensaje['Subject']="Correo de pruebas"
+        #print (mailServer.ehlo())
 
         # Envio del mensaje
-        mailServer.sendmail("mysmarthome4101@gmail.com",
-	                "jhonyt37@gmail.com",
-                     mensaje.as_string())
+        mailServer.sendmail(miMensaje['From'],
+	                miMensaje['To'],
+                     miMensaje.as_string())
 
         # Cierre de la conexion
         mailServer.close()
