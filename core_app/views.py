@@ -37,3 +37,8 @@ class HomeListView(ListView):
                      inmueble_id = primer_inmueble.id, user_id = user.id)
         
         return resultado
+
+#Este es un cambio de prueba para el Codeship
+class CodeShipTest(ListView):
+    context_object_name = 'info'
+    template_name = 'core_app/home_list.html'
