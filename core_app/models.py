@@ -24,7 +24,6 @@ class GenericModelWithName(GenericModel):
     def __str__(self):
         return self.nombre
 
-
 # Create your models here.
 # Clase que representa cada una de las pertenencias de un usuario
 class NivelAlerta(IntEnum):
@@ -79,3 +78,13 @@ class AlarmaParametro(GenericModelWithName):
     valorMax = models.IntegerField();
     nivel = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
     alarma = models.ForeignKey(Alarma)
+
+class HistoryAlarmas(GenericModelWithName):
+    user      = models.ForeignKey(User)
+    inmueble  = models.ForeignKey(Inmueble)
+    parametro = models.ForeignKey(AlarmaParametro)
+    estado    = models.BooleanField()
+    fecha     = models.DateTimeField()
+#    sensor   = models.ForeignKey(Sensor)
+#    alarma   = models.ForeignKey(Alarma)
+    

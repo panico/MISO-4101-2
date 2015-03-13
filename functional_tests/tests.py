@@ -45,24 +45,4 @@ class LoginTest(TestCase):
         self.client.logout()
         
     
-class HomeListTest(TestCase):        
-    username = 'hernan'
-    password = '000000'
-    email = 'hernan@uniandes.com'
-    
-    #Método que se ejecuta al inicio de cada uno de los métodos de prueba
-    def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create_user(self.username, self.email, self.password)
-        
-    def test_displays_all_items(self):
-        items = Inmueble.objects.first()        
-        self.assertEqual(items, None) #assertTrue(items == None)
-        
-    def test_displays_all_items(self):
-        elems = Elemento.objects.first()        
-        self.assertEqual(elems, None)        
-        
-    def tearDown(self):
-        self.user.delete()
-        self.client.logout()
+
