@@ -79,12 +79,5 @@ class AlarmaParametro(GenericModelWithName):
     nivel = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
     alarma = models.ForeignKey(Alarma)
 
-class HistoryAlarmas(GenericModelWithName):
-    user      = models.ForeignKey(User)
-    inmueble  = models.ForeignKey(Inmueble)
-    parametro = models.ForeignKey(AlarmaParametro)
-    estado    = models.BooleanField()
-    fecha     = models.DateTimeField()
-#    sensor   = models.ForeignKey(Sensor)
-#    alarma   = models.ForeignKey(Alarma)
+
     
