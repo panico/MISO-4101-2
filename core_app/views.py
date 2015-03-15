@@ -1,9 +1,10 @@
 #from django.shortcuts import render
 from django.views.generic import ListView
 from core_app.correo import  correo
-from core_app.models import Inmueble, Elemento
+from core_app.models import Inmueble, Elemento, Evento
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
+import datetime
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -44,9 +45,6 @@ class CorreoView(ListView):
             c = correo.myCorreo()
             c.enviarGmail(tipo_alarma=self.request.GET['alerta_id'],
                           destinatario=user.email,activo="Activo Ejemplo")
-        
-
-
         #return [];
     
 #==========================================================
@@ -74,3 +72,37 @@ class HomeListView(ListView):
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
         
         return resultado
+    
+class EventosView(ListView):
+    context_object_name = 'even_list'
+    template_name = 'core_app/even_list.html'
+    
+    def get_queryset(self):
+        user = self.request.user
+        fecha1      = self.request.GET['fech_1']
+        fecha2      = self.request.GET['fech_2']
+#        start_date = datetime.date(2005, 1, 1)
+#        end_date = datetime.date(2005, 3, 31)       
+        result = {}
+        inmbs = Inmueble.objects.filter(user = user.id)
+
+        for im in inmbs.__len__():                
+            elems = Elemento.objects.filter(inmueble = inmbs[im])
+            if (elems.__len__() > 0):
+                for e in elems.__len__():
+                    if (fecha1 != None and fecha2 == None):
+                        eventos = Evento.objects.all().filter(inmueble = inmbs[im], elemento = elems[e], 
+                                                              fecha = fecha1).order_by('inmueble')
+                        result['eventos'] = eventos
+                    else:
+                        if (fecha2 != None):
+                            eventos = Evento.objects.filter(inmueble = inmbs[im], elemento = elems[e], 
+                                                            pub_date__range=(fecha1, fecha2)).order_by('inmueble')
+                            result['eventos'] = eventos
+                        else:
+                            result = "Debe registrar la fecha inicial"
+            else:
+                result = "Inmueble sin elementos"
+
+        return result
+        

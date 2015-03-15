@@ -65,6 +65,9 @@ class Evento(GenericModel):
     descripcion = models.CharField(max_length=1000)
     trama = models.CharField(max_length=1000)
     sensor = models.ForeignKey(Sensor)
+# agregado 14/03/2015
+    inmueble = models.ForeignKey(Inmueble)
+    elemento = models.ForeignKey(Elemento)
 
 #Clase que representa las alarmas que pueden ser configuradas para un sensor/evento
 class Alarma(GenericModelWithName):
