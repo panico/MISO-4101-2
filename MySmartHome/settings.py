@@ -57,10 +57,29 @@ WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-NAME_DB='mysmarthome'
-USER_DB = 'postgres'
-PWD_DB = '000000'
-HOST_DB = 'localhost'
+#NAME_DB='mysmarthome'
+#USER_DB = 'postgres'
+#PWD_DB = '000000'
+#HOST_DB = 'localhost'
+
+#desa
+NAME_DB='dmbjrbf5tui1k'
+USER_DB = 'czkxlkptpfljhy'
+PWD_DB = 'UMq60bMuvQrXN0Ie9oJojMr5Yf'
+HOST_DB = 'ec2-50-19-236-178.compute-1.amazonaws.com'
+
+#test
+#NAME_DB='d7rtbk4m2c6c3k'
+#USER_DB = 'qpdmestgkkdxhn'
+#PWD_DB = 'dHC9ClLm8wyX7vt6U6ZiEjzOlo'
+#HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
+
+#prod
+#NAME_DB='dce330ch6019n5'
+#USER_DB = 'jxkxkqtyokdkdf'
+#PWD_DB = 'woo5BcTu62DbMZMvpRtf0KA7Li'
+#HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
+
 
 DATABASES = {
     'default': {
