@@ -1,6 +1,7 @@
 #from django.shortcuts import render
 from django.views.generic import ListView
 from core_app.correo import  correo
+from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
@@ -79,30 +80,17 @@ class EventosView(ListView):
     
     def get_queryset(self):
         user = self.request.user
-        fecha1      = self.request.GET['fech_1']
-        fecha2      = self.request.GET['fech_2']
+        fecha1      = '2014-01-01'#self.request.GET['fech_1']
+        fecha2      = None #'2014-03-31'#self.request.GET['fech_1']
 #        start_date = datetime.date(2005, 1, 1)
 #        end_date = datetime.date(2005, 3, 31)       
         result = {}
-        inmbs = Inmueble.objects.filter(user = user.id)
-
-        for im in inmbs.__len__():                
-            elems = Elemento.objects.filter(inmueble = inmbs[im])
-            if (elems.__len__() > 0):
-                for e in elems.__len__():
-                    if (fecha1 != None and fecha2 == None):
-                        eventos = Evento.objects.all().filter(inmueble = inmbs[im], elemento = elems[e], 
-                                                              fecha = fecha1).order_by('inmueble')
-                        result['eventos'] = eventos
-                    else:
-                        if (fecha2 != None):
-                            eventos = Evento.objects.filter(inmueble = inmbs[im], elemento = elems[e], 
-                                                            pub_date__range=(fecha1, fecha2)).order_by('inmueble')
-                            result['eventos'] = eventos
-                        else:
-                            result = "Debe registrar la fecha inicial"
-            else:
-                result = "Inmueble sin elementos"
-
+#        eventos = {}
+        if (user.id != None):
+            i = alarmas.Alarma()
+            eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
+#            result.append(eventos)
+            result['eventos'] = eventos
+            
         return result
         

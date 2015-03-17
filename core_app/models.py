@@ -59,15 +59,18 @@ class Sensor(GenericModelWithName):
     activo = models.ForeignKey(Activo)
 
 #Clase que representa los eventos generados por un sensor
-class Evento(GenericModel):
-    fecha = models.DateTimeField()
-    codigo = models.CharField(max_length=10)
+class Evento(GenericModelWithName): #GenericModel
+    fecha   = models.DateTimeField()
+    codigo  = models.CharField(max_length=10)
+    tipoEven    = models.CharField(max_length=2)
     descripcion = models.CharField(max_length=1000)
-    trama = models.CharField(max_length=1000)
+    trama   = models.CharField(max_length=1000)
+    prioridad = models.CharField(max_length=1)
     sensor = models.ForeignKey(Sensor)
-# agregado 14/03/2015
-    inmueble = models.ForeignKey(Inmueble)
     elemento = models.ForeignKey(Elemento)
+# agregado 14/03/2015
+#    inmueble = models.ForeignKey(Inmueble)
+    
 
 #Clase que representa las alarmas que pueden ser configuradas para un sensor/evento
 class Alarma(GenericModelWithName):
@@ -84,10 +87,10 @@ class AlarmaParametro(GenericModelWithName):
     alarma = models.ForeignKey(Alarma)
 
 class HistoryAlarmas(GenericModelWithName):
+    estado    = models.BooleanField(default=True)
+    fecha     = models.DateTimeField()
     user      = models.ForeignKey(User)
     inmueble  = models.ForeignKey(Inmueble)
     parametro = models.ForeignKey(AlarmaParametro)
-    estado    = models.BooleanField()
-    fecha     = models.DateTimeField()
 #    sensor   = models.ForeignKey(Sensor)
 #    alarma   = models.ForeignKey(Alarma)
