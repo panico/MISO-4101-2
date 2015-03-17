@@ -59,13 +59,14 @@ class Sensor(GenericModelWithName):
     activo = models.ForeignKey(Activo)
 
 #Clase que representa los eventos generados por un sensor
-class Evento(GenericModelWithName): #GenericModel
-    fecha   = models.DateTimeField()
+class Evento(GenericModel): #GenericModel
+#    id = models.AutoField(primary_key=True)
     codigo  = models.CharField(max_length=10)
-    tipoEven    = models.CharField(max_length=2)
     descripcion = models.CharField(max_length=1000)
     trama   = models.CharField(max_length=1000)
+    fecha   = models.DateTimeField()
     prioridad = models.CharField(max_length=1)
+    tipoEven    = models.CharField(max_length=2)
     sensor = models.ForeignKey(Sensor)
     elemento = models.ForeignKey(Elemento)
 # agregado 14/03/2015
