@@ -93,5 +93,6 @@ class HistoryAlarmas(GenericModelWithName):
     user      = models.ForeignKey(User)
     inmueble  = models.ForeignKey(Inmueble)
     parametro = models.ForeignKey(AlarmaParametro)
+
 #    sensor   = models.ForeignKey(Sensor)
 #    alarma   = models.ForeignKey(Alarma)
