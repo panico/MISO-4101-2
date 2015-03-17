@@ -4,12 +4,12 @@ import datetime
 
 
 class Alarma:        
-#    def reg_act_alarmas(self, id_param_alarma, id_inmb, id_estado, fech):
+    def reg_act_alarmas(self, id_estado, fech, id_inmb, id_elemen):
         
-#        ha = HistoryAlarmas(user = self.request.user, inmueble  = id_inmb, 
-#                            parametro = id_param_alarma, estado = id_estado, fecha = fech)
-#        ha.save()
-    
+        ha = HistoryAlarmas(estado = id_estado, fecha = fech, user = self.request.user, inmueble  = id_inmb, 
+                            elemento = id_elemen)
+        ha.save()
+        
     def consul_events(self, user_id, fech_1, fech_2):
         result = []
         results = {}

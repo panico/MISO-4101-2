@@ -65,9 +65,9 @@ class Evento(GenericModel): #GenericModel
     descripcion = models.CharField(max_length=1000)
     trama   = models.CharField(max_length=1000)
     fecha   = models.DateTimeField()
-    prioridad = models.CharField(max_length=1)
-    tipoEven    = models.CharField(max_length=2)
-    sensor = models.ForeignKey(Sensor)
+    prioridad = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
+    tipoEven  = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(9)])
+    sensor   = models.ForeignKey(Sensor)
     elemento = models.ForeignKey(Elemento)
 # agregado 14/03/2015
 #    inmueble = models.ForeignKey(Inmueble)
@@ -92,7 +92,8 @@ class HistoryAlarmas(GenericModelWithName):
     fecha     = models.DateTimeField()
     user      = models.ForeignKey(User)
     inmueble  = models.ForeignKey(Inmueble)
-    parametro = models.ForeignKey(AlarmaParametro)
+    elemento  = models.ForeignKey(Elemento)
+#    parametro = models.ForeignKey(AlarmaParametro)
 
 #    sensor   = models.ForeignKey(Sensor)
 #    alarma   = models.ForeignKey(Alarma)
