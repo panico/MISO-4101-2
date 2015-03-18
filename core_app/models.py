@@ -24,7 +24,6 @@ class GenericModelWithName(GenericModel):
     def __str__(self):
         return self.nombre
 
-
 # Create your models here.
 # Clase que representa cada una de las pertenencias de un usuario
 class NivelAlerta(IntEnum):
