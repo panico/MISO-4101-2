@@ -69,10 +69,14 @@ class HomeListView(ListView):
                 inmueble_param_id = self.request.GET['inmueble_id']
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
+
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+
             else:
                 primer_inmueble = inmuebles[0]
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
         
         return resultado
 
