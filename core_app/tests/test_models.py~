@@ -8,7 +8,7 @@ class CorreoTest(TestCase):
     def test_enviarGmail(self):
         # Send message.
         mail.send_mail('Correo de pruebas', 'Here is the message.',
-            'mysmarthome4101@gmail.com', ['jhonyt37@gmail.com'],
+            'mysmarthome4101@gmail.com', ['juvenalelias@gmail.com'],#jhonyt37
             fail_silently=False)
         
         # Test that one message has been sent.
@@ -16,7 +16,6 @@ class CorreoTest(TestCase):
         
         # Verify that the subject of the first message is correct.
         self.assertEqual(mail.outbox[0].subject, 'Correo de pruebas')
-
 
 class HomeListTest(TestCase):        
     username = 'hernan'
@@ -43,4 +42,3 @@ class HomeListTest(TestCase):
     def tearDown(self):
         self.user.delete()
         self.client.logout()
-

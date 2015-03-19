@@ -57,7 +57,7 @@ class HomeListView(ListView):
     
     def get_queryset(self):
         user = self.request.user
-        inmuebles = Inmueble.objects.all().filter(user_id = user.id)
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
         resultado = {}
         
         if(inmuebles.__len__() > 0):
@@ -66,13 +66,16 @@ class HomeListView(ListView):
             if 'inmueble_id' in self.request.GET:
                 inmueble_param_id = self.request.GET['inmueble_id']
                 resultado['elementos'] = Elemento.objects.all().filter(
-                     inmueble_id = inmueble_param_id, user_id = user.id)
+                     inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
             else:
                 primer_inmueble = inmuebles[0]
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
         
         return resultado
+
     
 class EventosView(ListView):
     context_object_name = 'even_list'
@@ -92,3 +95,9 @@ class EventosView(ListView):
             
         return result
         
+
+#Este es un cambio de prueba para el Codeship
+class CodeShipTest(ListView):
+    context_object_name = 'info'
+    template_name = 'core_app/home_list.html'
+
