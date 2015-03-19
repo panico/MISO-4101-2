@@ -109,6 +109,13 @@
 		{% endif %}
 		</tbody>
 	</table>
+
+	<td>
+  			<form action="{%url 'app:alarms_list'%}" method="get">
+		    	<input type="hidden" name="alerta_id" value="0"/>
+				<button type="submit">Alarmas</button>
+		    </form>
+    </td>
 </div>
 
 

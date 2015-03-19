@@ -28,9 +28,9 @@ class GenericModelWithName(GenericModel):
 # Create your models here.
 # Clase que representa cada una de las pertenencias de un usuario
 class NivelAlerta(IntEnum):
-    ROJO = 0
+    ROJO = 2
     AMARILLO = 1
-    VERDE = 2
+    VERDE = 0
     
 class Activo(GenericModelWithName):
     user = models.ForeignKey(User)
