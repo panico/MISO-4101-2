@@ -134,62 +134,11 @@
 	                    {% endif %}
                 	</div>
             	</div>
-<<<<<<< HEAD
-            	<div style="display:inline-block;float:right;">
-				</div>
-            </th>
-          </tr>
-        </thead>
-		{% if info.elementos %}
-		<thead>
-          <tr>
-            <!--<th>Id</th>-->
-            <th>Nombre</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-        
-			{% for elemento in info.elementos %}
-			<tr>
-	    		<!--<td style="text-align:center" width="10%">
-	    			{{elemento.id}}
-	    		</td>-->
-	    		<td class="ger-td-status-{{elemento.estado}}">
-	    			<a href="?elemento_id={{elemento.id}}">{{elemento.nombre}}</a>
-	    		</td>
-	    		<td width="20%" class="ger-td-status-{{elemento.estado}}">
-	    			<div align="center">
-		    			{% if elemento.estado == 0 %}
-		    				<div class="ger-status ger-status-0"></div>
-		    			{% else %}
-		    				{% if elemento.estado == 1 %}
-		    					<div class="ger-status ger-status-1"></div>
-		    				{% else %}
-		    					{% if elemento.estado == 2 %}
-		    						<div class="ger-status ger-status-2"></div>
-		    					{% endif %}
-		    				{% endif %}
-		    			{% endif %}
-	    			</div>
-	    		</td>
-	    	</tr>
-	   		{% endfor %}
-	    {% else %}
-			<tr>
-		    	<td>
-		    		<p>No hay elementos para el inmueble seleccionado</p>
-		    	</td>
-		    </tr>
-		{% endif %}
-		</tbody>
-	</table>
-</div>
-=======
+
 	        </div>
 	    </div>
 	</div>  
->>>>>>> develop
+
 
 <script src="js/ui.js"></script>
 
