@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core_app.models import Proyecto, Inmueble, Elemento, Sensor, Evento, Alarma, AlarmaParametro
+from core_app.models import Proyecto, Inmueble, Elemento, TipoSensor, Sensor, Evento, AlarmaHumo, AlarmaAcceso, AlarmaEstado, AlarmaReportada
 
 '''
 class LocalizationInLine(admin.TabularInline):
@@ -28,7 +28,10 @@ class AgendaAdmin(admin.ModelAdmin):
 admin.site.register(Proyecto)
 admin.site.register(Inmueble)
 admin.site.register(Elemento)
+admin.site.register(TipoSensor)
 admin.site.register(Sensor)
 admin.site.register(Evento)
-admin.site.register(Alarma)
-admin.site.register(AlarmaParametro)
+admin.site.register(AlarmaHumo)
+admin.site.register(AlarmaAcceso)
+admin.site.register(AlarmaEstado)
+admin.site.register(AlarmaReportada)

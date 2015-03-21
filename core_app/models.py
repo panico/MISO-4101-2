@@ -51,11 +51,14 @@ class Inmueble(Activo):
 #Clase que representa los electrodomésticos y demás elementos dentro de un inmueble
 class Elemento(Activo):
     inmueble = models.ForeignKey(Inmueble)
-
+#Clase que tiene los tipos de sensores
+class TipoSensor(GenericModelWithName):
+    descripcion = models.CharField(max_length=255)
 #Clase que representa a un sensor físico (RFID, Gases, Incendio, etc) 
 class Sensor(GenericModelWithName):
     #Objeto/Inmueble al que se asocia el sensor
-    activo = models.ForeignKey(Activo)
+    activo = models.ForeignKey(Elemento)
+    tipo_sensor = models.ForeignKey(TipoSensor)
 
 #Clase que representa los eventos generados por un sensor
 class Evento(GenericModelWithName): #GenericModel
@@ -63,10 +66,8 @@ class Evento(GenericModelWithName): #GenericModel
     codigo  = models.CharField(max_length=10)
 #    descripcion = models.CharField(max_length=1000)
     trama   = models.CharField(max_length=1000)
-    fecha   = models.DateTimeField()
-    prioridad = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
-    tipoEven  = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(9)])
-    elemento = models.ForeignKey(Elemento)
+    fecha_hora_evento = models.DateTimeField()
+    fecha_hora_sistema = models.DateTimeField()
     sensor   = models.ForeignKey(Sensor)
 #    inmueble = models.ForeignKey(Inmueble)
 # agregado 14/03/2015
@@ -76,17 +77,38 @@ class Evento(GenericModelWithName): #GenericModel
 #Clase que representa las alarmas que pueden ser configuradas para un sensor/evento
 class Alarma(GenericModelWithName):
     #Determina si la alarma se encuentra activada
-    estado = models.BooleanField(default=True)
+    descripcion = models.CharField(max_length=512)
+    usuario = models.ForeignKey(User)
     sensor = models.ForeignKey(Sensor)
+    activa = models.BooleanField(default=True)
+    notifica = models.BooleanField(default=True)
+    eliminada = models.BooleanField(default=False)
 
-#Clase que representa todos los parámetros configurables de una alarma (pe. MinTemperatura)
-class AlarmaParametro(GenericModelWithName):
-    valor = models.CharField(max_length=255)
-    valorMin = models.IntegerField();
-    valorMax = models.IntegerField();
-    nivel = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
+
+#Clase que representa alarma de tipo Humo
+class AlarmaHumo(Alarma):
+    pass
+#Clase que representa alarma de tipo Acceso
+class AlarmaAcceso(Alarma):
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+
+#Clase que representa alarma de tipo Estado
+class AlarmaEstado(Alarma):
+    estado = models.BooleanField(default=True)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+#Alarmas reportadas
+class AlarmaReportada(GenericModelWithName):
+    descripcion = models.CharField(max_length=512)
+    usuario = models.ForeignKey(User)
     alarma = models.ForeignKey(Alarma)
+    fecha_hora = models.DateTimeField()
+    nivel_alerta = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
 
+
+
+##Otras clases
 
 class HistoryAlarmas(GenericModel):
     estado    = models.BooleanField(default=True)
@@ -95,8 +117,8 @@ class HistoryAlarmas(GenericModel):
     elemento  = models.ForeignKey(Elemento)
     inmueble  = models.ForeignKey(Inmueble)
     
-#    parametro = models.ForeignKey(AlarmaParametro)
+    #parametro = models.ForeignKey(AlarmaParametro)
 
-#    sensor   = models.ForeignKey(Sensor)
-#    alarma   = models.ForeignKey(Alarma)
+    sensor   = models.ForeignKey(Sensor)
+    alarma   = models.ForeignKey(Alarma)
 
