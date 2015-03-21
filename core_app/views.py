@@ -83,8 +83,8 @@ class EventosView(ListView):
     
     def get_queryset(self):
         user = self.request.user
-        fecha1  = '2015-01-19' #'2015-03-16'#None# self.request.GET['fech_1']
-        fecha2  = '2015-03-19'# '2015-02-18''2015-03-01'#self.request.GET['fech_1']
+        fecha1  = None# '2015-01-01'#'2015-01-19' #self.request.GET['fech_1']
+        fecha2  = None#'2015-03-19'# '2015-02-18''2015-03-01'#self.request.GET['fech_1']
 #        start_date = datetime.date(2005, 1, 1)
 #        end_date = datetime.date(2005, 3, 31)       
         result = {}

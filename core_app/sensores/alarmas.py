@@ -67,6 +67,7 @@ class Alarma:
                         result.append(x)
                 
                 else:
+                                      
                     for x in list(Evento.objects.all().filter(elemento = elem_id).select_related(
                                 'evento__elemento__inmueble', 'evento__sensor').values('nombre', 'fecha', 
                                 'codigo', 'prioridad', 'tipoEven', 'elemento__inmueble__nombre', 
@@ -74,5 +75,5 @@ class Alarma:
                         result.append(x)
 
         return result
-                                                
+               
 #    def consul_hist(self, fech_even1, fech_even2, fech_alr1, fech_alr2):
