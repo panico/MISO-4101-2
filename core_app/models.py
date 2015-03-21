@@ -56,7 +56,7 @@ class Elemento(Activo):
 #Clase que representa a un sensor físico (RFID, Gases, Incendio, etc) 
 class Sensor(GenericModelWithName):
     #Objeto/Inmueble al que se asocia el sensor
-    activo = models.ForeignKey(Activo)
+    activo = models.ForeignKey(Elemento)
 
 #Clase que representa los eventos generados por un sensor
 class Evento(GenericModel):
@@ -79,3 +79,4 @@ class AlarmaParametro(GenericModelWithName):
     valorMax = models.IntegerField();
     nivel = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
     alarma = models.ForeignKey(Alarma)
+a
