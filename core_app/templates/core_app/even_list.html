@@ -1,0 +1,76 @@
+{% extends "template_base.html" %}
+ 
+{% block content %}
+
+<div>
+	<table class="table table-striped table-bordered table-condensed form_table" style="width:70%" align="center">
+		<thead>
+          <tr>
+            <th colspan="7">
+            	<div style="display:inline-block;">
+            		<h3>Lista de Eventos MySmartHome</h3>
+            	</div>
+            	<div style="display:inline-block;float:right;">
+				</div>
+            </th>
+          </tr>
+        </thead>
+		{% if even_list.eventos %}
+		<thead>
+          <tr>
+            <th>Evento</th>
+            <th>Fecha</th>
+            <th>Codigo</th>
+            <th>Prioridad</th>
+            <th>Tipo Evento</th>
+            <th>Inmueble</th>
+            <th>Elemento</th>
+            <th>Sensor</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+			{% for evento in even_list.eventos %}
+			<tr>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.nombre}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.fecha}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.codigo}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.prioridad}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.tipoEven}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.elemento__inmueble__nombre}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.elemento__nombre}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.descripcion}}
+	    		</td>
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.sensor__nombre}}
+	    		</td>    		
+	    	</tr>
+	   		{% endfor %}
+	    {% else %}
+			<tr>
+		    	<td>
+		    		<p>No hay eventos generados.</p>
+		    	</td>
+		    </tr>
+		{% endif %}
+		</tbody>
+	</table>
+</div>
+
+
+{% endblock %}

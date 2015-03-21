@@ -24,7 +24,6 @@ class GenericModelWithName(GenericModel):
     def __str__(self):
         return self.nombre
 
-
 # Create your models here.
 # Clase que representa cada una de las pertenencias de un usuario
 class NivelAlerta(IntEnum):
@@ -59,12 +58,20 @@ class Sensor(GenericModelWithName):
     activo = models.ForeignKey(Activo)
 
 #Clase que representa los eventos generados por un sensor
-class Evento(GenericModel):
-    fecha = models.DateTimeField()
-    codigo = models.CharField(max_length=10)
-    descripcion = models.CharField(max_length=1000)
-    trama = models.CharField(max_length=1000)
-    sensor = models.ForeignKey(Sensor)
+class Evento(GenericModelWithName): #GenericModel
+#    id = models.AutoField(primary_key=True)
+    codigo  = models.CharField(max_length=10)
+#    descripcion = models.CharField(max_length=1000)
+    trama   = models.CharField(max_length=1000)
+    fecha   = models.DateTimeField()
+    prioridad = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
+    tipoEven  = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(9)])
+    elemento = models.ForeignKey(Elemento)
+    sensor   = models.ForeignKey(Sensor)
+#    inmueble = models.ForeignKey(Inmueble)
+# agregado 14/03/2015
+#    inmueble = models.ForeignKey(Inmueble)
+    
 
 #Clase que representa las alarmas que pueden ser configuradas para un sensor/evento
 class Alarma(GenericModelWithName):
@@ -79,3 +86,17 @@ class AlarmaParametro(GenericModelWithName):
     valorMax = models.IntegerField();
     nivel = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
     alarma = models.ForeignKey(Alarma)
+
+
+class HistoryAlarmas(GenericModel):
+    estado    = models.BooleanField(default=True)
+    fecha     = models.DateTimeField()
+    user      = models.ForeignKey(User)
+    elemento  = models.ForeignKey(Elemento)
+    inmueble  = models.ForeignKey(Inmueble)
+    
+#    parametro = models.ForeignKey(AlarmaParametro)
+
+#    sensor   = models.ForeignKey(Sensor)
+#    alarma   = models.ForeignKey(Alarma)
+

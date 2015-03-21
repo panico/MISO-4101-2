@@ -1,9 +1,11 @@
 #from django.shortcuts import render
 from django.views.generic import ListView
 from core_app.correo import  correo
-from core_app.models import Inmueble, Elemento
+from core_app.sensores import  alarmas
+from core_app.models import Inmueble, Elemento, Evento
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
+import datetime
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -44,9 +46,6 @@ class CorreoView(ListView):
             c = correo.myCorreo()
             c.enviarGmail(tipo_alarma=self.request.GET['alerta_id'],
                           destinatario=user.email,activo="Activo Ejemplo")
-        
-
-
         #return [];
     
 #==========================================================
@@ -77,7 +76,28 @@ class HomeListView(ListView):
         
         return resultado
 
+    
+class EventosView(ListView):
+    context_object_name = 'even_list'
+    template_name = 'core_app/even_list.html'
+    
+    def get_queryset(self):
+        user = self.request.user
+        fecha1  = None# '2015-01-01'#'2015-01-19' #self.request.GET['fech_1']
+        fecha2  = None#'2015-03-19'# '2015-02-18''2015-03-01'#self.request.GET['fech_1']
+#        start_date = datetime.date(2005, 1, 1)
+#        end_date = datetime.date(2005, 3, 31)       
+        result = {}
+        if (user.id != None):
+            i = alarmas.Alarma()
+            eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
+            result['eventos'] = eventos
+            
+        return result
+        
+
 #Este es un cambio de prueba para el Codeship
 class CodeShipTest(ListView):
     context_object_name = 'info'
     template_name = 'core_app/home_list.html'
+
