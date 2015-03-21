@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 from core_app import views
 from core_app.models import Inmueble, Elemento
-from base import FunctionalTest
+from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import sys
