@@ -152,18 +152,22 @@ class AlarmCreateView(TemplateView):
             AlarmFormSet = formset_factory(AlarmaAccesoForm, extra=1, max_num=10, formset=RequiredFormSet)    
     
         if request.method == 'POST':
-
+            print ("paso1")
             alarma_formset = AlarmFormSet(request.POST, request.FILES)
-
+            print ("paso2")
             if alarma_formset.is_valid():
+                print ("paso3")
                 for form in todo_articulo_formset.forms:
+                    print ("paso4")
                     alarma = form.save(commit=False)
                     if alarma_id=='2':
+                        print ("paso5")
                         alarma.estado_sensor=form.estado_sensor
                     alarma.save()
-                print ("paso1")
+                print ("paso6")
                 return HttpResponseRedirect('core_app/myform.html')
         else:
+            print ("paso7")
             alarma_formset = AlarmFormSet()
 
         alarmas = Alarma.objects.all()#.order_by('id') #Select * from Todo ;

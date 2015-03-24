@@ -24,7 +24,6 @@ class AlarmaEstado2Form(forms.ModelForm):
 	estado_sensor = forms.BooleanField(help_text='0=apagado 1=Encendido')
 	class Meta:
 		model = AlarmaEstado
-
 		exclude = ('eliminada', 'estado_sensor',)
 		
 		#exclude = ('fktodo',)
