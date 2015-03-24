@@ -27,9 +27,10 @@
                     </a>
                 </li>
                  <li class="ger-horizontal-menu-item pure-menu-item">
-                    <a href="correo">
-                        <img src="{% static "core_app/icons/alert-icon.png"%}"/>
-                    </a>
+                 	<form action="alarmas" method="get">
+		    														<input type="hidden" name="alarma_id" value="0"/>
+		    															<button type="image" style="height:90px;width:90px;" src="{% static "core_app/icons/alert-icon.png"%}" ></button>
+                    </form>
                 </li>
                  <li class="ger-horizontal-menu-item pure-menu-item">
                     <a href="#">
@@ -134,9 +135,11 @@
 	                    {% endif %}
                 	</div>
             	</div>
+
 	        </div>
 	    </div>
 	</div>  
+
 
 <script src="js/ui.js"></script>
 

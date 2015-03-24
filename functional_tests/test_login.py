@@ -1,24 +1,26 @@
 from django.test import TestCase, LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from django.core import mail
 from core_app import views
 from core_app.models import Inmueble, Elemento
+from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import sys
+      
 
-# Create your tests here.
-class LoginTest(TestCase):
+class LoginTest(FunctionalTest):#TestCase
     username = 'hernan'
     password = '000000'
     email = 'hernan@uniandes.com'
         
-    #Método que se ejecuta al inicio de cada uno de los métodos de prueba
-    def setUp(self):
-        # Cada uno de los test necesita ser ejecutado en un cliente
-        self.client = Client()
-        #Para verificar el login, se debe primero crea el usuario con el que se va a probar
-        self.user = User.objects.create_user(self.username, self.email, self.password)
+#    def setUp(self):
+#        # Cada uno de los test necesita ser ejecutado en un cliente
+#        self.client = Client()
+#        #Para verificar el login, se debe primero crea el usuario con el que se va a probar
+#        self.user = User.objects.create_user(self.username, self.email, self.password)
     
     #Método que verifica el proceso de login cuando se accede al API directo del cliente
     def test_login_by_client(self):
@@ -39,30 +41,10 @@ class LoginTest(TestCase):
         response = self.client.get('/app/')
         self.assertEqual(response.status_code, 200)
         
-    #Método que se ejecuta al final de cada uno de los métodos de prueba   
-    def tearDown(self):
-        self.user.delete()
-        self.client.logout()
+       
+#    def tearDown(self):
+#        self.user.delete()
+#        self.client.logout()
         
     
-class HomeListTest(TestCase):        
-    username = 'hernan'
-    password = '000000'
-    email = 'hernan@uniandes.com'
-    
-    #Método que se ejecuta al inicio de cada uno de los métodos de prueba
-    def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create_user(self.username, self.email, self.password)
-        
-    def test_displays_all_items(self):
-        items = Inmueble.objects.first()        
-        self.assertEqual(items, None) #assertTrue(items == None)
-        
-    def test_displays_all_items(self):
-        elems = Elemento.objects.first()        
-        self.assertEqual(elems, None)        
-        
-    def tearDown(self):
-        self.user.delete()
-        self.client.logout()
+

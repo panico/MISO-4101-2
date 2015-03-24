@@ -3,23 +3,29 @@
 {% block content %}
 
 
-<form class="form-inline" action="" method="post">
-	{% csrf_token %}
-	<table align="center" class="table table-condensed table-responsive">
-		<tr>
-			<td align="center" colspan="2">
-				<h3>Información de Alarma!</h3>
-			</td>
-		</tr>
-		<div class="form-group">
-		{{ form.as_table }}
-		</div>
-		<tr>
-			<td align="center" colspan="2">
-				<input class="btn btn-default" type="submit" value="Guardar"/>
-				<input class="btn btn-default" type="button" value="Cancelar" onClick="window.history.back()"/>
-			</td>
-		</tr>
-	</table>
+<form action="" method="POST">{%csrf_token%}
+
+	<h2>Alarmas</h2>
+	
+	{{ alarma_formset.management_form }}
+	
+	 {% for form in alarma_formset.forms %}
+	 <h4>Nueva Alarma</h4>
+   
+      {{ form.as_p }}
+    
+    {% endfor %}
+    
+	<input type="submit" name="" value="Grabar" placeholder="">
 </form>
+
+{% for dato in alarmas %}
+	<div class="span4">
+		<h2>{{dato}}</h2>
+	</div><!--/span-->
+{% empty %}
+	<p>No hay datos</p>
+{% endfor %}
+
+
 {% endblock %}
