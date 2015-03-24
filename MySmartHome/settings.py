@@ -58,7 +58,7 @@ WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-#NAME_DB='mysmarthome'
+#NAME_DB='mySmartHome'
 #USER_DB = 'postgres'
 #PWD_DB = '000000'
 #HOST_DB = 'localhost'
