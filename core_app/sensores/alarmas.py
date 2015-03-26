@@ -42,10 +42,12 @@ class Alarma:
         result  = []
         
         if (fech_1 != None and fech_2 == None):            
-            for x in list(Evento.objects.all().filter(elemento = elem_id, fecha__gte = fech_1
-                        ).select_related(' evento__elemento__inmueble', 'evento__sensor').values('nombre', 'fecha', 'codigo', 'prioridad', 'tipoEven', 
-                        'elemento__inmueble__nombre', 'elemento__nombre', 'sensor__nombre').order_by('-fecha')[:20]):
-                
+            for x in list(Evento.objects.all().filter(activo = elem_id, fecha_hora_evento__gte = fech_1
+                        ).select_related(' evento__sensor__elemento__inmueble', 'evento__sensor__tiposensor'
+                        ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tiposensor__nombre', 
+                        'sensor__elemento__inmueble__nombre', 'sensor__elemento__nombre', 'sensor__nombre'
+                        ).order_by('-fecha_hora_evento')[:20]):
+                        #'prioridad', 
                 result.append(x)
                                                          
         else:
