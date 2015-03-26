@@ -1,0 +1,15 @@
+{% extends "template_base.html" %}
+ 
+{% block content %}
+
+
+{% for dato in alarmas %}
+	<div class="span4">
+		<h2>{{dato}}</h2>
+	</div><!--/span-->
+{% empty %}
+	<p>No hay datos</p>
+{% endfor %}
+
+
+{% endblock %}

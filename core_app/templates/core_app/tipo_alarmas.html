@@ -1,0 +1,41 @@
+{% extends "template_base.html" %}
+{% load staticfiles %}
+{% load admin_static %}
+{% block content %}
+<header>
+    <div id="ger-horizontal-menu">
+        <div class="pure-menu pure-menu-horizontal">
+            <ul class="pure-menu-list">
+                <li class="ger-horizontal-menu-item pure-menu-item ger-horizontal-menu-item-selected">
+                    <a href="#"> 
+                        <img src="{% static "core_app/icons/apartment-icon.png"%}"/>
+                    </a>
+                </li>
+                 <li class="ger-horizontal-menu-item pure-menu-item">
+                 	<a href="#">
+                        <img src="{% static "core_app/icons/alert-icon.png"%}"/>
+                  </a>
+                  </li>
+                  
+                 <li class="ger-horizontal-menu-item pure-menu-item">
+                    <a href="#">
+                        <img src="{% static "core_app/icons/analytics-icon.png"%}"/>
+                    </a>
+                </li>
+                 <li class="ger-horizontal-menu-item pure-menu-item">
+                    <a href="#">
+                        <img src="{% static "core_app/icons/settings-icon.png"%}"/>
+                    </a>
+                </li>
+                <li class="ger-horizontal-menu-item pure-menu-item">
+                 	<form action="alarmas" method="get">
+		    														<input type="hidden" name="alarma_id" value="4"/>
+		    															<button type="image" style="height:90px;width:90px;" src="{% static "core_app/icons/alert-icon.png"%}" ></button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+{% endblock %}
