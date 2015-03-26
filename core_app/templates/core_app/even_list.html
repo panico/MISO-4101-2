@@ -21,8 +21,8 @@
             <th>Evento</th>
             <th>Fecha</th>
             <th>Codigo</th>
-            <th>Prioridad</th>
-            <th>Tipo Evento</th>
+            <!--th>Prioridad</th-->
+            <th>Tipo Sensor</th>
             <th>Inmueble</th>
             <th>Elemento</th>
             <th>Sensor</th>
@@ -36,26 +36,26 @@
 	    			{{evento.nombre}}
 	    		</td>
 	    		<td style="text-align:center" width="10%">
-	    			{{evento.fecha}}
+	    			{{evento.fecha_hora_evento}}
 	    		</td>
 	    		<td style="text-align:center" width="10%">
 	    			{{evento.codigo}}
 	    		</td>
-	    		<td style="text-align:center" width="10%">
+	    		<!--td style="text-align:center" width="10%">
 	    			{{evento.prioridad}}
+	    		</td-->
+	    		<td style="text-align:center" width="10%">
+	    			{{evento.sensor__tipo_sensor__nombre}}
 	    		</td>
 	    		<td style="text-align:center" width="10%">
-	    			{{evento.tipoEven}}
+	    			{{evento.sensor__activo__inmueble__nombre}}
 	    		</td>
 	    		<td style="text-align:center" width="10%">
-	    			{{evento.elemento__inmueble__nombre}}
+	    			{{evento.sensor__activo__nombre}}
 	    		</td>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.elemento__nombre}}
-	    		</td>
-	    		<td style="text-align:center" width="10%">
+	    		<!--td style="text-align:center" width="10%">
 	    			{{evento.descripcion}}
-	    		</td>
+	    		</td-->
 	    		<td style="text-align:center" width="10%">
 	    			{{evento.sensor__nombre}}
 	    		</td>    		
