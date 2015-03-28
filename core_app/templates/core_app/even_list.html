@@ -1,75 +1,153 @@
 {% extends "template_base.html" %}
- 
+{% load staticfiles %}
+{% load admin_static %}
 {% block content %}
 
-<div>
-	<table class="table table-striped table-bordered table-condensed form_table" style="width:70%" align="center">
-		<thead>
-          <tr>
-            <th colspan="7">
-            	<div style="display:inline-block;">
-            		<h3>Lista de Eventos MySmartHome</h3>
+<div id="ger-principal-container">
+    <div id="ger-principal-content">
+        <div id="layout">
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-sm-1-4 pure-u-lg-1-8 pure-u-xl-1-12">
+                    <div id="menu">
+                    	{% if info.inmuebles %}
+
+	                        <div class="ger-house-menu">
+	                        	<div class="pure-g">
+	                        		{% for inmueble in info.inmuebles %}
+		                                <div class="pure-u-1-3 pure-u-sm-1">
+		                                	{% if inmueble.id|add:0 == info.inmueble_actual.id|add:0 %}
+		                                		<a class="ger-house ger-house-selected" href="?inmueble_id={{inmueble.id}}">
+		                                	{% else %}
+		                                		<a class="ger-house" href="?inmueble_id={{inmueble.id}}">
+		                                	{% endif %}
+		                                        <div class="pure-g">
+		                                            <div class="pure-u-1">
+		                                                <div class="ger-house-content">
+
+		                                                	{% with estado=inmueble.estado|stringformat:"s" %}
+															<img class="ger-house-icon" src="{% static "core_app/icons/home-icon-"|add:estado|add:".png" %}"/>
+			                                                {% endwith %}
+		                                                    <h4>{{inmueble.nombre}}</h4>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                    </a>
+		                                </div>
+		                            {% endfor %}
+	                            </div>
+	                        </div>
+	                    {% endif %}
+                    </div>
+                </div>
+                <div class="pure-u-1 pure-u-sm-3-4 pure-u-lg-7-8 pure-u-xl-11-12">
+                    <div id="ger-left-content">
+                    
+                        {% if info.elemento_actual %}
+			    			<h3>Listado de eventos de "{{info.elemento_actual.nombre}}"" de "{{info.inmueble_actual.nombre}}"</h3>
+			    			
+			    		{% else %}
+			    			{% if info.inmueble_actual %}
+			    				<h3>Listado de eventos de "{{info.inmueble_actual.nombre}}"</h3>
+			    			{% else %}
+			    				<h3>Listado de todos los eventos</h3>
+			    			{% endif %}
+			    		{% endif %}
+			    		{% if info.elemento_actual or info.inmueble_actual %}
+			    			{% if info.elementos %}
+				    			<form class="pure-form" action="/app/eventos" method="GET">
+								    <fieldset>
+								        <label for="state">Filtrar por elemento </label>
+								        <select id="state" name="elemento_id">
+								        	<option {% if not info.elemento_actual %} selected {% endif %} value="">
+								            	Todos los elementos de {{info.inmueble_actual.name}}
+								            </option>
+								        	{% for elemento in info.elementos %}
+									            <option {% if elemento.id == info.elemento_actual.id %} selected {% endif %} value="{{elemento.id}}">
+									            	{{elemento.nombre}}
+									            </option>
+								            {% endfor %}
+								        </select>
+								        <button type="submit" class="pure-button pure-button-primary">Filtrar</button>
+								    </fieldset>
+								</form>
+							{% endif %}
+			    		{% endif %}
+						{% if info.eventos %}
+							<table>
+								<thead>
+						        	<tr>
+							            <th>Evento</th>
+							            <th>Fecha</th>
+							            <th>Codigo</th>
+							            <!--th>Prioridad</th-->
+							            <th>Tipo Sensor</th>
+							            <th>Inmueble</th>
+							            <th>Elemento</th>
+							            <th>Sensor</th>
+						          	</tr>
+						        </thead>
+						        <tbody>
+									{% for evento in info.eventos %}
+										<tr>
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.nombre}}
+								    		</td>
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.fecha_hora_evento}}
+								    		</td>
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.codigo}}
+								    		</td>
+								    		<!--td style="text-align:center" width="10%">
+								    			{{evento.prioridad}}
+								    		</td-->
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.sensor__tipo_sensor__nombre}}
+								    		</td>
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.sensor__activo__inmueble__nombre}}
+								    		</td>
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.sensor__activo__nombre}}
+								    		</td>
+								    		<!--td style="text-align:center" width="10%">
+								    			{{evento.descripcion}}
+								    		</td-->
+								    		<td style="text-align:center" width="10%">
+								    			{{evento.sensor__nombre}}
+								    		</td>    		
+								    	</tr>
+							   		{% endfor %}
+						   		</tbody>
+							</table>
+					    {% else %}
+							<tr>
+						    	<td>
+						    		
+						    		{% if info.elemento_actual %}
+						    			<p>No han habido eventos en el elemento: {{info.elemento_actual.nombre}} del inmueble: {{info.inmueble_actual.nombre}}</p>
+						    		{% else %}
+						    			{% if info.inmueble_actual %}
+						    				<p>No han habido eventos en el inmueble: {{info.inmueble_actual.nombre}}</p>
+						    			{% else %}
+						    				<p>No han habido eventos en tus inmuebles</p>
+						    			{% endif %}
+						    		{% endif %}
+						    	</td>
+						    </tr>
+						{% endif %}
+						
+                	</div>
             	</div>
-            	<div style="display:inline-block;float:right;">
-				</div>
-            </th>
-          </tr>
-        </thead>
-		{% if even_list.eventos %}
-		<thead>
-          <tr>
-            <th>Evento</th>
-            <th>Fecha</th>
-            <th>Codigo</th>
-            <!--th>Prioridad</th-->
-            <th>Tipo Sensor</th>
-            <th>Inmueble</th>
-            <th>Elemento</th>
-            <th>Sensor</th>
-          </tr>
-        </thead>
-        <tbody>
-        
-			{% for evento in even_list.eventos %}
-			<tr>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.nombre}}
-	    		</td>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.fecha_hora_evento}}
-	    		</td>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.codigo}}
-	    		</td>
-	    		<!--td style="text-align:center" width="10%">
-	    			{{evento.prioridad}}
-	    		</td-->
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.sensor__tipo_sensor__nombre}}
-	    		</td>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.sensor__activo__inmueble__nombre}}
-	    		</td>
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.sensor__activo__nombre}}
-	    		</td>
-	    		<!--td style="text-align:center" width="10%">
-	    			{{evento.descripcion}}
-	    		</td-->
-	    		<td style="text-align:center" width="10%">
-	    			{{evento.sensor__nombre}}
-	    		</td>    		
-	    	</tr>
-	   		{% endfor %}
-	    {% else %}
-			<tr>
-		    	<td>
-		    		<p>No hay eventos generados.</p>
-		    	</td>
-		    </tr>
-		{% endif %}
-		</tbody>
-	</table>
+
+	        </div>
+	    </div>
+	</div>  
+
+<script type="text/javascript">
+	$("#ger-item-eventos").addClass("ger-horizontal-menu-item-selected");
+</script>
+
 </div>
 
 

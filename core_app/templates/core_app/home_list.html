@@ -2,35 +2,6 @@
 {% load staticfiles %}
 {% load admin_static %}
 {% block content %}
-<header>
-    
-    <div id="ger-horizontal-menu">
-        <div class="pure-menu pure-menu-horizontal">
-            <ul class="pure-menu-list">
-                <li class="ger-horizontal-menu-item pure-menu-item ger-horizontal-menu-item-selected">
-                    <a href="#"> 
-                        <img src="{% static "core_app/icons/apartment-icon.png"%}"/>
-                    </a>
-                </li>
-                 <li class="ger-horizontal-menu-item pure-menu-item">
-                    <a href="correo">
-                        <img src="{% static "core_app/icons/alert-icon.png"%}"/>
-                    </a>
-                </li>
-                 <li class="ger-horizontal-menu-item pure-menu-item">
-                    <a href="#">
-                        <img src="{% static "core_app/icons/analytics-icon.png"%}"/>
-                    </a>
-                </li>
-                 <li class="ger-horizontal-menu-item pure-menu-item">
-                    <a href="#">
-                        <img src="{% static "core_app/icons/settings-icon.png"%}"/>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</header>
 <div id="ger-principal-container">
     <div id="ger-principal-content">
         <div id="layout">
@@ -131,7 +102,9 @@
 	</div>  
 
 
-<script src="js/ui.js"></script>
+<script type="text/javascript">
+	$("#ger-item-houses").addClass("ger-horizontal-menu-item-selected");
+</script>
 
 </div>
 {% endblock %}
