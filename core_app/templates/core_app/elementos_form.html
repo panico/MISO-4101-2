@@ -1,0 +1,238 @@
+{% extends "template_base.html" %}
+{% load staticfiles %}
+{% load admin_static %}
+{% block content %}
+<style>
+	.ger-table-events {
+		margin:0px;padding:0px;
+		width:100%;
+		border:1px solid #000000;
+		
+		-moz-border-radius-bottomleft:0px;
+		-webkit-border-bottom-left-radius:0px;
+		border-bottom-left-radius:0px;
+		
+		-moz-border-radius-bottomright:0px;
+		-webkit-border-bottom-right-radius:0px;
+		border-bottom-right-radius:0px;
+		
+		-moz-border-radius-topright:0px;
+		-webkit-border-top-right-radius:0px;
+		border-top-right-radius:0px;
+		
+		-moz-border-radius-topleft:0px;
+		-webkit-border-top-left-radius:0px;
+		border-top-left-radius:0px;
+	}.ger-table-events table{
+	    border-collapse: collapse;
+	    border-spacing: 0;
+		width:100%;
+		height:100%;
+		margin:0px;padding:0px;
+	}.ger-table-events tr:last-child td:last-child {
+		-moz-border-radius-bottomright:0px;
+		-webkit-border-bottom-right-radius:0px;
+		border-bottom-right-radius:0px;
+	}
+	.ger-table-events table tr:first-child td:first-child {
+		-moz-border-radius-topleft:0px;
+		-webkit-border-top-left-radius:0px;
+		border-top-left-radius:0px;
+	}
+	.ger-table-events table tr:first-child td:last-child {
+		-moz-border-radius-topright:0px;
+		-webkit-border-top-right-radius:0px;
+		border-top-right-radius:0px;
+	}.ger-table-events tr:last-child td:first-child{
+		-moz-border-radius-bottomleft:0px;
+		-webkit-border-bottom-left-radius:0px;
+		border-bottom-left-radius:0px;
+	}.ger-table-events tr:hover td{
+		background-color:#ffffff;
+			
+
+	}
+	.ger-table-events td{
+		vertical-align:middle;
+		
+		background-color:#efebe8;
+
+		border:1px solid #000000;
+		border-width:0px 1px 1px 0px;
+		text-align:left;
+		padding:20px;
+		font-size:10px;
+		font-family:Arial;
+		font-weight:normal;
+		color:#000000;
+	}.ger-table-events tr:last-child td{
+		border-width:0px 1px 0px 0px;
+	}.ger-table-events tr td:last-child{
+		border-width:0px 0px 1px 0px;
+	}.ger-table-events tr:last-child td:last-child{
+		border-width:0px 0px 0px 0px;
+	}
+	.ger-table-events tr:first-child td{
+			background:-o-linear-gradient(bottom, #3d3b39 5%, #969daa 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3d3b39), color-stop(1, #969daa) );
+		background:-moz-linear-gradient( center top, #3d3b39 5%, #969daa 100% );
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3d3b39", endColorstr="#969daa");	background: -o-linear-gradient(top,#3d3b39,969daa);
+
+		background-color:#3d3b39;
+		border:0px solid #000000;
+		text-align:center;
+		border-width:0px 0px 1px 1px;
+		font-size:14px;
+		font-family:Arial;
+		font-weight:bold;
+		color:#ffffff;
+	}
+	.ger-table-events tr:first-child:hover td{
+		background:-o-linear-gradient(bottom, #3d3b39 5%, #969daa 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3d3b39), color-stop(1, #969daa) );
+		background:-moz-linear-gradient( center top, #3d3b39 5%, #969daa 100% );
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3d3b39", endColorstr="#969daa");	background: -o-linear-gradient(top,#3d3b39,969daa);
+
+		background-color:#3d3b39;
+	}
+	.ger-table-events tr:first-child td:first-child{
+		border-width:0px 0px 1px 0px;
+	}
+	.ger-table-events tr:first-child td:last-child{
+		border-width:0px 0px 1px 1px;
+	}
+</style>
+<div id="ger-principal-container">
+    <div id="ger-principal-content">
+        <div id="layout">
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-sm-1-4 pure-u-lg-1-8 pure-u-xl-1-12">
+                    <div id="menu">
+                    	{% if info.inmuebles %}
+
+	                        <div class="ger-house-menu">
+	                        	<div class="pure-g">
+	                        		{% for inmueble in info.inmuebles %}
+		                                <div class="pure-u-1-3 pure-u-sm-1">
+		                                	{% if inmueble.id|add:0 == info.inmueble_actual.id|add:0 %}
+		                                		<a class="ger-house ger-house-selected" href="?inmueble_id={{inmueble.id}}">
+		                                	{% else %}
+		                                		<a class="ger-house" href="?inmueble_id={{inmueble.id}}">
+		                                	{% endif %}
+		                                        <div class="pure-g">
+		                                            <div class="pure-u-1">
+		                                                <div class="ger-house-content">
+
+		                                                	{% with estado=inmueble.estado|stringformat:"s" %}
+															<img class="ger-house-icon" src="{% static "core_app/icons/home-icon-"|add:estado|add:".png" %}"/>
+			                                                {% endwith %}
+		                                                    <h4>{{inmueble.nombre}}</h4>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                    </a>
+		                                </div>
+		                            {% endfor %}
+	                            </div>
+	                        </div>
+	                    {% endif %}
+                    </div>
+                </div>
+                <div class="pure-u-1 pure-u-sm-3-4 pure-u-lg-7-8 pure-u-xl-11-12">
+                    <div id="ger-left-content">
+                    
+                        {% if info.elemento_actual %}
+			    			<h3>Listado de eventos de "{{info.elemento_actual.nombre}}"" de "{{info.inmueble_actual.nombre}}"</h3>
+			    			
+			    		{% else %}
+			    			{% if info.inmueble_actual %}
+			    				<h3>Agregar elementos a "{{info.inmueble_actual.nombre}}"</h3>
+			    			{% else %}
+			    				<h3>Agregar elementos</h3>
+			    			{% endif %}
+			    		{% endif %}
+			    		{% if info.elemento_actual or info.inmueble_actual %}
+			    			{% if info.elementos %}
+				    			<form class="pure-form" action="/app/eventos" method="GET">
+								    <fieldset>
+								        <label for="state">Filtrar por elemento </label>
+								        <select id="state" name="elemento_id">
+								        	<option {% if not info.elemento_actual %} selected {% endif %} value="">
+								            	Todos los elementos de {{info.inmueble_actual.name}}
+								            </option>
+								        	{% for elemento in info.elementos %}
+									            <option {% if elemento.id == info.elemento_actual.id %} selected {% endif %} value="{{elemento.id}}">
+									            	{{elemento.nombre}}
+									            </option>
+								            {% endfor %}
+								        </select>
+								        <button type="submit" class="pure-button pure-button-primary">Filtrar</button>
+								    </fieldset>
+								</form>
+							{% endif %}
+			    		{% endif %}
+						
+					<form class="pure-form" action="/app/elementos" method="GET">
+
+					nombre elemento: 
+					<br>
+					<br>
+
+						<input type="text" name="nombre_elemento">
+						<br>
+						<br>
+
+						ubicacion elemento:  
+						<br>
+						<br>
+
+						<input type="text" name="ubicacion_elemento">
+						<br>
+						<br>
+
+
+						inmueble asociado:  
+						<br>
+						<br>
+
+						<input type="text" name="inmueble_elemento">
+						<br>
+						<br>
+
+						proyecto asociado:  
+						<br>
+						<br>
+
+						<input type="text" name="proyecto_elemento">
+						<br>
+						<br>
+
+						usuario asociado:  
+						<br>
+						<br>
+
+						estado asociado:  
+						<br>
+						<br>
+
+						<input style="background-color:black" type="submit" value="agregar">
+
+					</form>	
+
+
+
+
+
+                	</div>
+            	</div>
+
+	        </div>
+	    </div>
+	</div>  
+
+<script type="text/javascript">
+	$("#ger-item-eventos").addClass("ger-horizontal-menu-item-selected");
+</script>
+
+</div>
+
+
+{% endblock %}
