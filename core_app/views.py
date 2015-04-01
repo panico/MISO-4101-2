@@ -196,3 +196,9 @@ class AlarmsView(TemplateView):
         return  render_to_response('core_app/myform.html', locals(),
                                 RequestContext(request))
 
+class TipoAlarmsView (TemplateView):
+    context_object_name = 'app_list' 
+    
+    def get_queryset(self):
+        #user = self.request.user;
+        return [];
