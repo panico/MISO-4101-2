@@ -54,7 +54,6 @@ ROOT_URLCONF = 'MySmartHome.urls'
 
 WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 

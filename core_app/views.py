@@ -84,24 +84,40 @@ class HomeListView(ListView):
         
         return resultado
 
-    
 class EventosView(ListView):
-    context_object_name = 'even_list'
+    context_object_name = 'info'
     template_name = 'core_app/even_list.html'
     
     def get_queryset(self):
+                    
         user = self.request.user
-        fecha1  = None# '2015-01-01'#'2015-01-19' #self.request.GET['fech_1']
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        fecha1  = None#'2015-01-19' #self.request.GET['fech_1']
         fecha2  = None#'2015-03-19'# '2015-02-18''2015-03-01'#self.request.GET['fech_1']
 #        start_date = datetime.date(2005, 1, 1)
-#        end_date = datetime.date(2005, 3, 31)       
-        result = {}
-        if (user.id != None):
-            i = alarmas.Alarma()
-            eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
-            result['eventos'] = eventos
-            
-        return result
+#        end_date = datetime.date(2005, 3, 31)     
+        resultado = {}
+        i = alarmas.Alarma()
+        resultado['inmuebles'] = inmuebles  
+        if 'inmueble_id' in self.request.GET and self.request.GET['inmueble_id'] != "":
+            inmb_id = self.request.GET['inmueble_id']
+            resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmb_id)
+            resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = inmb_id, user_id = user.id).order_by('-estado')
+            eventos = i.consul_events_inmb(inmueb_id = inmb_id, fecha1 = fecha1, fecha2 = fecha2)
+        else:
+            if 'elemento_id' in self.request.GET and self.request.GET['elemento_id'] != "":
+                elm_id = self.request.GET['elemento_id']
+                resultado['elemento_actual'] = Elemento.objects.get(pk=elm_id)
+                resultado['inmueble_actual'] = resultado['elemento_actual'].inmueble
+                resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = resultado['inmueble_actual'].id, user_id = user.id).order_by('-estado')
+                eventos = i.consul_events_elem(elem_id = elm_id, fech_1 = fecha1, fech_2 = fecha2)
+            else:
+                if (user.id != None):
+                    eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
+                    resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
+        
+        resultado['eventos'] = eventos    
+        return resultado
         
 
 #Este es un cambio de prueba para el Codeship
