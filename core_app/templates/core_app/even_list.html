@@ -156,7 +156,7 @@
 								        <label for="state">Filtrar por elemento </label>
 								        <select id="state" name="elemento_id">
 								        	<option {% if not info.elemento_actual %} selected {% endif %} value="">
-								            	Todos los elementos de {{info.inmueble_actual.name}}
+								            	Todos los elementos de {{info.inmueble_actual}}
 								            </option>
 								        	{% for elemento in info.elementos %}
 									            <option {% if elemento.id == info.elemento_actual.id %} selected {% endif %} value="{{elemento.id}}">
