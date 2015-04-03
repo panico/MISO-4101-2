@@ -70,9 +70,21 @@
 		                                            </div>
 		                                            <div class="pure-u-3-4 pure-u-sm-7-8">
 		                                                <div class="accordion ger-element-info">
-		                                                    <h3 class="ger-element-info-label">{{elemento.nombre}}</h3>
+		                                                    <div class="ger-element-info-label accordion-header">
+		                                                    	<div class="pure-g">
+		                                                    		<div class="pure-u-7-8">
+		                                                    			<span>{{elemento.nombre}}</span>
+		                                                    		</div>
+		                                                    		<div class="pure-u-1-8">
+		                                                    			<a href="/app/eventos/?elemento_id={{elemento.id}}">
+		                                                    				<img style="witdh: 100%; max-width: 30px;" src="{% static "core_app/icons/analytics-icon.png"%}"/>
+		                                                    			</a>
+		                                                    		</div>
+		                                                    	</div>
+		                                                    </div>
 		                                                    <div>
 		                                                        <p>Descipción de lo que sucedió</p>
+		                                                        
 		                                                    </div>
 		                                                </div>
 		                                            </div>
