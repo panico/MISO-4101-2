@@ -1,11 +1,14 @@
 #from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
 import datetime
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django import forms
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -117,3 +120,16 @@ class CodeShipTest(ListView):
     context_object_name = 'info'
     template_name = 'core_app/home_list.html'
 
+
+# Form de elementos
+
+class ElementosCreateView(CreateView):
+    model = Elemento
+    fields = ['nombre_elem']
+    success_url = 'core_app/notificacion/elementos_notif.html'
+
+    def form_valid(self, form):
+        inmueble_id = self.request.session['inmueble_id']
+        form.instance.elemento = Agenda.objects.get(pk=inmueble_id)
+        
+        return super(ElementosCreateView, self).form_valid(form)

@@ -121,4 +121,3 @@ class HistoryAlarmas(GenericModel):
 
     sensor   = models.ForeignKey(Sensor)
     alarma   = models.ForeignKey(Alarma)
-

@@ -169,56 +169,17 @@
 								</form>
 							{% endif %}
 			    		{% endif %}
+
 						
-					<form class="pure-form" action="/app/elementos" method="GET">
+					<form class="pure-form" action="notificacion/" method="get">
+					
+					{% csrf_token %}
 
-					nombre elemento: 
-					<br>
-					<br>
+					{{ formElem.as_p }}
 
-						<input type="text" name="nombre_elemento">
-						<br>
-						<br>
-
-						ubicacion elemento:  
-						<br>
-						<br>
-
-						<input type="text" name="ubicacion_elemento">
-						<br>
-						<br>
-
-
-						inmueble asociado:  
-						<br>
-						<br>
-
-						<input type="text" name="inmueble_elemento">
-						<br>
-						<br>
-
-						proyecto asociado:  
-						<br>
-						<br>
-
-						<input type="text" name="proyecto_elemento">
-						<br>
-						<br>
-
-						usuario asociado:  
-						<br>
-						<br>
-
-						estado asociado:  
-						<br>
-						<br>
-
-						<input style="background-color:black" type="submit" value="agregar">
+					<input type="submit" class="pure-button pure-button-primary" value="Agregar" />
 
 					</form>	
-
-
-
 
 
                 	</div>

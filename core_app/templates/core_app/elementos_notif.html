@@ -1,0 +1,28 @@
+{% extends "template_base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+  	<table align="center" id="tab1"> 
+  	<tr align="center">
+
+    {% if info.inmuebles %}
+
+    
+
+  		<h3>El elemento " {{ info.inmueble_actual.nombre }} " ha sido agregado al inmueble " {{ info.inmueble_actual.nombre }} " </h2>
+
+
+    {% endif %}
+
+  	</tr>
+  	<tr>
+  		<a href="/app/" style="float:right; display:inline-block;margin:20px">volver
+      </a>
+    </tr>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

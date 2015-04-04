@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     url(r'^correo/envio/$', login_required(views.CorreoView.as_view(template_name='core_app/correo_detail.html')), name='correo_envio'),
     #url(r'^$', login_required(views.HomeListView.as_view()), name='home_list'),                           
     url(r'^elementos/$', login_required(views.EventosView.as_view(template_name='core_app/elementos_form.html')), name='elementos_form'),
+    url(r'^elementos/notificacion/$', login_required(views.EventosView.as_view(template_name='core_app/elementos_notif.html')), name='elementos_notif')
 )
