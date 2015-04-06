@@ -1,5 +1,5 @@
 #from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento
@@ -111,7 +111,27 @@ class EventosView(ListView):
         resultado['eventos'] = eventos    
         return resultado
         
+class ElemCreateView(CreateView):
+    model = Elemento
+    fields = ['nombre', 'estado']
+    success_url = '/core_app/'
+    
+    
+    def form_valid(self, form):
+        #user = self.request.user
+        form.instance.user = self.request.user
+        form.instance.inmueble_id = self.request.GET['inmueble_id']
+        return super(ElemCreateView, self).form_valid(form)
+    
+class ElemDetailView(DetailView):
+    model = Elemento
 
+class ElemUpdateView(UpdateView):
+    model = Elemento
+    
+    def get_success_url(self):
+        return reverse('core_app:elem_detail', kwargs={'pk': self.object.pk,})
+    
 #Este es un cambio de prueba para el Codeship
 class CodeShipTest(ListView):
     context_object_name = 'info'
