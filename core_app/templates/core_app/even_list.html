@@ -168,8 +168,7 @@
 
 							<div>
 	                    		<div id="ger-dashboard-chart-div" style="width: 100%; min-width: 500px;">
-							      	<!--Divs that will hold each control and chart-->
-							    	
+							      	
 							    	<div id="ger-filter-element-div" style="width: 100%; min-width: 500px;"></div>
 							    	<div id="ger-timechart" style="width: 100%; height: 100%; min-width: 500px;"></div>
 							    	<div id="ger-filter-date-div" style="width: 100%; min-width: 500px;"></div>
@@ -179,10 +178,10 @@
 				        	</div>
                         {% else %}
                         	{% if info.elemento_actual %}
-				    			<p>No han habido eventos en el elemento: {{info.elemento_actual.nombre}} del inmueble: {{info.inmueble_actual.nombre}}</p>
+				    			<p>No han habido eventos en el elemento: "{{info.elemento_actual.nombre}}"" del inmueble: "{{info.inmueble_actual.nombre}}"</p>
 				    		{% else %}
 				    			{% if info.inmueble_actual %}
-				    				<p>No han habido eventos en el inmueble: {{info.inmueble_actual.nombre}}</p>
+				    				<p>No han habido eventos en el inmueble: "{{info.inmueble_actual.nombre}}"</p>
 				    			{% else %}
 				    				<p>No han habido eventos en tus inmuebles</p>
 				    			{% endif %}
@@ -223,26 +222,26 @@ function drawDashboard() {
 			
 			{% ifchanged evento.sensor__activo__nombre%}
 				{% if not forloop.first %}
-					, new Date("May 5, 2015")],
+					, new Date()],
 				{% endif %}
 			{% else %}
 				{% if not forloop.first %}
-					, new Date({{evento.fecha_hora_evento|date:"Y"}},{{ evento.fecha_hora_evento|date:"n" }}, {{ evento.fecha_hora_evento|date:"j" }}, {{ evento.fecha_hora_evento|date:"G" }}, {{ evento.fecha_hora_evento|date:"i" }})], 
+					, new Date('{{evento.fecha_hora_evento|date:"r"}}')], 
 				{% endif %}
 			{% endifchanged %}
 			
 			[ "{{evento.sensor__activo__nombre}}"
-			{% if evento.sensor__tipo_sensor__nombre == "estado" %}
-				{% if evento.codigo == "0" %},"Cerrada"
-				{% else %},"Abierta"{% endif %}
+			{% if evento.sensor__tipo_sensor__nombre == "acceso" %}
+				{% if evento.codigo == "0" %},"Close"
+				{% else %},"Open"{% endif %}
 			{% else %}
 				{% if evento.codigo == "0" %},"Off"
 				{% else %},"On"{% endif %}
 			{% endif %}
 			, "{{evento.sensor__tipo_sensor__nombre}}", "{{evento.sensor__activo__inmueble__nombre}}"
-				, new Date({{evento.fecha_hora_evento|date:"Y"}},{{ evento.fecha_hora_evento|date:"n" }}, {{ evento.fecha_hora_evento|date:"j" }}, {{ evento.fecha_hora_evento|date:"G" }}, {{ evento.fecha_hora_evento|date:"i" }})
+				, new Date('{{evento.fecha_hora_evento|date:"r"}}')
 			{% if forloop.last %}
-				, new Date("May 5, 2015")]
+				, new Date()]
 			{% endif %}
 		{% endfor %}
 
