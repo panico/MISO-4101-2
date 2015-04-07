@@ -122,7 +122,9 @@ class ElemCreateView(CreateView):
     def form_valid(self, form):
         #user = self.request.user
         form.instance.user      = self.request.user
-        form.instance.inmueble  = self.request.GET['inmueble_id']
+        inmb_id = self.request.session['inmueble_id']
+        form.instance.inmueble = Inmueble.objects.get(pk=inmb_id)
+        
         return super(ElemCreateView, self).form_valid(form)
     
 class ElemDetailView(DetailView):
