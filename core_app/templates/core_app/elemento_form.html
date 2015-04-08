@@ -1,4 +1,5 @@
 {% extends "template_base.html" %}
+
 {% load staticfiles %}
 {% load admin_static %}
 {% block content %}
@@ -17,8 +18,10 @@
 			<td align="center" colspan="2">
 				<input type="submit" value="Guardar"/>
 				<input type="button" value="Cancelar" onClick="window.history.back()"/>
+
 			</td>
 		</tr>
 	</table>
 </form>
+
 {% endblock %}

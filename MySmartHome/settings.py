@@ -62,10 +62,24 @@ WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 #PWD_DB = '000000'
 #HOST_DB = 'localhost'
 
+#desa
 NAME_DB='dmbjrbf5tui1k'
 USER_DB = 'czkxlkptpfljhy'
 PWD_DB = 'UMq60bMuvQrXN0Ie9oJojMr5Yf'
 HOST_DB = 'ec2-50-19-236-178.compute-1.amazonaws.com'
+
+#test
+#NAME_DB='d7rtbk4m2c6c3k'
+#USER_DB = 'qpdmestgkkdxhn'
+#PWD_DB = 'dHC9ClLm8wyX7vt6U6ZiEjzOlo'
+#HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
+
+#prod
+#NAME_DB='dce330ch6019n5'
+#USER_DB = 'jxkxkqtyokdkdf'
+#PWD_DB = 'woo5BcTu62DbMZMvpRtf0KA7Li'
+#HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
+
 
 DATABASES = {
     'default': {
@@ -80,28 +94,40 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
+#import dj_database_url
+#DATABASES['default'] =  dj_database_url.config()
+ 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+ 
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+ 
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+ 
+STATICFILES_DIRS = (
+    #os.path.join(BASE_DIR, 'static'),
+    os.path.join('core_app/', 'static'),
+)
+
 
 #Custome template folder
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'

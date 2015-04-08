@@ -70,7 +70,7 @@
 	    padding: 1em 0;
 	}
         body {
-            color: #FFF;
+            color: white;
             background: rgb(51, 51, 51);
         }
         option, select {
@@ -186,6 +186,30 @@
             padding: 1em;
         }
 
+        #formAlarma{
+            text-align: center;
+        }
+        /* Apply padding to td elements that are direct children of the tr element. */
+        tr.spaceUnder > td
+        {
+            padding-bottom: 1em;
+        }
+                /* Apply padding to td elements that are direct children of the tr element. */
+        td.spaceleft
+        {
+            padding-left: 1em;
+        }
+
+        #select1 {width:150px; color:rgba(0, 0, 0, 0);}
+        #select1:focus, #select1:focus {
+            color:black;
+        }
+        .white {background:white;}
+        .red {background:red;}
+        .yellow {background:yellow;}
+        .green {background:green}
+
+
     </style>
 </head>
 
@@ -230,7 +254,7 @@
                             </a>
                         </li>
                          <li class="ger-horizontal-menu-item pure-menu-item">
-                            <a title="Alertas" href="/app/correo">
+                            <a title="Alarmas" href="/app/alarmas">
                                 <img src="{% static "core_app/icons/alert-icon.png"%}"/>
                             </a>
                         </li>
@@ -263,8 +287,10 @@
    	
 	{% block footer %}
 	<footer>
+        <script type="text/javascript" src="https://mysmarthome.atlassian.net/s/f34c4e9cef1569cdd47c2b808b74ffdd-T/en_US50u5ku/64014/8/1.4.24/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=b6c5fff2">
+        </script>
 		<p class="ger-credits">Powered by 
-			<b>Hernán Tenjo</b>, 
+        	<b>Hernán Tenjo</b>, 
 			<b>Jhony Toro</b>, 
 			<b>David Medina</b>, 
 			<b>Germán Rojas</b> & 
