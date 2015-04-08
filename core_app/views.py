@@ -1,5 +1,5 @@
 #from django.shortcuts import render
-from django.views.generic import ListView, CreateView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView, UpdateView
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSensor
@@ -120,7 +120,27 @@ class EventosView(ListView):
         resultado['eventos'] = eventos    
         return resultado
         
+class ElemCreateView(CreateView):
+    model = Elemento
+    fields = ['nombre', 'estado']
+    success_url = '/core_app/'
+    
+    
+    def form_valid(self, form):
+        #user = self.request.user
+        form.instance.user = self.request.user
+        form.instance.inmueble_id = self.request.GET['inmueble_id']
+        return super(ElemCreateView, self).form_valid(form)
+    
+class ElemDetailView(DetailView):
+    model = Elemento
 
+class ElemUpdateView(UpdateView):
+    model = Elemento
+    
+    def get_success_url(self):
+        return reverse('core_app:elem_detail', kwargs={'pk': self.object.pk,})
+    
 #Este es un cambio de prueba para el Codeship
 class CodeShipTest(ListView):
     context_object_name = 'info'
@@ -406,6 +426,11 @@ class AlarmsView(TemplateView):
                 for form in self.forms:
                     form.empty_permitted = False
 
+        if 'tipo_alarma' in self.request.GET:
+            alarma_id = self.request.GET['tipo_alarma']
+        else:
+            return  render_to_response('core_app/home_list.html', locals(),
+                                RequestContext(request))
 
         tipo_alarma = self.request.GET['tipo_alarma']
 
@@ -447,6 +472,7 @@ class AlarmsView(TemplateView):
                                 RequestContext(request))
     
         alarma_formset = AlarmFormSet()
+
 
         return  render_to_response('core_app/crear_alarma.html', locals(),
                                 RequestContext(request))

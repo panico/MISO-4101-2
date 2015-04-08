@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load admin_static %}
 {% block content %}
+
 <div id="ger-principal-container">
     <div id="ger-principal-content">
         <div id="layout">
@@ -113,13 +114,13 @@
                     <td>
                     <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <form action="crear_alarmas" method="get">
+                      <form action="crear_alarmas/app" method="get">
                                     <input type="hidden" name="tipo_alarma" value="2"/>
-                                      <button type="image" style="height:190px;width:190px;" >Uso Electrico</button>
+                                      <button type="image" style="height:190px;width:190px;" >Uso DElectrico</button>
                       </form>
                     </li>
                     <li class="pure-menu-item">
-                      <form action="crear_alarmas" method="get">
+                      <form action="crear_alarmas/app" method="get">
                                     <input type="hidden" name="tipo_alarma" value="4"/>
                                       <button type="image" style="height:190px;width:190px;" >Estado de Inmueble</button>
                       </form>
@@ -129,13 +130,13 @@
                     <td>
                     <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <form action="crear_alarmas" method="get">
+                      <form action="crear_alarmas_mia" method="get">
                                     <input type="hidden" name="tipo_alarma" value="3"/>
                                       <button type="image" style="height:190px;width:190px;" >Acceso a Immueble</button>
                       </form>
                     </li>
                     <li class="pure-menu-item">
-                      <form action="crear_alarmas" method="get">
+                      <form action="crear_alarmas_suya" method="get">
                                     <input type="hidden" name="tipo_alarma" value="1"/>
                                       <button type="image" style="height:190px;width:190px;" >Humo</button>
                       </form>
