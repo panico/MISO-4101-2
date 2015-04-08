@@ -181,32 +181,32 @@ class Alarma:
                                                          
         else:
             if (fech_2 != None and fech_1 != None):
-                for x in list(HistoryAlarmas.objects.all().filter(sensor__activo__id = elem_id, fecha__range = [fech_1, fech_2]
-                            ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
-                            ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
-                                     'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
-                            ).order_by('-fecha_hora_evento')[:20]):
+                for x in list(HistoryAlarmas.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__range = [fech_1, fech_2]
+                            ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
+                                ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
+                                         'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
+                                ).order_by('-fecha_hora')[:20]):
                 
                     result.append(x)
             
             else:
                 if (fech_1 == None and fech_2 != None):
-                    for x in list(HistoryAlarmas.objects.all().filter(sensor__activo__id = elem_id, fecha__lte = fech_2
-                                ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
-                                ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
-                                         'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
-                                ).order_by('-fecha_hora_evento')[:20]):
+                    for x in list(HistoryAlarmas.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__lte = fech_2
+                                ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
+                                ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
+                                         'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
+                                ).order_by('-fecha_hora')[:20]):
                     #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
                         result.append(x)
                 
                 else:
-                    print('paso 3 '+str(elem_id))
+                    
                     for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id
                                 ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
-                        print('paso 4' +str(x))
+                        
                         result.append(x)
                         #'fecha', 'sensor__tipo_sensor__nombre', 
                         #                 'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
