@@ -82,7 +82,7 @@ class Alarma(GenericModelWithName):
     #usuario = models.ForeignKey(User)
     sensor = models.ForeignKey(Sensor)
     activa = models.BooleanField(default=True)
-    notifica = models.BooleanField(default=True,help_text='envia notificacion')
+    notifica = models.BooleanField(default=True)
     eliminada = models.BooleanField(default=False)
     nivel_alarma = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
 
