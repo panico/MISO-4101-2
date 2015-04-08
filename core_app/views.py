@@ -180,7 +180,8 @@ class AlarmsEditView(TemplateView):
     template_name = 'core_app/alarmas_detalle.html'
     
 
-    def post(self,request):
+    def post(self,request,contact_id):
+        
 
         class RequiredFormSet(BaseFormSet):
             def __init__(self, *args, **kwargs):
@@ -193,15 +194,19 @@ class AlarmsEditView(TemplateView):
         
 
         if tipo_alarma==1 :
+            contact = get_object_or_404(AlarmaHumo, pk=contact_id)
             AlarmFormSet = formset_factory(AlarmaHumoForm, extra=0, max_num=10, formset=RequiredFormSet)
         elif tipo_alarma==2:
+            contact = get_object_or_404(AlarmaEstado, pk=contact_id)
             AlarmFormSet = formset_factory(AlarmaEstado2Form, extra=0, max_num=10, formset=RequiredFormSet)
         elif tipo_alarma==3:
+            contact = get_object_or_404(AlarmaAcceso, pk=contact_id)
             AlarmFormSet = formset_factory(AlarmaAccesoForm, extra=0, max_num=10, formset=RequiredFormSet)    
         elif tipo_alarma==4:
+            contact = get_object_or_404(AlarmaEstado, pk=contact_id)
             AlarmFormSet = formset_factory(AlarmaEstadoForm, extra=0, max_num=10, formset=RequiredFormSet)
         
-        alarma_formset = AlarmFormSet(request.POST, request.FILES)
+        alarma_formset = AlarmFormSet(request.POST, request.FILES, instance=contact)
         sensor_id = self.request.POST.get('sensor_select',False)
         nivel_id = self.request.POST.get('nivel_select',False)
 
@@ -217,6 +222,7 @@ class AlarmsEditView(TemplateView):
                         alarma.estado_sensor=form['estado']
                     elif tipo_alarma==4:
                         alarma.estado_sensor=form['estado']
+
                     alarma.save()
             else:
                 error_sensor= '* This field is required.'
@@ -269,6 +275,7 @@ class AlarmsEditView(TemplateView):
             hora_ini = 0
             hora_fin = 0
             estado = 0
+            contact = get_object_or_404(AlarmaHumo, pk=alarma_id)
 
         elif tipo_alarma==2 or tipo_alarma=='2':
             AlarmFormSet = formset_factory(AlarmaEstado2Form, extra=0, max_num=10, formset=RequiredFormSet)
@@ -277,6 +284,7 @@ class AlarmsEditView(TemplateView):
             hora_ini = myAlarma.hora_inicio
             hora_fin = myAlarma.hora_fin
             estado = myAlarma.estado_sensor
+            contact = get_object_or_404(AlarmaEstado, pk=alarma_id)
         elif tipo_alarma==3 or tipo_alarma=='3':
             AlarmFormSet = formset_factory(AlarmaAccesoForm, extra=0, max_num=10, formset=RequiredFormSet)    
             alarm = AlarmaAcceso.objects.all().filter(id=alarma_id)
@@ -284,6 +292,7 @@ class AlarmsEditView(TemplateView):
             hora_ini = myAlarma.hora_inicio
             hora_fin = myAlarma.hora_fin
             estado = 0
+            contact = get_object_or_404(AlarmaAcceso, pk=alarma_id)
         elif tipo_alarma==4 or tipo_alarma=='4':
             AlarmFormSet = formset_factory(AlarmaEstadoForm, extra=0, max_num=10, formset=RequiredFormSet)            
             alarm = AlarmaEstado.objects.all().filter(id=alarma_id)
@@ -291,6 +300,7 @@ class AlarmsEditView(TemplateView):
             hora_ini = myAlarma.hora_inicio
             hora_fin = myAlarma.hora_fin
             estado = myAlarma.estado_sensor
+            contact = get_object_or_404(AlarmaEstado, pk=alarma_id)
         else:
             return  render_to_response('core_app/home_list.html', locals(),
                         RequestContext(request))
@@ -300,7 +310,7 @@ class AlarmsEditView(TemplateView):
         alarm = Alarma.objects.all().filter(id=alarma_id)
         
 
-        alarma_formset = AlarmFormSet(initial=[{
+        alarma_formset = AlarmFormSet(instance=contact,initial=[{
             'nombre': myAlarma.nombre,
             'descripcion': myAlarma.descripcion,
             'sensor':myAlarma.sensor,
