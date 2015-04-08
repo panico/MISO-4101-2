@@ -1,6 +1,6 @@
 #from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView, UpdateView
 
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
