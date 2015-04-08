@@ -11,6 +11,8 @@ urlpatterns = patterns('',
 
     url(r'^eventos/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_list'),
 
+    url(r'^history/$', login_required(views.AlarmReportsView.as_view(template_name='core_app/alarmas_history.html')), name='alarmas_history'),
+    
     url(r'^tipo_alarmas/$', login_required(views.TipoAlarmsView.as_view(template_name='core_app/tipo_alarmas.html')),name='tipo_alarmas'),
     url(r'^alarmas/$', login_required(views.AlarmsListView.as_view(template_name='core_app/alarmas_lista.html')), name='alarmas_lista'),
     url(r'^alarmas/editar_alarmas/$', login_required(views.AlarmsEditView.as_view(template_name='core_app/alarmas_detalle.html')), name='alarmas_detalle'),
