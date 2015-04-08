@@ -6,7 +6,7 @@ from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSens
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
 import datetime
-from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm
+from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -122,12 +122,14 @@ class EventosView(ListView):
 
 class ElemCreateView(CreateView):
     model = Elemento
-    fields = ['nombre', 'estado']
+    obj=10
+    #fields = ['nombre', 'estado']
     success_url = '/core_app/'
     
     
     def form_valid(self, form):
         #user = self.request.user
+        user = self.request.user
         form.instance.user = self.request.user
         form.instance.inmueble_id = self.request.GET['inmueble_id']
         return super(ElemCreateView, self).form_valid(form)
@@ -149,7 +151,7 @@ class CodeShipTest(ListView):
 
 #vista de alarmas
 class AlarmsListView(TemplateView):
-    template_name = 'core_app/tipo_alarmas.html'
+    template_name = 'core_app/alarmas_lista.html'
     
     def get(self,request):
         
@@ -161,6 +163,7 @@ class AlarmsListView(TemplateView):
         
         if(inmuebles.__len__() > 0):
             info['inmuebles'] = inmuebles
+            info['inmueble_actual'] = info['inmuebles'][0]
             
             if 'inmueble_id' in self.request.GET:
                 inmueble_param_id = self.request.GET['inmueble_id']
@@ -176,8 +179,13 @@ class AlarmsListView(TemplateView):
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
                 #info['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
                 if (user.id != None):
-                    alarma = i.consul_alarms(user_id = user.id,tipo_sensor_id='0')
+                    #alarma = i.consul_alarms(user_id = user.id,tipo_sensor_id='0')
+
+                    info['inmueble_actual'] = info['inmuebles'][0]
+                    inmueble_param_id = info['inmueble_actual'].id
+                    alarma = i.consul_alarms_inmb(inmueb_id = inmueble_param_id,tipo_sensor_id='0')
                     info['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
+                    
         
 
             #if 'elemento_id' in self.request.GET and self.request.GET['elemento_id'] != "":
@@ -435,7 +443,31 @@ class AlarmsView(TemplateView):
         tipo_alarma = self.request.GET['tipo_alarma']
 
         i = alarmas.Alarma()
-        sensores = i.consul_elementos_sensor( tipo_sensor = tipo_alarma)
+        
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        resultado = {}
+    
+        
+        if(inmuebles.__len__() > 0):
+            resultado['inmuebles'] = inmuebles
+            
+            if 'inmueble_id' in self.request.GET:
+        
+                inmueble_param_id = self.request.GET['inmueble_id']
+                resultado['elementos'] = Elemento.objects.all().filter(
+                     inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
+
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+
+            else:
+        
+                primer_inmueble = inmuebles[0]
+                resultado['elementos'] = Elemento.objects.all().filter(
+                     inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+
+        sensores = i.consul_sensores_inmb( inmueb_id = resultado['inmueble_actual'].id,tipo_sensor = tipo_alarma)
 
         if tipo_alarma=='1' :
             AlarmFormSet = formset_factory(AlarmaHumoForm, extra=1, max_num=10, formset=RequiredFormSet)
@@ -448,25 +480,7 @@ class AlarmsView(TemplateView):
 
             
         else:
-            user = self.request.user
-            inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
-            resultado = {}
-        
-            if(inmuebles.__len__() > 0):
-                resultado['inmuebles'] = inmuebles
-                
-                if 'inmueble_id' in self.request.GET:
-                    inmueble_param_id = self.request.GET['inmueble_id']
-                    resultado['elementos'] = Elemento.objects.all().filter(
-                         inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
-                    resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
-
-                else:
-                    primer_inmueble = inmuebles[0]
-                    resultado['elementos'] = Elemento.objects.all().filter(
-                         inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
-                    resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
 
             return  render_to_response('core_app/home_list.html', locals(),
                                 RequestContext(request))
@@ -545,7 +559,7 @@ class AlarmReportsView(ListView):
             inmb_id = self.request.GET['inmueble_id']
             resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmb_id)
             resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = inmb_id, user_id = user.id).order_by('-estado')
-            print('paso 2')
+        
             eventos = i.consul_history_inmb(inmueb_id = inmb_id, fecha1 = fecha1, fecha2 = fecha2)
         else:
             if 'elemento_id' in self.request.GET and self.request.GET['elemento_id'] != "":
@@ -553,14 +567,104 @@ class AlarmReportsView(ListView):
                 resultado['elemento_actual'] = Elemento.objects.get(pk=elm_id)
                 resultado['inmueble_actual'] = resultado['elemento_actual'].inmueble
                 resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = resultado['inmueble_actual'].id, user_id = user.id).order_by('-estado')
-                print('paso 1')
+                
                 eventos = i.consul_history_elem(elem_id = elm_id, fech_1 = fecha1, fech_2 = fecha2)
             else:
                 if (user.id != None):
-                    print('paso 0')
+                    
                     eventos = i.consul_history(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
                     resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
         
         resultado['reporte'] = eventos    
-        print('sale '+str(resultado['reporte']))
+        
         return resultado
+
+
+#creacion de alarmas
+class CrearElementoView(TemplateView):
+    state = 0
+    def post(self,request):
+
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+
+
+        resultado = {}
+        user = self.request.user
+
+        if 'inmueble_id' in self.request.POST:
+
+            inmueble_param_id = self.request.POST['inmueble_id']
+            resultado['elementos'] = Elemento.objects.all().filter(
+                 inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
+
+            resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+
+
+        else:
+
+            return  render_to_response('core_app/home_list.html', locals(),
+                            RequestContext(request))
+        
+        AlarmFormSet = formset_factory(ElementoForm, extra=1, max_num=10, formset=RequiredFormSet)
+    
+        alarma_formset = AlarmFormSet(request.POST, request.FILES)
+        
+        if alarma_formset.is_valid():            
+            
+            for form in alarma_formset.forms:
+
+                nombre = form.cleaned_data['nombre']
+                elemento = Elemento(nombre = nombre,estado=0,inmueble=resultado['inmueble_actual'],user = self.request.user)
+                elemento.save()
+                tipo = TipoSensor.objects.get(pk=2)
+                sensor = Sensor(nombre = nombre,activo=elemento,tipo_sensor=tipo)
+                sensor.save()
+                
+        else:
+            
+            return  render_to_response('core_app/crear_elemento.html', locals(),
+                    RequestContext(request))
+
+        return HttpResponseRedirect('../')
+
+    def get(self,request):
+        
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+
+        
+        AlarmFormSet = formset_factory(ElementoForm, extra=1, max_num=10, formset=RequiredFormSet)
+            
+    
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        resultado = {}
+    
+        if(inmuebles.__len__() > 0):
+            resultado['inmuebles'] = inmuebles
+            
+            if 'inmueble_id' in self.request.GET:
+                inmueble_param_id = self.request.GET['inmueble_id']
+                resultado['elementos'] = Elemento.objects.all().filter(
+                     inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
+
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+
+            else:
+                primer_inmueble = inmuebles[0]
+                resultado['elementos'] = Elemento.objects.all().filter(
+                     inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
+                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+
+        alarma_formset = AlarmFormSet()
+
+
+        return  render_to_response('core_app/crear_elemento.html', locals(),
+                                RequestContext(request))

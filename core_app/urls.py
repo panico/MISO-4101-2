@@ -20,7 +20,9 @@ urlpatterns = patterns('',
     #url(r'^alarmas/$', login_required(views.AlarmCreateView.as_view(template_name='core_app/alarma_lista.html')),name='alarma_creacion'),
 
     # ex: /elemento/create/
-    url(r'^create/$', login_required(views.ElemCreateView.as_view()), name='elem_create'),
+    #url(r'^create/$', login_required(views.ElemCreateView.as_view()), name='elem_create'),
+     url(r'^create/$', login_required(views.CrearElementoView.as_view(template_name='core_app/crear_elemento.html')), name='crear_elemento'),
+    
     # ex: /agenda/5/
     url(r'^(?P<pk>\d+)/$', login_required(views.ElemDetailView.as_view()), name='elem_detail'),
     # ex: /agenda/1/update/

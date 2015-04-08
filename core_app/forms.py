@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import Widget, Select, MultiWidget
-from core_app.models import Alarma,AlarmaHumo,AlarmaEstado,AlarmaAcceso
+from core_app.models import Alarma,AlarmaHumo,AlarmaEstado,AlarmaAcceso, Elemento
 from core_app.snipe import SelectTimeWidget
 
 
@@ -67,3 +67,9 @@ class AlarmaAccesoForm(forms.ModelForm):
 	class Meta:
 		model = AlarmaAcceso
 		exclude = ('eliminada', 'estado_sensor','nivel_alarma','sensor')
+
+class ElementoForm(forms.ModelForm):
+	#sensor = forms.CharField(max_length=50, min_length=1)
+	class Meta:
+		model = Elemento
+		exclude = ('inmueble', 'user','estado')
