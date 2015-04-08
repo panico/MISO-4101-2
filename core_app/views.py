@@ -119,7 +119,7 @@ class EventosView(ListView):
         
         resultado['eventos'] = eventos    
         return resultado
-        
+
 class ElemCreateView(CreateView):
     model = Elemento
     fields = ['nombre', 'estado']
@@ -521,10 +521,46 @@ class TipoAlarmsView(TemplateView):
         
         info['alarmas'] = alarma
 
-
-
-        
-        
         return  render_to_response(self.template_name, locals(),
                         RequestContext(request))
         #return resultado
+
+
+
+class AlarmReportsView(ListView):
+    context_object_name = 'info'
+    template_name = 'core_app/alarmas_history.html'
+    
+    def get_queryset(self):
+                    
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        fecha1  = None#'2015-01-19' #self.request.GET['fech_1']
+        fecha2  = None#'2015-03-19'# '2015-02-18''2015-03-01'#self.request.GET['fech_1']
+
+        resultado = {}
+        i = alarmas.Alarma()
+        resultado['inmuebles'] = inmuebles  
+        if 'inmueble_id' in self.request.GET and self.request.GET['inmueble_id'] != "":
+            inmb_id = self.request.GET['inmueble_id']
+            resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmb_id)
+            resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = inmb_id, user_id = user.id).order_by('-estado')
+            print('paso 2')
+            eventos = i.consul_history_inmb(inmueb_id = inmb_id, fecha1 = fecha1, fecha2 = fecha2)
+        else:
+            if 'elemento_id' in self.request.GET and self.request.GET['elemento_id'] != "":
+                elm_id = self.request.GET['elemento_id']
+                resultado['elemento_actual'] = Elemento.objects.get(pk=elm_id)
+                resultado['inmueble_actual'] = resultado['elemento_actual'].inmueble
+                resultado['elementos'] = Elemento.objects.all().filter(inmueble_id = resultado['inmueble_actual'].id, user_id = user.id).order_by('-estado')
+                print('paso 1')
+                eventos = i.consul_history_elem(elem_id = elm_id, fech_1 = fecha1, fech_2 = fecha2)
+            else:
+                if (user.id != None):
+                    print('paso 0')
+                    eventos = i.consul_history(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
+                    resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
+        
+        resultado['reporte'] = eventos    
+        print('sale '+str(resultado['reporte']))
+        return resultado
