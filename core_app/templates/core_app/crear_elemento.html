@@ -1,0 +1,60 @@
+{% extends "template_base.html" %}
+ 
+{% block content %}
+
+{{ form.non_field_errors }}
+<div style="text-align: left;">
+<form action="" method="POST">{%csrf_token%}
+	<input type="hidden" name="inmueble_id" value={{ resultado.inmueble_actual.id }} >
+	
+	<h3>Creacion de nuevo Elemento en el inmueble {{resultado.inmueble_actual.nombre}}</h3>
+			
+	{{ alarma_formset.management_form }}
+	
+	 {% for form in alarma_formset.forms %}
+   		{% for field in form %}
+    	<div style="text-align: center;">
+        	{{ field.errors }}
+
+        	<table width="100%" border="0" >
+        	
+        		<tr class="spaceUnder">
+        		<td style="text-align: left;">
+        		<label>{{field.label}}: </label>
+        		</td>
+        		<td style="text-align: right;">
+        		
+							{{ field }}
+				
+			    
+        		</td>
+        		
+        		<td class="spaceleft" style="text-align: left;" width="20%" >
+        		{% if field.help_text != '' %}
+        		<label>{{field.help_text}}</label>
+        		{% else %}
+        		{% endif %}
+        		</td>
+
+        		</tr>
+
+        	</table>
+
+	        {% for error in field.errors %}
+
+	        {% endfor %}
+
+	    </div>
+{% endfor %}
+      
+    
+    {% endfor %}
+    <div style="text-align: center; width=50%;" >
+	<input type="submit" name=""
+	style="height:80px;width:150px; "
+	 value="Grabar" placeholder="">
+	 </div>
+
+</form>
+</div>
+{% endblock %}

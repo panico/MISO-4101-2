@@ -67,7 +67,7 @@
 	                        <div class="header">
 	                            <h1>{{ info.inmueble_actual.nombre }}</h1>
 	                        </div>
-	                        <h3>Alarmas</h3>
+	                        <h3>Alarmas del sistema</h3>
 	                        
 		                        <div>
 		                            <div class="pure-g">
@@ -98,10 +98,10 @@
 		                                                    			<span>{{alarma.nombre}}</span>
 		                                                    		</div>
 		                                                    		<div class="pure-u-1-8">
-		                                                    			<a href="/app/alarmas/editar_alarmas/?alarma_id={{alarma.id}}">
-		                                                    				<!--<img style="witdh: 100%; max-width: 30px;" src="{% static "core_app/icons/analytics-icon.png"%}"/>-->
+		                                                    			<!--<a href="/app/alarmas/editar_alarmas/?alarma_id={{alarma.id}}">
+		                                                    				<img style="witdh: 100%; max-width: 30px;" src="{% static "core_app/icons/analytics-icon.png"%}"/>
 		                                                    				Editar
-		                                                    			</a>
+		                                                    			</a>-->
 		                                                    		</div>
 		                                                    	</div>
 		                                                    </div>
@@ -126,7 +126,7 @@
 	                    	</div>
 	                    {% else %}
 	                    	<div class="header">
-	                            <h2>"{{info.inmueble_actual}}" no tiene elementos asociados</h2>
+	                            <h2>"{{info.inmueble_actual}}" no tiene alarmas asociadas</h2>
 	                        </div>
 	                    {% endif %}
                 	</div>
@@ -150,7 +150,7 @@
 		
 		<div class="pure-u-1-2">
 			<div class="alarm-type-container">
-				<a href="/app/alarmas/crear_alarmas/?tipo_alarma=2">
+				<a href="/app/alarmas/crear_alarmas/?tipo_alarma=2&inmueble_id={{info.inmueble_actual.id}}">
 					<h5>Uso el&eacute;ctrico</h5>
 					<div width="70%" class="ger-img-container">
 						<img width="100%" src="{% static "core_app/icons/alarm-electric.png" %}"/>
@@ -170,7 +170,7 @@
 		</div>
 		<div class="pure-u-1-2">
 			<div class="alarm-type-container">
-				<a href="/app/alarmas/crear_alarmas/?tipo_alarma=1">
+				<a href="/app/alarmas/crear_alarmas/?tipo_alarma=1?inmueble_id={{inmueble.id}}">
 					<h5>Disponibilidad de acceso</h5>
 					<div width="70%" class="ger-img-container">
 						<img width="100%" src="{% static "core_app/icons/alarm-access-disp.png" %}"/>

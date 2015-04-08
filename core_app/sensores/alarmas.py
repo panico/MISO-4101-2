@@ -79,16 +79,42 @@ class Alarma:
 
 
 
-    def consul_elementos_sensor(self, tipo_sensor):
+    def consul_sensores(self, user_id, tipo_sensor):
+        result = []
+
+        inmbs = Inmueble.objects.all().filter(user = user_id)
+        
+        for im in inmbs:
+            result.extend(list(self.consul_sensores_inmb(inmueb_id = im.id, tipo_sensor = tipo_sensor)))
+
+        
+        return result 
+
+    def consul_sensores_inmb(self, inmueb_id, tipo_sensor ): 
+        result = []
+
+        elems = Elemento.objects.all().filter(inmueble = inmueb_id)
+        if (elems.__len__() > 0):           
+            for e in elems:
+                result.extend(list(self.consul_elementos_sensor(elem_id = e.id,  tipo_sensor = tipo_sensor)))
+#        else:
+#            if (sw == '1'):
+#                eventos = "Inmueble sin elementos"
+#                result.append(eventos)      
+        return result
+
+    def consul_elementos_sensor(self, elem_id, tipo_sensor):
         result  = []
         
         
-        for x in list(Sensor.objects.all().filter(tipo_sensor__id = tipo_sensor
+        for x in list(Sensor.objects.all().filter(activo__id = elem_id, tipo_sensor__id = tipo_sensor
                     ).select_related('sensor__activo', 'sensor__tiposensor'
                     ).values().order_by('-id')[:20]):
             result.append(x)
 
         return result
+
+
 
 
 
