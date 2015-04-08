@@ -186,6 +186,29 @@
             padding: 1em;
         }
 
+        #formAlarma{
+            text-align: center;
+        }
+        /* Apply padding to td elements that are direct children of the tr element. */
+        tr.spaceUnder > td
+        {
+            padding-bottom: 1em;
+        }
+                /* Apply padding to td elements that are direct children of the tr element. */
+        td.spaceleft
+        {
+            padding-left: 1em;
+        }
+
+        #select1 {width:150px; color:rgba(0, 0, 0, 0);}
+        #select1:focus, #select1:focus {
+            color:black;
+        }
+        .white {background:white;}
+        .red {background:red;}
+        .yellow {background:yellow;}
+        .green {background:green}
+
 
     </style>
 </head>
@@ -231,7 +254,7 @@
                             </a>
                         </li>
                          <li class="ger-horizontal-menu-item pure-menu-item">
-                            <a title="Alertas" href="/app/correo">
+                            <a title="Alarmas" href="/app/alarmas">
                                 <img src="{% static "core_app/icons/alert-icon.png"%}"/>
                             </a>
                         </li>

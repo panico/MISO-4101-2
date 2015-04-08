@@ -10,12 +10,20 @@ urlpatterns = patterns('',
     url(r'^correo/$', login_required(views.HomeListView.as_view(template_name='core_app/correo_index.html')), name='correo_index'),
 
     url(r'^eventos/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_list'),
+
+    url(r'^tipo_alarmas/$', login_required(views.TipoAlarmsView.as_view(template_name='core_app/tipo_alarmas.html')),name='tipo_alarmas'),
+    url(r'^alarmas/$', login_required(views.AlarmsListView.as_view(template_name='core_app/alarmas_lista.html')), name='alarmas_lista'),
+    url(r'^alarmas/editar_alarmas/$', login_required(views.AlarmsEditView.as_view(template_name='core_app/alarmas_detalle.html')), name='alarmas_detalle'),
+    url(r'^alarmas/crear_alarmas/$', login_required(views.AlarmsView.as_view(template_name='core_app/crear_alarma.html')), name='alarmas_lista'),
+    #url(r'^alarmas/$', login_required(views.AlarmCreateView.as_view(template_name='core_app/alarma_lista.html')),name='alarma_creacion'),
+
     # ex: /elemento/create/
     url(r'^create/$', login_required(views.ElemCreateView.as_view()), name='elem_create'),
     # ex: /agenda/5/
     url(r'^(?P<pk>\d+)/$', login_required(views.ElemDetailView.as_view()), name='elem_detail'),
     # ex: /agenda/1/update/
     url(r'^(?P<pk>\d+)/update/$', login_required(views.ElemUpdateView.as_view()), name='elem_update'),
+
 #    url(r'^even_inm/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_inm_list'),
 #    url(r'^even_elm/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_elm_list'),
 

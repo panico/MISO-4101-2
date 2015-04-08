@@ -82,7 +82,7 @@ class Alarma(GenericModelWithName):
     #usuario = models.ForeignKey(User)
     sensor = models.ForeignKey(Sensor)
     activa = models.BooleanField(default=True)
-    notifica = models.BooleanField(default=True)
+    notifica = models.BooleanField(default=True,help_text='envia notificacion')
     eliminada = models.BooleanField(default=False)
     nivel_alarma = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
 
@@ -92,14 +92,14 @@ class AlarmaHumo(Alarma):
     pass
 #Clase que representa alarma de tipo Acceso
 class AlarmaAcceso(Alarma):
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
+    hora_inicio = models.TimeField(help_text='hh:mm:ss')
+    hora_fin = models.TimeField(help_text='hh:mm:ss')
 
 #Clase que representa alarma de tipo Estado
 class AlarmaEstado(Alarma):
     estado_sensor = models.BooleanField(default=True)
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
+    hora_inicio = models.TimeField(help_text='hh:mm:ss')
+    hora_fin = models.TimeField(help_text='hh:mm:ss')
 
 #Alarmas reportadas
 class AlarmaReportada(GenericModelWithName):

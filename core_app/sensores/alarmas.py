@@ -1,4 +1,4 @@
-from core_app.models import HistoryAlarmas, Inmueble, Elemento, Evento
+from core_app.models import HistoryAlarmas, Inmueble, Elemento, Evento, Sensor,Alarma as MyAlarm
 import getpass
 import datetime
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
@@ -74,6 +74,65 @@ class Alarma:
                                          'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
                                 ).order_by('-fecha_hora_evento')[:20]):
                         result.append(x)
+
+        return result
+
+
+
+    def consul_elementos_sensor(self, tipo_sensor):
+        result  = []
+        
+        
+        for x in list(Sensor.objects.all().filter(tipo_sensor__id = tipo_sensor
+                    ).select_related('sensor__activo', 'sensor__tiposensor'
+                    ).values().order_by('-id')[:20]):
+            result.append(x)
+
+        return result
+
+
+
+    def consul_alarms(self, user_id,tipo_sensor_id):
+        result = []
+
+        inmbs = Inmueble.objects.all().filter(user = user_id)
+        
+        for im in inmbs:
+            result.extend(list(self.consul_alarms_inmb(inmueb_id = im.id, tipo_sensor_id = tipo_sensor_id)))
+        
+        return result 
+    
+    def consul_alarms_inmb(self, inmueb_id,tipo_sensor_id): 
+        result = []
+
+        elems = Elemento.objects.all().filter(inmueble = inmueb_id)
+        
+        if (elems.__len__() > 0):           
+            for e in elems:
+                result.extend(list(self.consul_alarms_elem(elem_id = e.id,tipo_sensor_id=tipo_sensor_id )))
+
+        return result
+
+    def consul_alarms_elem(self, elem_id,tipo_sensor_id):
+
+        result  = []
+        if tipo_sensor_id != 0 and tipo_sensor_id != '' and tipo_sensor_id != '0':
+            
+            for x in list(MyAlarm.objects.all().filter(sensor__activo__id = elem_id, sensor__tipo_sensor__id= tipo_sensor_id
+                    ).select_related('alarma__sensor__activo__inmueble', 'alarma__sensor__tiposensor'
+                    ).values('id','nombre', 'descripcion', 'sensor__tipo_sensor__nombre', 'sensor__tipo_sensor_id'
+                             'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre','nivel_alarma'
+                    ).order_by('-id')[:20]):
+                result.append(x)
+        else:
+            
+            for x in list(MyAlarm.objects.all().filter(sensor__activo__id = elem_id
+                    ).select_related('alarma__sensor__activo__inmueble', 'alarma__sensor__tiposensor'
+                    ).values('id','nombre', 'descripcion', 'sensor__tipo_sensor__nombre', 
+                             'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre','nivel_alarma'
+                    ).order_by('-id')[:20]):
+                result.append(x)
+
 
         return result
                
