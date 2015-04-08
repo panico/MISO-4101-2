@@ -47,59 +47,55 @@
 					<form class="form-inline" action="" method="post">
 						{% csrf_token %}
 						<table align="center" class="table table-condensed table-responsive">
-							<tr>
-								<td align="center" colspan="2">
-									<h3>Información de Elemento!</h3>
-								</td>
-							</tr>
+							
 							<div class="form-group">
-								{{ form.as_table }}
+							{{ form.as_table }}
 					   		{% for field in form %}
-					    	<div style="text-align: center;">
-					        	{{ field.errors }}
-					        	{% if field.label == 'Sensor' %}
-					        		{% if error_sensor != '' %}
-					        			<label>{{error_sensor}}</label>
-					        		{% endif %}
-					        	{% endif %}
+						    	<div style="text-align: center;">
+						        	{{ field.errors }}
+						        	{% if field.label == 'Sensor' %}
+						        		{% if error_sensor != '' %}
+						        			<label>{{error_sensor}}</label>
+						        		{% endif %}
+						        	{% endif %}
 
-					        	<table width="100%" border="0" >
-					        	
-					        		<tr class="spaceUnder">
-					        		<td style="text-align: left;">
-					        		<label>{{field.label}}: </label>
-					        		</td>
-					        		<td style="text-align: right;">
-					        			{% if field.label == 'Sensor' %}
+						        	<table width="100%" border="0" >
+						        	
+						        		<tr class="spaceUnder">
+						        		<td style="text-align: left;">
+						        		<label>{{field.label}}: </label>
+						        		</td>
+						        		<td style="text-align: right;">
+						        			{% if field.label == 'Sensor' %}
 
-						        			<select name="sensor_select" title="sensor_select">
-						        			   <option value="0">--------------</option>
-						        			   {% for sensor in sensores %}
-											   <option value={{ sensor.id }}>{{ sensor.nombre }}</option>
-											   {% endfor %}
-											</select>
-								        {% else %}
-											{{ field }}
-								        {% endif %}
-					        		</td>
-					        		
-					        		<td class="spaceleft" style="text-align: left;" width="20%" >
-					        		{% if field.help_text != '' %}
-					        		<label>{{field.help_text}}</label>
-					        		{% else %}
-					        		{% endif %}
-					        		</td>
+							        			<select name="sensor_select" title="sensor_select">
+							        			   <option value="0">--------------</option>
+							        			   {% for sensor in sensores %}
+												   <option value={{ sensor.id }}>{{ sensor.nombre }}</option>
+												   {% endfor %}
+												</select>
+									        {% else %}
+												{{ field }}
+									        {% endif %}
+						        		</td>
+						        		
+						        		<td class="spaceleft" style="text-align: left;" width="20%" >
+						        		{% if field.help_text != '' %}
+						        		<label>{{field.help_text}}</label>
+						        		{% else %}
+						        		{% endif %}
+						        		</td>
 
-					        		</tr>
+						        		</tr>
 
-					        	</table>
+						        	</table>
 
-						        {% for error in field.errors %}
+							        {% for error in field.errors %}
 
-						        {% endfor %}
+							        {% endfor %}
 
-						    </div>
-					{% endfor %}
+							    </div>
+							{% endfor %}
 
 							
 							</div>
