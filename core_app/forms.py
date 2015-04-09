@@ -1,7 +1,8 @@
 from django import forms
 from django.forms.widgets import Widget, Select, MultiWidget
-from core_app.models import Alarma,AlarmaHumo,AlarmaEstado,AlarmaAcceso, Elemento
+from core_app.models import Alarma,AlarmaHumo,AlarmaEstado,AlarmaAcceso, Elemento, Evento
 from core_app.snipe import SelectTimeWidget
+import datetime
 
 
 #BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
@@ -73,3 +74,12 @@ class ElementoForm(forms.ModelForm):
 	class Meta:
 		model = Elemento
 		exclude = ('inmueble', 'user','estado')
+
+
+class EventoForm(forms.ModelForm):
+	mensaje = forms.CharField(max_length=10, min_length=1)
+	fecha_hora = forms.DateTimeField()
+	class Meta:
+		model = Evento
+		exclude = ( 'fecha_hora_sistema', 'fecha_hora_evento', 'trama','codigo')
+		

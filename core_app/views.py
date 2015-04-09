@@ -6,12 +6,13 @@ from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSens
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
 import datetime
-from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm
+from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm, EventoForm
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from core_app.models import AlarmaHumo,AlarmaEstado,AlarmaAcceso
 from django.http import HttpResponseRedirect
+import datetime
 
 
 class CorreoListView(ListView):
@@ -580,7 +581,7 @@ class AlarmReportsView(ListView):
         return resultado
 
 
-#creacion de alarmas
+#creacion de elementos
 class CrearElementoView(TemplateView):
     state = 0
     def post(self,request):
@@ -667,4 +668,96 @@ class CrearElementoView(TemplateView):
 
 
         return  render_to_response('core_app/crear_elemento.html', locals(),
+                                RequestContext(request))
+
+
+
+#Borrado de elementos
+class BorrarElementoView(TemplateView):
+    state = 0
+
+    def get(self,request):
+        
+        resultado = {}
+    
+        if 'elemento_id' in self.request.GET:
+            elemento_id = self.request.GET['elemento_id']
+            elemento = Elemento.objects.get(pk=elemento_id)
+            elemento.delete()
+
+
+        else:
+            return HttpResponseRedirect('../')
+
+        return HttpResponseRedirect('../')
+
+
+#creacion de alarmas
+class SimuladorView(TemplateView):
+
+    def post(self,request):
+
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+
+        EventFormSet = formset_factory(EventoForm, extra=1, max_num=1, formset=RequiredFormSet)
+        
+        alarma_formset = EventFormSet(request.POST, request.FILES)
+
+        if alarma_formset.is_valid():
+                
+       
+                for form in alarma_formset.forms:
+                    
+                    evento = Evento(
+                    nombre = form.cleaned_data['nombre'],
+                    codigo  = form.cleaned_data['mensaje'],
+                    trama   = form.cleaned_data['mensaje'],
+                    fecha_hora_evento = form.cleaned_data['fecha_hora'],
+                    fecha_hora_sistema = form.cleaned_data['fecha_hora'],
+                    sensor   = form.cleaned_data['sensor'])
+
+                    if (evento.codigo == 0 or evento.codigo == '0'):
+                        evento.codigo == '0'
+                    else:
+                        evento.codigo == '1'
+
+                    evento.save()
+
+                    i = alarmas.Alarma()
+                    i.validarAlarma(evento,self.request.user)
+        else:
+            
+            
+            return  render_to_response('core_app/api_index.html', locals(),
+                    RequestContext(request))
+        
+        
+        return HttpResponseRedirect('../')
+
+    def get(self,request):
+        
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+        
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        resultado = {}
+    
+        EventoFormSet = formset_factory(EventoForm, extra=0, max_num=10, formset=RequiredFormSet)
+    
+        alarma_formset = EventoFormSet(
+            initial=[{
+            'fecha_hora': datetime.datetime.today(),
+            }])
+            
+
+
+        return  render_to_response('core_app/api_index.html', locals(),
                                 RequestContext(request))

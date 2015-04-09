@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     # ex: /grupo/
     url(r'^correo/$', login_required(views.HomeListView.as_view(template_name='core_app/correo_index.html')), name='correo_index'),
 
+    url(r'^api/$', login_required(views.SimuladorView.as_view(template_name='core_app/api_index.html')), name='api_index'),
+
     url(r'^eventos/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_list'),
 
     url(r'^history/$', login_required(views.AlarmReportsView.as_view(template_name='core_app/alarmas_history.html')), name='alarmas_history'),
@@ -22,6 +24,8 @@ urlpatterns = patterns('',
     # ex: /elemento/create/
     #url(r'^create/$', login_required(views.ElemCreateView.as_view()), name='elem_create'),
      url(r'^create/$', login_required(views.CrearElementoView.as_view(template_name='core_app/crear_elemento.html')), name='crear_elemento'),
+     url(r'^elemento/$', login_required(views.HomeListView.as_view()), name='home_list'),
+     url(r'^elemento/delete/$', login_required(views.BorrarElementoView.as_view(template_name='core_app/borrar_elemento.html')), name='borrar_elemento'),
     
     # ex: /agenda/5/
     url(r'^(?P<pk>\d+)/$', login_required(views.ElemDetailView.as_view()), name='elem_detail'),
