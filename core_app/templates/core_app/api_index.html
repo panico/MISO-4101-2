@@ -49,17 +49,9 @@ function colourFunction() {
             <div class="ger-container-create-element">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        {% if tipo_alarma == '1' %}
-						<b>Creando alarma de humo</b>
-						{% elif tipo_alarma == '2' %}
-						<b>Creando Alarma de uso el&eacute;ctrico</b>
-						{% elif tipo_alarma == '4' %}
-						<b>Creando alarma de disponibilidad de acceso</b>
-						{% elif tipo_alarma == '3' %}
-						<b>Creando alarma de ingreso de personas</b>
-						{% else %}
-						<b></b>
-						{% endif %}
+                        
+						<b>Creacion de Evento</b>
+						
                     </div>
                 </div>
                 <div class="panel-body" >
@@ -86,25 +78,9 @@ function colourFunction() {
 						        		<label>{{field.label}}: </label>
 						        		</td>
 						        		<td style="text-align: right;">
-						        			{% if field.label == 'Sensor' %}
-
-							        			<select name="sensor_select" title="sensor_select">
-							        			   <option value="0">--------------</option>
-							        			   {% for sensor in sensores %}
-												   <option value={{ sensor.id }}>{{ sensor.nombre }}</option>
-												   {% endfor %}
-												</select>
-									        {% else %}
-										        {% if field.label == 'Nivel' %}
-								        			<select name="nivel_select" onchange="colourFunction()" title="nivel_select">
-														<option class="red" value="2">Cr&iacute;tica</option>
-														<option class="yellow" value="1">Media</option>
-														<option class="green" value="0">B&aacute;sica</option>
-													</select>
-												{% else %}
-													{{ field }}
-												{% endif %}
-									        {% endif %}
+						        			
+										{{ field }}
+												
 						        		</td>
 						        		
 						        		<td class="spaceleft" style="text-align: left;" width="20%" >
