@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     # ex: /grupo/
     url(r'^correo/$', login_required(views.HomeListView.as_view(template_name='core_app/correo_index.html')), name='correo_index'),
 
-    url(r'^api/$', login_required(views.SimuladorView.as_view(template_name='core_app/api_index.html')), name='api_index'),
+    url(r'^api/$', views.SimuladorView.as_view(template_name='core_app/api_index.html'), name='api_index'),
 
     url(r'^eventos/$', login_required(views.EventosView.as_view(template_name='core_app/even_list.html')), name='even_list'),
 

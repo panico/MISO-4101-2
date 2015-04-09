@@ -259,14 +259,18 @@ class Alarma:
 
         if segIni > segFin:
             if (segEve>=segIni and segEve<=segMax):
+                print('entra a horario noche')
                 ret = True
             elif (segEve>=0 and segEve<=segFin):
+                print('entra a horario nocturno')
                 ret = True
         elif segIni < segFin:
             if (segEve>=segIni and segEve<=segFin):
+                print('entra a horario diurno')
                 ret = True
         elif segIni == segFin:
             if (segEve==segIni):
+                print('entra a horario fijo')
                 ret = True
 
         return ret
@@ -325,11 +329,16 @@ class Alarma:
 
             elif tipo_alarma == 3:
                 print('id alarma ingreso '+ str(alarma.sensor.tipo_sensor.id))
-                self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
-                self.GeneraAlarma(alarma,evento,user)
+                alarmaAcceso = AlarmaAcceso.objects.get(pk = alarma.id)
+                ret =  self.validaHorarios(alarma=alarma,alarmaEstado=alarmaAcceso,evento=evento)
+                if ret == True :
+                        self.GeneraAlarma(alarma,evento,user)
             elif tipo_alarma == 4:
+                print('id alarma estado '+ str(alarma.sensor.tipo_sensor.id))
+                alarmaEstado = AlarmaEstado.objects.get(pk = alarma.id)
                 ret = self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
                 if ret == True :
+                    print('id alarma estado '+ str(evento.codigo)+'--'+str(alarmaEstado.estado_sensor))
                     if int(evento.codigo) == int(alarmaEstado.estado_sensor):
                         self.GeneraAlarma(alarma,evento,user)
 

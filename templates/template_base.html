@@ -44,31 +44,31 @@
     </script>
     <style>
     .pure-img-responsive {
-	    max-width: 100%;
-	    height: auto;
-	}
+        max-width: 100%;
+        height: auto;
+    }
 
-	#menu,
-	.menu-link {
-	    -webkit-transition: all 0.2s ease-out;
-	    -moz-transition: all 0.2s ease-out;
-	    -ms-transition: all 0.2s ease-out;
-	    -o-transition: all 0.2s ease-out;
-	    transition: all 0.2s ease-out;
-	}
+    #menu,
+    .menu-link {
+        -webkit-transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -ms-transition: all 0.2s ease-out;
+        -o-transition: all 0.2s ease-out;
+        transition: all 0.2s ease-out;
+    }
 
-	#menu {
-	    background: rgb(153, 153, 153);
-	    border-top-left-radius: 2em;
-	}
-	#menu a {      
-	    border: none;
-	    padding: 1em 0;
-	}
-	#menu a:hover {
-	    background: rgb(46, 49, 64);
-	    padding: 1em 0;
-	}
+    #menu {
+        background: rgb(153, 153, 153);
+        border-top-left-radius: 2em;
+    }
+    #menu a {      
+        border: none;
+        padding: 1em 0;
+    }
+    #menu a:hover {
+        background: rgb(46, 49, 64);
+        padding: 1em 0;
+    }
         body {
             color: white;
             background: rgb(51, 51, 51);
@@ -215,9 +215,9 @@
 
  
 <body>
-	<!-- Content -->
-	<div class="container clase-general">
-		<div id="ger-header">
+    <!-- Content -->
+    <div class="container clase-general">
+        <div id="ger-header">
         <div class="pure-g">
             <div class="pure-u-1-2 pure-u-md-1-6 pure-u-xl-1-12">
                 <img width="100%" src="{% static "core_app/icons/mySmartLogo.png"%}" />
@@ -258,12 +258,17 @@
                                 <img src="{% static "core_app/icons/alert-icon.png"%}"/>
                             </a>
                         </li>
-                         <li id="ger-item-eventos" class="ger-horizontal-menu-item pure-menu-item">
+                        <li id="ger-item-alarm-history" class="ger-horizontal-menu-item pure-menu-item">
+                            <a title="Historial de alarmas" href="/app/history">
+                                <img src="{% static "core_app/icons/alarm-history.png"%}"/>
+                            </a>
+                        </li>
+                        <li id="ger-item-eventos" class="ger-horizontal-menu-item pure-menu-item">
                             <a title="Eventos" href="/app/eventos">
                                 <img src="{% static "core_app/icons/analytics-icon.png"%}"/>
                             </a>
                         </li>
-                         <li class="ger-horizontal-menu-item pure-menu-item">
+                        <li class="ger-horizontal-menu-item pure-menu-item">
                             <a title="Ajustes" href="#">
                                 <img src="{% static "core_app/icons/settings-icon.png"%}"/>
                             </a>
@@ -273,30 +278,30 @@
             </div>
         </header>
     {% endif %}
-    	<div id="ger-master-container">
-	        {% block pretitle %}{% endblock %}
-	        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-	        {% block content %}
-	        	{% block object-tools %}{% endblock %}
-	        	{{ content }}
-	        {% endblock %}
-	        {% block sidebar %}{% endblock %}
-		</div>
+        <div id="ger-master-container">
+            {% block pretitle %}{% endblock %}
+            {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+            {% block content %}
+                {% block object-tools %}{% endblock %}
+                {{ content }}
+            {% endblock %}
+            {% block sidebar %}{% endblock %}
+        </div>
     </div>
     <!-- END Content -->
-   	
-	{% block footer %}
-	<footer>
+    
+    {% block footer %}
+    <footer>
         <script type="text/javascript" src="https://mysmarthome.atlassian.net/s/f34c4e9cef1569cdd47c2b808b74ffdd-T/en_US50u5ku/64014/8/1.4.24/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=b6c5fff2">
         </script>
-		<p class="ger-credits">Powered by 
-        	<b>Hernán Tenjo</b>, 
-			<b>Jhony Toro</b>, 
-			<b>David Medina</b>, 
-			<b>Germán Rojas</b> & 
-			<b>Juvenal Barrios</b>
-		</p>
-	</footer>
-	{% endblock %}
+        <p class="ger-credits">Powered by 
+            <b>Hernán Tenjo</b>, 
+            <b>Jhony Toro</b>, 
+            <b>David Medina</b>, 
+            <b>Germán Rojas</b> & 
+            <b>Juvenal Barrios</b>
+        </p>
+    </footer>
+    {% endblock %}
 </body>
 </html>

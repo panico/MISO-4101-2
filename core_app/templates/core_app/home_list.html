@@ -100,9 +100,8 @@
 
 		                                                </div>
 		              
-																																																		<div class="pure-u-1-4 pure-u-sm-7-8">
+														<div class="pure-u-1-4 pure-u-sm-7-8">
 		                                                <div class="accordion ger-element-info">
-		                                                    <div class="ger-element-info-label accordion-header">
 		                                                    	<div class="pure-g">
 		                                                    		<div class="pure-u-1-8">
 		                                                    			<a href="/app/elemento/delete/?elemento_id={{elemento.id}}">
@@ -112,7 +111,6 @@
 		                                                    			</a>
 		                                                    		</div>
 		                                                    		
-		                                                    	</div>
 		                                                    </div>
 
 		                                                </div>
@@ -136,6 +134,7 @@
 	                    {% else %}
 	                    	<div class="header">
 	                            <h2>"{{info.inmueble_actual}}" no tiene elementos asociados</h2>
+	                            <p><a id="ger-create-element" href="/app/create/?inmueble_id={{info.inmueble_actual.id}}">Agregar elemento</a></p>
 	                        </div>
 	                    {% endif %}
                 	</div>

@@ -400,10 +400,10 @@ class AlarmsView(TemplateView):
                     alarma.sensor = sensor[0]
                     alarma.nivel_alarma = nivel_id
                     if tipo_alarma=='2':
-                        alarma.estado_sensor=form['estado']
+                        alarma.estado_sensor=int(form.cleaned_data['estado'])
             
                     elif tipo_alarma=='4':
-                        alarma.estado_sensor=form['estado']
+                        alarma.estado_sensor=int(form.cleaned_data['estado'])
             
                     alarma.save()
             else:
@@ -728,7 +728,7 @@ class SimuladorView(TemplateView):
                     evento.save()
 
                     i = alarmas.Alarma()
-                    i.validarAlarma(evento,self.request.user)
+                    i.validarAlarma(evento,evento.sensor.activo.user)
         else:
             
             
