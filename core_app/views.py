@@ -1,15 +1,8 @@
 #from django.shortcuts import render
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> develop
+
 from django.core.urlresolvers import reverse
 from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView, UpdateView
-<<<<<<< HEAD
 
-=======
->>>>>>> a17dccbfa32689d2b6a909c13abbb7c99398a205
->>>>>>> develop
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSensor
@@ -134,28 +127,21 @@ class EventosView(ListView):
 
 class ElemCreateView(CreateView):
     model = Elemento
-<<<<<<< HEAD
     fields = ['nombre', 'estado']
     success_url = '/app/'
-=======
+
     obj=10
     #fields = ['nombre', 'estado']
     success_url = '/core_app/'
->>>>>>> a17dccbfa32689d2b6a909c13abbb7c99398a205
+
     
     
     def form_valid(self, form):
         #user = self.request.user
-<<<<<<< HEAD
         form.instance.user      = self.request.user
         inmb_id = self.request.session['inmueble_id']
         form.instance.inmueble = Inmueble.objects.get(pk=inmb_id)
         
-=======
-        user = self.request.user
-        form.instance.user = self.request.user
-        form.instance.inmueble_id = self.request.GET['inmueble_id']
->>>>>>> a17dccbfa32689d2b6a909c13abbb7c99398a205
         return super(ElemCreateView, self).form_valid(form)
     
 class ElemDetailView(DetailView):
