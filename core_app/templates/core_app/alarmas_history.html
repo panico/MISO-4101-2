@@ -228,7 +228,7 @@ function drawDashboard() {
 			
 			{% ifchanged alarma.alarma__sensor__activo__nombre%}
 				{% if not forloop.first %}
-					, new Date()],
+					, new Date('{{info.maxdatetime|date:"r"}}')],
 				{% endif %}
 			{% else %}
 				{% if not forloop.first %}
@@ -246,7 +246,7 @@ function drawDashboard() {
 			{% endif %}
 			, "{{alarma.alarma__nombre}}", "{{alarma.alarma__descripcion}}", "{{alarma.alarma__sensor__tipo_sensor__nombre}}", "{{alarma.alarma__sensor__activo__inmueble__nombre}}" , new Date('{{alarma.fecha_hora|date:"r"}}')
 			{% if forloop.last %}
-				, new Date()]
+				, new Date('{{info.maxdatetime|date:"r"}}')]
 			{% endif %}
 		{% endfor %}
 

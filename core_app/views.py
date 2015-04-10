@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from core_app.models import AlarmaHumo,AlarmaEstado,AlarmaAcceso
 from django.http import HttpResponseRedirect
-
+from operator import attrgetter
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -117,7 +117,12 @@ class EventosView(ListView):
                     eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
                     resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
         
-        resultado['eventos'] = eventos    
+        resultado['eventos'] = eventos 
+        maxdatetime = datetime.datetime.today()
+        for evento in eventos:
+            if evento.get('fecha_hora_evento').date() > maxdatetime.date():
+                maxdatetime = evento.get('fecha_hora_evento')
+        resultado['maxdatetime'] = maxdatetime
         return resultado
 
 class ElemCreateView(CreateView):
@@ -575,8 +580,12 @@ class AlarmReportsView(ListView):
                     eventos = i.consul_history(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
                     resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
         
-        resultado['reporte'] = eventos    
-        
+        resultado['reporte'] = eventos
+        maxdatetime = datetime.datetime.today()
+        for evento in eventos:
+            if evento.get('fecha_hora').date() > maxdatetime.date():
+                maxdatetime = evento.get('fecha_hora')
+        resultado['maxdatetime'] = maxdatetime
         return resultado
 
 

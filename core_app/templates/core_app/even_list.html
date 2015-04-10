@@ -222,7 +222,7 @@ function drawDashboard() {
 			
 			{% ifchanged evento.sensor__activo__nombre%}
 				{% if not forloop.first %}
-					, new Date()],
+					, new Date('{{info.maxdatetime|date:"r"}}')],
 				{% endif %}
 			{% else %}
 				{% if not forloop.first %}
@@ -241,7 +241,7 @@ function drawDashboard() {
 			, "{{evento.sensor__tipo_sensor__nombre}}", "{{evento.sensor__activo__inmueble__nombre}}"
 				, new Date('{{evento.fecha_hora_evento|date:"r"}}')
 			{% if forloop.last %}
-				, new Date()]
+				, new Date('{{info.maxdatetime|date:"r"}}')]
 			{% endif %}
 		{% endfor %}
 
