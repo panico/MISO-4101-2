@@ -11,9 +11,9 @@ import sys
 
 # Create your tests here.
 class FunctionalTest(StaticLiveServerCase):
-    username = self.request.user
+    username = 'admin'#self.request.user
     password = 'admin'
-    email = self.request.mail() #'hernan@uniandes.com'
+    email = 'ing.rojas.m@gmail.com'#self.request.mail() #'hernan@uniandes.com'
     
     @classmethod
     def setUpClass(cls):
