@@ -14,7 +14,7 @@ class myCorreo:
     mensaje = MIMEText("""Correo electronico de pruebas
     Verificacion de envio exitosa. Por favor No contestar""")
     mensaje['From']="mysmarthome4101@gmail.com"
-    mensaje['To']="jhonyt37@gmail.com" #
+    mensaje['To']="ing.rojas.m@gmail.com" #
     mensaje['Subject']="Correo de pruebas"
 
     def setRemitente(self,remitente):
