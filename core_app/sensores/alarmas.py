@@ -1,8 +1,9 @@
-from core_app.models import HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor,Alarma as MyAlarm
+from core_app.models import HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor,Alarma as MyAlarm,AlarmaEstado,AlarmaAcceso,AlarmaHumo
 import getpass
 import datetime
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
+from core_app.correo import  correo
 
 class Alarma:        
     
@@ -237,4 +238,112 @@ class Alarma:
                         #'fecha', 'sensor__tipo_sensor__nombre', 
                         #                 'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
 
+        return result
+
+    def validaHorarios(self,alarma,alarmaEstado,evento):
+        ret = False
+        print('id alarma '+ str(alarma.sensor.tipo_sensor.id))
+        print('hora alarma '+ str(alarmaEstado.hora_inicio))
+        print('hora fin alarma '+ str(alarmaEstado.hora_fin))
+        print('hora evento '+ str(evento.fecha_hora_evento))
+
+        segMax = self.getSec(s='23:59:59')
+        segIni = self.getSec(s=str(alarmaEstado.hora_inicio))
+        segFin = self.getSec(s=str(alarmaEstado.hora_fin))
+        segEve = self.getSec(s=str(str(evento.fecha_hora_evento.hour)+':'+str(evento.fecha_hora_evento.minute)+':'+str(evento.fecha_hora_evento.second)))
+
+        print('seg max '+ str(segMax))
+        print('seg ini '+ str(segIni))
+        print('seg fin '+ str(segFin))
+        print('seg act '+ str(segEve))
+
+        if segIni > segFin:
+            if (segEve>=segIni and segEve<=segMax):
+                print('entra a horario noche')
+                ret = True
+            elif (segEve>=0 and segEve<=segFin):
+                print('entra a horario nocturno')
+                ret = True
+        elif segIni < segFin:
+            if (segEve>=segIni and segEve<=segFin):
+                print('entra a horario diurno')
+                ret = True
+        elif segIni == segFin:
+            if (segEve==segIni):
+                print('entra a horario fijo')
+                ret = True
+
+        return ret
+
+
+
+
+    def GeneraAlarma(self,alarma,evento,user):
+        print('genera alarma ')
+        ##Otras clases
+        if alarma.activa == False or alarma.activa == 0 or alarma.activa == '0':
+            print('alarma inactiva')
+            return 0;
+
+        registro = AlarmaReportada(
+            fecha_hora     = evento.fecha_hora_evento,
+            #user      = models.ForeignKey(User)
+            #elemento  = alarma.sensor.activo ,
+            #inmueble  = alarma.sensor.activo.inmueble,
+            #sensor   = alarma.sensor,
+            alarma   = alarma,
+            nivel_alerta = alarma.nivel_alarma,
+            descripcion = evento.nombre)
+        registro.save()
+        if alarma.notifica == 1 or alarma.notifica == '1' or alarma.notifica == True:
+            c = correo.myCorreo()
+            c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
+                          destinatario=user.email,activo=alarma.sensor.activo.nombre)
+        print('ya genero alarma '+str(registro))
+
+        return 0
+
+    def getSec(self,s):
+        
+        l = s.split(':')
+        return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
+
+    def validarAlarma(self,evento,user):
+        result  = []
+        print('entra a validar alarma '+str(evento.sensor))
+
+        alarms = MyAlarm.objects.all().filter(sensor__id = evento.sensor.id)
+        for alarma in alarms:
+            tipo_alarma = int(alarma.sensor.tipo_sensor.id)
+
+
+            if tipo_alarma == 1:
+                print('id alarma humo '+ str(alarma.sensor.tipo_sensor.id))
+                self.GeneraAlarma(alarma,evento,user)
+            elif tipo_alarma == 2:
+                alarmaEstado = AlarmaEstado.objects.get(pk = alarma.id)
+                ret = self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
+                if ret == True :
+                    if int(evento.codigo) == int(alarmaEstado.estado_sensor):
+                        self.GeneraAlarma(alarma,evento,user)
+
+            elif tipo_alarma == 3:
+                print('id alarma ingreso '+ str(alarma.sensor.tipo_sensor.id))
+                alarmaAcceso = AlarmaAcceso.objects.get(pk = alarma.id)
+                ret =  self.validaHorarios(alarma=alarma,alarmaEstado=alarmaAcceso,evento=evento)
+                if ret == True :
+                        self.GeneraAlarma(alarma,evento,user)
+            elif tipo_alarma == 4:
+                print('id alarma estado '+ str(alarma.sensor.tipo_sensor.id))
+                alarmaEstado = AlarmaEstado.objects.get(pk = alarma.id)
+                ret = self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
+                if ret == True :
+                    print('id alarma estado '+ str(evento.codigo)+'--'+str(alarmaEstado.estado_sensor))
+                    if int(evento.codigo) == int(alarmaEstado.estado_sensor):
+                        self.GeneraAlarma(alarma,evento,user)
+
+
+                print('alarma '+ str(alarma))
+                print('id alarma '+ str(alarma.sensor.tipo_sensor.id))
+        
         return result

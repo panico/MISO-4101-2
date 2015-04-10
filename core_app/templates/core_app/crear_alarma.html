@@ -53,9 +53,9 @@ function colourFunction() {
 						<b>Creando alarma de humo</b>
 						{% elif tipo_alarma == '2' %}
 						<b>Creando Alarma de uso el&eacute;ctrico</b>
-						{% elif tipo_alarma == '3' %}
-						<b>Creando alarma de disponibilidad de acceso</b>
 						{% elif tipo_alarma == '4' %}
+						<b>Creando alarma de disponibilidad de acceso</b>
+						{% elif tipo_alarma == '3' %}
 						<b>Creando alarma de ingreso de personas</b>
 						{% else %}
 						<b></b>
@@ -66,6 +66,7 @@ function colourFunction() {
                     <div id="create-element-alert" class="alert alert-danger col-sm-12"></div>
 					<form action="" method="POST">{%csrf_token%}
 						<input type="hidden" name="tipo_alarma" value={{ tipo_alarma }} >
+						<input type="hidden" name="inmueble_actual" value={{ inmueble_actual }} >
 						
 						{{ alarma_formset.management_form }}
 						

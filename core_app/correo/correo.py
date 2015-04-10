@@ -41,11 +41,11 @@ class myCorreo:
 
         print("enviado a : "+ miMensaje['To'])
 
-        if tipo_alarma == "2":
+        if tipo_alarma == "2" or tipo_alarma == 2:
             miMensaje['Subject']="Alerta critica registrada"
-        elif tipo_alarma == "1":
+        elif tipo_alarma == "1" or tipo_alarma == 1:
             miMensaje['Subject']="Alerta de Seguridad registrada"
-        elif tipo_alarma == "0":
+        elif tipo_alarma == "0" or tipo_alarma == 0:
             miMensaje['Subject']="Notificacion de evento registrado"
         
         #print (mailServer.ehlo())

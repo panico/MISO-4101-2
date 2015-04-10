@@ -6,13 +6,14 @@ from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSens
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
 import datetime
-from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm
+from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm, EventoForm
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from core_app.models import AlarmaHumo,AlarmaEstado,AlarmaAcceso
 from django.http import HttpResponseRedirect
-from operator import attrgetter
+
+import datetime
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -374,21 +375,22 @@ class AlarmsView(TemplateView):
                 for form in self.forms:
                     form.empty_permitted = False
 
-        tipo_alarma = self.request.POST['tipo_alarma']
-        
+        tipo_alarma = int(self.request.POST['tipo_alarma'])
+        print('alarma '+str(tipo_alarma))
 
-        if tipo_alarma=='1' :
+        if tipo_alarma==1 :
             AlarmFormSet = formset_factory(AlarmaHumoForm, extra=1, max_num=10, formset=RequiredFormSet)
-        elif tipo_alarma=='2':
+        elif tipo_alarma==2:
             AlarmFormSet = formset_factory(AlarmaEstado2Form, extra=1, max_num=10, formset=RequiredFormSet)
-        elif tipo_alarma=='3':
+        elif tipo_alarma==3:
             AlarmFormSet = formset_factory(AlarmaAccesoForm, extra=1, max_num=10, formset=RequiredFormSet)    
-        elif tipo_alarma=='4':
+        elif tipo_alarma==4:
             AlarmFormSet = formset_factory(AlarmaEstadoForm, extra=1, max_num=10, formset=RequiredFormSet)
         
         alarma_formset = AlarmFormSet(request.POST, request.FILES)
         sensor_id = self.request.POST.get('sensor_select',False)
         nivel_id = self.request.POST.get('nivel_select',False)
+        inmueble_id = self.request.POST.get('inmueble_actual',0)
         
         #alarma.sensor = sensor[0]
         
@@ -404,17 +406,17 @@ class AlarmsView(TemplateView):
                     alarma.sensor = sensor[0]
                     alarma.nivel_alarma = nivel_id
                     if tipo_alarma=='2':
-                        alarma.estado_sensor=form['estado']
+                        alarma.estado_sensor=int(form.cleaned_data['estado'])
             
                     elif tipo_alarma=='4':
-                        alarma.estado_sensor=form['estado']
+                        alarma.estado_sensor=int(form.cleaned_data['estado'])
             
                     alarma.save()
             else:
             
                 error_sensor= '* This field is required.'
                 i = alarmas.Alarma()
-                sensores = i.consul_elementos_sensor( tipo_sensor = tipo_alarma)
+                sensores = i.consul_sensores_inmb( inmueb_id = inmueble_id,tipo_sensor = tipo_alarma)
             
                 return  render_to_response('core_app/crear_alarma.html', locals(),
                         RequestContext(request))
@@ -422,7 +424,7 @@ class AlarmsView(TemplateView):
         else:
             
             i = alarmas.Alarma()
-            sensores = i.consul_elementos_sensor( tipo_sensor = tipo_alarma)
+            sensores = i.consul_sensores_inmb( inmueb_id = inmueble_id,tipo_sensor = tipo_alarma)
             
             return  render_to_response('core_app/crear_alarma.html', locals(),
                     RequestContext(request))
@@ -464,6 +466,7 @@ class AlarmsView(TemplateView):
                      inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
                 resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+                inmueble_actual = resultado['inmueble_actual'].id
 
             else:
         
@@ -471,6 +474,7 @@ class AlarmsView(TemplateView):
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
                 resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+                inmueble_actual = resultado['inmueble_actual'].id
 
         sensores = i.consul_sensores_inmb( inmueb_id = resultado['inmueble_actual'].id,tipo_sensor = tipo_alarma)
 
@@ -589,7 +593,7 @@ class AlarmReportsView(ListView):
         return resultado
 
 
-#creacion de alarmas
+#creacion de elementos
 class CrearElementoView(TemplateView):
     state = 0
     def post(self,request):
@@ -676,4 +680,96 @@ class CrearElementoView(TemplateView):
 
 
         return  render_to_response('core_app/crear_elemento.html', locals(),
+                                RequestContext(request))
+
+
+
+#Borrado de elementos
+class BorrarElementoView(TemplateView):
+    state = 0
+
+    def get(self,request):
+        
+        resultado = {}
+    
+        if 'elemento_id' in self.request.GET:
+            elemento_id = self.request.GET['elemento_id']
+            elemento = Elemento.objects.get(pk=elemento_id)
+            elemento.delete()
+
+
+        else:
+            return HttpResponseRedirect('../')
+
+        return HttpResponseRedirect('../')
+
+
+#creacion de alarmas
+class SimuladorView(TemplateView):
+
+    def post(self,request):
+
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+
+        EventFormSet = formset_factory(EventoForm, extra=1, max_num=1, formset=RequiredFormSet)
+        
+        alarma_formset = EventFormSet(request.POST, request.FILES)
+
+        if alarma_formset.is_valid():
+                
+       
+                for form in alarma_formset.forms:
+                    
+                    evento = Evento(
+                    nombre = form.cleaned_data['nombre'],
+                    codigo  = form.cleaned_data['mensaje'],
+                    trama   = form.cleaned_data['mensaje'],
+                    fecha_hora_evento = form.cleaned_data['fecha_hora'],
+                    fecha_hora_sistema = form.cleaned_data['fecha_hora'],
+                    sensor   = form.cleaned_data['sensor'])
+
+                    if (evento.codigo == 0 or evento.codigo == '0'):
+                        evento.codigo == '0'
+                    else:
+                        evento.codigo == '1'
+
+                    evento.save()
+
+                    i = alarmas.Alarma()
+                    i.validarAlarma(evento,evento.sensor.activo.user)
+        else:
+            
+            
+            return  render_to_response('core_app/api_index.html', locals(),
+                    RequestContext(request))
+        
+        
+        return HttpResponseRedirect('../')
+
+    def get(self,request):
+        
+        class RequiredFormSet(BaseFormSet):
+            def __init__(self, *args, **kwargs):
+                super(RequiredFormSet, self).__init__(*args, **kwargs)
+                for form in self.forms:
+                    form.empty_permitted = False
+        
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        resultado = {}
+    
+        EventoFormSet = formset_factory(EventoForm, extra=0, max_num=10, formset=RequiredFormSet)
+    
+        alarma_formset = EventoFormSet(
+            initial=[{
+            'fecha_hora': datetime.datetime.today(),
+            }])
+            
+
+
+        return  render_to_response('core_app/api_index.html', locals(),
                                 RequestContext(request))
