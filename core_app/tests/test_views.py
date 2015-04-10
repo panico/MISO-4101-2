@@ -19,9 +19,9 @@ class CorreoTest(TestCase):
 
 
 class HomeListTest(TestCase):        
-    username = 'hernan'
-    password = '000000'
-    email = 'hernan@uniandes.com'
+    username = 'admin'#self.request.user
+    password = 'admin'
+    email = 'ing.rojas.m@gmail.com'#self.request.mail() #'hernan@uniandes.com'
     
     #Método que se ejecuta al inicio de cada uno de los métodos de prueba
     def setUp(self):

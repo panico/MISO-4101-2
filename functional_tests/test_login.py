@@ -12,9 +12,9 @@ import sys
       
 
 class LoginTest(FunctionalTest):#TestCase
-    username = 'hernan'
-    password = '000000'
-    email = 'hernan@uniandes.com'
+    username = 'admin'#self.request.user
+    password = 'admin'
+    email = 'ing.rojas.m@gmail.com'#self.request.mail() #'hernan@uniandes.com'
         
 #    def setUp(self):
 #        # Cada uno de los test necesita ser ejecutado en un cliente
