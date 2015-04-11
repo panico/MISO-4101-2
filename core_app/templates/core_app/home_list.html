@@ -10,6 +10,23 @@
 		text-decoration: none;
 		background: #DFDFDF;
 	}
+	.ger-element-status-container{
+		margin-top: 10px;
+	}
+	
+	@media (max-width: 600px) {
+		.ger-element-status{
+			margin: 0;
+			padding: 0;
+		}
+		.ger-element-info{
+			padding: 0;
+			margin: 0.1em;
+		}
+		.ger-element-status-container{
+			margin-top: 15px;
+		}
+	}
 </style>
 <div id="ger-principal-container">
     <div id="ger-principal-content">
@@ -63,7 +80,7 @@
 	                                    {% for elemento in info.elementos %}
 		                                    <div class="ger-element-container">
 		                                        <div class="pure-g ger-element-content">
-		                                            <div class="pure-u-1-4 pure-u-sm-1-8">
+		                                            <div class="pure-u-1-12 pure-u-sm-1-8">
 		                                                <div class="ger-element-status-container">
 		                                                    <div class="ger-element-status ger-element-status-{{elemento.estado}}">
 		                                                    	{% if elemento.estado == 2 %}
@@ -78,7 +95,7 @@
 		                                                    </div>
 		                                                </div>
 		                                            </div>
-		                                            <div class="pure-u-3-4 pure-u-sm-7-8">
+		                                            <div class="pure-u-11-12 pure-u-sm-7-8">
 		                                                <div class="accordion ger-element-info">
 		                                                    <div class="ger-element-info-label accordion-header">
 		                                                    	<div class="pure-g">
