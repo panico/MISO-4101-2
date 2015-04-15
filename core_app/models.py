@@ -36,7 +36,9 @@ class Activo(GenericModelWithName):
     user = models.ForeignKey(User)
     #Contiene el estado actual notificado por un evento sobre el activo
     estado = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
-    
+    def set_estado(self, estado):
+        if(estado>=0 or estado<3):
+            self.estado = estado
     class Meta:
         ordering = ['estado']
         
