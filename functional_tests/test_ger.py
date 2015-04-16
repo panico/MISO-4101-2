@@ -25,21 +25,7 @@ class EstadoInmueble(FunctionalTest):#TestCase
     
     
 #    def setUp(self):
-    def test_Inmueble(self):
-#        self.client = Client()        
-#        self.user = User.objects.create_user(self.username, self.email, self.password)
-        self.proyecto = Proyecto.objects.create(nombre="Proyecto_test")
-
-        self.activo_to_inmueble = Activo.objects.create(user=self.user)
-        self.inmueble = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)
-        self.inmueble.name = self.nombre
-        self.inmueble.estado = self.estado_inicial_inmueble
     
-    def test_Elemento(self):    
-        self.activo_to_elemento = Activo.objects.create(user=self.user)
-        self.elemento = Elemento(activo_ptr=self.activo_to_elemento, inmueble = self.inmueble)
-        self.elemento.name = self.nombre
-        self.elemento.estado = self.estado_inicial_elemento
 
     #Método que verifica que el estado del inmueble cambie cuando se hace un set en el estado del inmueble
     def test_estado_inmueble(self):
@@ -57,12 +43,12 @@ class EstadoInmueble(FunctionalTest):#TestCase
         self.assertTrue(self.estado_final_inmueble <= self.elemento.inmueble.estado)
     
         
-    def tearDown(self):
-        self.user.delete()
-        self.proyecto.delete()
-        self.inmueble.delete()
-        self.elemento.delete()
-        self.client.logout()
+#    def tearDown(self):
+#        self.user.delete()
+#        self.proyecto.delete()
+#        self.inmueble.delete()
+#        self.elemento.delete()
+#        self.client.logout()
         
     
 
