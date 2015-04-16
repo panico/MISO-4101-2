@@ -359,4 +359,4 @@ class Alarma:
         return 0
 
     def contarNuevasNotificaciones(self,user):
-        return 5
+        return 0

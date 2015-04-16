@@ -2,12 +2,8 @@ from django.test import TestCase, LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-from django.core import mail
-from core_app import views
 from core_app.models import Inmueble, Elemento, Proyecto, Activo, Sensor, TipoSensor, AlarmaAcceso,AlarmaReportada
 from .base import FunctionalTest
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
 import sys
 import datetime
 from core_app.sensores import  alarmas
@@ -73,10 +69,8 @@ class AlarmasPendientes(FunctionalTest):#TestCase
 
         if(numAlarma.__len__() > 0):
             num = numAlarma.__len__()
-            print("hay alarmas")
         else:
             num = 0
-            print("no hay alarmas")
 
         res = i.hayNuevasNotificaciones(self.user.id)
         self.assertTrue(res==num)
@@ -95,10 +89,8 @@ class AlarmasPendientes(FunctionalTest):#TestCase
 
         if(numAlarma.__len__() > 0):
             num = numAlarma.__len__()
-            print("no hay alarmas todas"+str(num))
         else:
             num = 0
-            print("todas leidas todas")
 
         res = i.hayNuevasNotificaciones(self.user.id)
         self.assertTrue(res==num)
@@ -114,10 +106,8 @@ class AlarmasPendientes(FunctionalTest):#TestCase
 
         if(numAlarma.__len__() > 0):
             num = numAlarma.__len__()
-            print("hay alarmas por leer "+str(num))
         else:
             num = 0
-            print("todas leidas")
 
         res = i.hayNuevasNotificaciones(self.user.id)
         #simulando el retorno de la funcion
@@ -129,6 +119,9 @@ class AlarmasPendientes(FunctionalTest):#TestCase
 
         i = alarmas.Alarma()
 
+        self.alarma.leida=1
+        self.alarma.save()
+
         numAlarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=self.user.id,
                     leida=0)
@@ -137,10 +130,8 @@ class AlarmasPendientes(FunctionalTest):#TestCase
             num = numAlarma.__len__()
             #simulando numero de alarmas
             num = 5
-            print("hay alarmas por leer "+str(num))
         else:
             num = 0
-            print("todas leidas")
 
         res = i.contarNuevasNotificaciones(self.user.id)
         self.assertTrue(res==num)
