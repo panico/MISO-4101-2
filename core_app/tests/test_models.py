@@ -31,20 +31,19 @@ class InmuebleTest(FunctionalTest):
         self.proyecto = Proyecto.objects.create(nombre="Proyecto_test")
         self.activo_to_inmueble = Activo.objects.create(user=self.user)
         self.activo_to_elemento = Activo.objects.create(user=self.user)
-#        self.inmueble = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)
-        inmb = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)
+        self.inmueble = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)
 #        self.inmueble.name = self.nombre
-        inmb.name = self.nom_inm
-        inmb.estado = self.estado_inicial_inmueble
+        self.inmueble.name = self.nom_inm
+        self.inmueble.estado = self.estado_inicial_inmueble
         
-        elem = Elemento(activo_ptr=self.activo_to_elemento, inmueble = inmb.id)
-        elem.name = self.nom_elm
-        elem.estado = self.estado_inicial_elemento
+        self.assertNotEqual(self.inmueble.name, '')
+        self.assertEqual(self.inmueble.estado, 2)
+        
+        self.elemento = Elemento(activo_ptr=self.activo_to_elemento, inmueble = self.inmueble)
+        self.elemento.name = self.nom_elm
+        self.elemento.estado = self.estado_inicial_elemento
+        
+        self.assertNotEqual(self.elemento.name, '')
+        self.assertEqual(self.elemento.estado, 2)
 
-#class ElementoTest(FunctionalTest):
     
-    
-#    def test_Elemento(self):
-#        inmb = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)    
-#        self.activo_to_elemento = Activo.objects.create(user=self.user)
-        
