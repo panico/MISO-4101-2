@@ -16,4 +16,4 @@ class HistoryAlarmasTest(TestCase):
         self.assertNotEqual(histalm.estado, False)
         self.assertTrue(histalm.is_over())
     
-    
+#    def test_inmueble(self):

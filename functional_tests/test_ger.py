@@ -18,23 +18,24 @@ class EstadoInmueble(FunctionalTest):#TestCase
 
     estado_inicial_elemento = 2
     estado_final_elemento = 1
-    username = "user_test"
-    password = "pass"
-    email = "test"
+#    username = "user_test"
+#    password = "pass"
+#    email = "test"
     #user = User.objects.create(username="test_user_last2", password="pass", email="test@test.co")
     
     
-    def setUp(self):
-        self.client = Client()
-        
-        self.user = User.objects.create_user(self.username, self.email, self.password)
+#    def setUp(self):
+    def test_Inmueble(self):
+#        self.client = Client()        
+#        self.user = User.objects.create_user(self.username, self.email, self.password)
         self.proyecto = Proyecto.objects.create(nombre="Proyecto_test")
 
         self.activo_to_inmueble = Activo.objects.create(user=self.user)
         self.inmueble = Inmueble(activo_ptr=self.activo_to_inmueble, proyecto = self.proyecto)
         self.inmueble.name = self.nombre
         self.inmueble.estado = self.estado_inicial_inmueble
-        
+    
+    def test_Elemento(self):    
         self.activo_to_elemento = Activo.objects.create(user=self.user)
         self.elemento = Elemento(activo_ptr=self.activo_to_elemento, inmueble = self.inmueble)
         self.elemento.name = self.nombre
