@@ -1,5 +1,5 @@
 from django.test import TestCase, LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from django.core import mail

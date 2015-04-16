@@ -1,5 +1,5 @@
 from django.test import TestCase, LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from django.core import mail
@@ -10,19 +10,20 @@ from selenium.webdriver.common.keys import Keys
 import sys
 
 # Create your tests here.
-class FunctionalTest(StaticLiveServerCase):
-    username = 'admin'#self.request.user
-    password = 'admin'
-    email = 'ing.rojas.m@gmail.com'#self.request.mail() #'hernan@uniandes.com'
+
+class FunctionalTest(StaticLiveServerTestCase):
+    username = 'hernan'
+    password = '000000'
+    email = 'hernan@uniandes.com'
     
     @classmethod
     def setUpClass(cls):
-        cls.wd = WebDriver()
+        #cls.wd = WebDriver()
         super(FunctionalTest, cls).setUpClass()
         
     @classmethod
     def tearDownClass(cls):
-        cls.wd.quit()
+        #cls.wd.quit()
         super(FunctionalTest, cls).tearDownClass()
         
     #Método que se ejecuta al inicio de cada uno de los métodos de prueba

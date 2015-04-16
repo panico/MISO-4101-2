@@ -54,18 +54,16 @@
 		background-color:#ffffff;
 	}
 	table.google-visualization-table-table td, table.google-visualization-table-table th{
-		vertical-align:middle;
-		
-		background-color:#efebe8;
-
-		border:1px solid #000000;
-		border-width:0px 1px 1px 0px;
-		text-align:left;
-		padding:20px;
-		font-size:10px;
-		font-family:Arial;
-		font-weight:normal;
-		color:#000000;
+		vertical-align: middle;
+		background-color: #efebe8;
+		border: 1px solid #000000;
+		border-width: 0px 1px 1px 0px;
+		text-align: left;
+		padding: 12px;
+		font-size: 12px;
+		font-family: Arial;
+		font-weight: normal;
+		color: #000000;
 	}
 	table.google-visualization-table-table tr:last-child td{
 		border-width:0px 1px 0px 0px;
@@ -115,6 +113,60 @@
 	#ger-filter-date-div .charts-inline-block .charts-inline-block .google-visualization-controls-slider-horizontal{
 		width: 85%;
 	}
+	text {
+		fill: white;
+	}
+
+	#ger-dashboard-chart-div{
+		width: 100%;
+	}
+	#ger-filter-date-div .charts-inline-block{
+		width: 100%;
+	}
+	#ger-filter-date-div .charts-inline-block .charts-inline-block .google-visualization-controls-slider-horizontal{
+		width: 85%;
+	}
+	text {
+		fill: white;
+	}
+	#ger-filter-element-div, #ger-filter-alarm-type-div{
+  		width: 100%;
+  		
+  		padding: 1em;
+  	}
+  	
+  	#ger-timechart, #ger-filter-date-div, #ger-chart-table{
+  		width: 100%;
+  		height: 100%;
+  	}
+	@media (max-width: 600px) {
+		#ger-principal-container {
+			padding: 0em;
+			margin: 0em;
+		}
+		#ger-left-content {
+			padding: 0em 0.5em 0 0.5em;
+		}
+		#ger-dashboard-chart-container{
+			overflow: hidden;
+		}
+		table.google-visualization-table-table td, table.google-visualization-table-table th{
+			padding: 5px;
+		}
+		#ger-filter-date-div .charts-inline-block{
+			width: 100%;
+		}
+		#ger-filter-date-div .charts-inline-block .charts-inline-block .google-visualization-controls-slider-horizontal{
+			width: 70%;
+		}
+		#ger-filter-date-div{
+	  		padding: 1em;
+	  	}
+		.google-visualization-controls-rangefilter-thumblabel {
+			font-size: 10px;
+		}
+	}
+	
 </style>
 <div id="ger-principal-container">
     <div id="ger-principal-content">
@@ -167,14 +219,16 @@
                     	{% if info.eventos %}
 
 							<div>
-	                    		<div id="ger-dashboard-chart-div" style="width: 100%; min-width: 500px;">
-							      	
-							    	<div id="ger-filter-element-div" style="width: 100%; min-width: 500px;"></div>
-							    	<div id="ger-timechart" style="width: 100%; height: 100%; min-width: 500px;"></div>
-							    	<div id="ger-filter-date-div" style="width: 100%; min-width: 500px;"></div>
-							    	<div id="ger-chart-table" style="width: 100%; height: 100%; min-width: 500px;"></div>
-							    	
-							    </div>
+								<div id="ger-dashboard-chart-container">
+		                    		<div id="ger-dashboard-chart-div">
+								      	
+								    	<div id="ger-filter-element-div"></div>
+								    	<div id="ger-timechart"></div>
+								    	<div id="ger-filter-date-div"></div>
+								    	<div id="ger-chart-table"></div>
+								    	
+								    </div>
+								</div>
 				        	</div>
                         {% else %}
                         	{% if info.elemento_actual %}
@@ -195,9 +249,6 @@
 	    </div>
 	</div>  
 
-<script type="text/javascript">
-	$("#ger-item-eventos").addClass("ger-horizontal-menu-item-selected");
-</script>
 <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['timeline']}]}"></script>
 <script type="text/javascript">
 google.load('visualization', '1.0', {'packages':['controls', 'timeline']});
@@ -222,7 +273,7 @@ function drawDashboard() {
 			
 			{% ifchanged evento.sensor__activo__nombre%}
 				{% if not forloop.first %}
-					, new Date()],
+					, new Date('{{info.maxdatetime|date:"r"}}')],
 				{% endif %}
 			{% else %}
 				{% if not forloop.first %}
@@ -241,7 +292,7 @@ function drawDashboard() {
 			, "{{evento.sensor__tipo_sensor__nombre}}", "{{evento.sensor__activo__inmueble__nombre}}"
 				, new Date('{{evento.fecha_hora_evento|date:"r"}}')
 			{% if forloop.last %}
-				, new Date()]
+				, new Date('{{info.maxdatetime|date:"r"}}')]
 			{% endif %}
 		{% endfor %}
 
@@ -261,19 +312,23 @@ function drawDashboard() {
           }
         });
         var elementFilter = new google.visualization.ControlWrapper({
-          'controlType': 'CategoryFilter',
-          'containerId': 'ger-filter-element-div',
-          'options': {
-            'filterColumnIndex': 0,
+          	'controlType': 'CategoryFilter',
+          	'containerId': 'ger-filter-element-div',
+          	'options': {
+            	'filterColumnIndex': 0,
           }
         });
 
         var timeLine = new google.visualization.ChartWrapper({
-          'chartType': 'Timeline',
-          'containerId': 'ger-timechart',
-          'view': {
+          	'chartType': 'Timeline',
+          	'containerId': 'ger-timechart',
+          	'view': {
 		        columns: [0, 1, 4, 5]
-		  }
+		  	},
+		  	'options': {
+				'avoidOverlappingGridLines': false,
+				'backgroundColor': '#999'
+		  	}
         });
 
         var tableChart = new google.visualization.ChartWrapper({
@@ -298,6 +353,8 @@ function drawDashboard() {
 </script>
 
 </div>
-
+<script type="text/javascript">
+	$("#ger-item-eventos").addClass("ger-horizontal-menu-item-selected");
+</script>
 
 {% endblock %}

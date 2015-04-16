@@ -47,11 +47,36 @@ class Proyecto(GenericModelWithName):
 #Clase que representa las propiedades del usuario fijas como Apto, Oficina, etc 
 class Inmueble(Activo):
     proyecto = models.ForeignKey(Proyecto)
+    def set_estado(self, estado):
+        if(estado>=0 or estado<3):
+            self.estado = estado
+            return True
+        else:
+            return False
     #activos = models.ManyToManyField(Activo, related_name='inmuebles_activos_type', null=True)
     
 #Clase que representa los electrodomésticos y demás elementos dentro de un inmueble
 class Elemento(Activo):
     inmueble = models.ForeignKey(Inmueble)
+    def set_estado(self, estado):
+        if estado == 0:
+            self.estado = estado
+            return True
+        elif estado == 1:
+            self.estado = estado
+            if self.inmueble.estado == 0:
+                self.inmueble.set_estado(estado)
+            return True
+        elif estado == 2:
+            self.estado = estado
+            if self.inmueble.estado < 2:
+                self.inmueble.set_estado(estado)
+            return True
+        else:
+            return False
+
+
+
 #Clase que tiene los tipos de sensores
 class TipoSensor(GenericModelWithName):
     descripcion = models.CharField(max_length=255,default='')

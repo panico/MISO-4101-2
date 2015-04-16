@@ -28,7 +28,24 @@
     color: #555555;
     padding: 0.5em;
     margin: 0.5em;
-  } 
+  }
+  .ger-element-status-container{
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 600px) {
+    .ger-element-status{
+      margin: 0;
+      padding: 0;
+    }
+    .ger-element-info{
+      padding: 0;
+      margin: 0.1em;
+    }
+    .ger-element-status-container{
+      margin-top: 20%;
+    }
+  }
 </style>
 <div id="ger-principal-container">
     <div id="ger-principal-content">
@@ -82,7 +99,7 @@
                                     {% for alarma in info.alarmas %}
                                       <div class="ger-element-container">
                                           <div class="pure-g ger-element-content">
-                                              <div class="pure-u-1-4 pure-u-sm-1-8">
+                                              <div class="pure-u-1-12 pure-u-sm-1-8">
                                                   <div class="ger-element-status-container">
                                                       <div class="ger-element-status ger-element-status-{{alarma.nivel_alarma}}">
                                                         {% if alarma.nivel_alarma == 2 %}
@@ -98,7 +115,7 @@
                                                       </div>
                                                   </div>
                                               </div>
-                                              <div class="pure-u-3-4 pure-u-sm-7-8">
+                                              <div class="pure-u-11-12 pure-u-sm-7-8">
                                                   <div class="accordion ger-element-info">
                                                       <div class="ger-element-info-label accordion-header">
                                                         <div class="pure-g">
@@ -190,7 +207,6 @@
 </div>
 
 <script type="text/javascript">
-  $("#ger-item-houses").addClass("ger-horizontal-menu-item-selected");
   $(function() {
       $("#ger-modal-alarmas").dialog({
           autoOpen: false,
@@ -208,5 +224,8 @@
         $( "#ger-modal-alarmas" ).dialog("open");
       });
   });
+</script>
+<script type="text/javascript">
+  $("#ger-item-alarms").addClass("ger-horizontal-menu-item-selected");
 </script>
 {% endblock %}

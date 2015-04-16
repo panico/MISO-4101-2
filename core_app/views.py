@@ -12,8 +12,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from core_app.models import AlarmaHumo,AlarmaEstado,AlarmaAcceso
 from django.http import HttpResponseRedirect
-import datetime
 
+import datetime
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -118,7 +118,12 @@ class EventosView(ListView):
                     eventos = i.consul_events(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
                     resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
         
-        resultado['eventos'] = eventos    
+        resultado['eventos'] = eventos 
+        maxdatetime = datetime.datetime.today()
+        for evento in eventos:
+            if evento.get('fecha_hora_evento').date() > maxdatetime.date():
+                maxdatetime = evento.get('fecha_hora_evento')
+        resultado['maxdatetime'] = maxdatetime
         return resultado
 
 class ElemCreateView(CreateView):
@@ -370,21 +375,22 @@ class AlarmsView(TemplateView):
                 for form in self.forms:
                     form.empty_permitted = False
 
-        tipo_alarma = self.request.POST['tipo_alarma']
-        
+        tipo_alarma = int(self.request.POST['tipo_alarma'])
+        print('alarma '+str(tipo_alarma))
 
-        if tipo_alarma=='1' :
+        if tipo_alarma==1 :
             AlarmFormSet = formset_factory(AlarmaHumoForm, extra=1, max_num=10, formset=RequiredFormSet)
-        elif tipo_alarma=='2':
+        elif tipo_alarma==2:
             AlarmFormSet = formset_factory(AlarmaEstado2Form, extra=1, max_num=10, formset=RequiredFormSet)
-        elif tipo_alarma=='3':
+        elif tipo_alarma==3:
             AlarmFormSet = formset_factory(AlarmaAccesoForm, extra=1, max_num=10, formset=RequiredFormSet)    
-        elif tipo_alarma=='4':
+        elif tipo_alarma==4:
             AlarmFormSet = formset_factory(AlarmaEstadoForm, extra=1, max_num=10, formset=RequiredFormSet)
         
         alarma_formset = AlarmFormSet(request.POST, request.FILES)
         sensor_id = self.request.POST.get('sensor_select',False)
         nivel_id = self.request.POST.get('nivel_select',False)
+        inmueble_id = self.request.POST.get('inmueble_actual',0)
         
         #alarma.sensor = sensor[0]
         
@@ -410,7 +416,7 @@ class AlarmsView(TemplateView):
             
                 error_sensor= '* This field is required.'
                 i = alarmas.Alarma()
-                sensores = i.consul_elementos_sensor( tipo_sensor = tipo_alarma)
+                sensores = i.consul_sensores_inmb( inmueb_id = inmueble_id,tipo_sensor = tipo_alarma)
             
                 return  render_to_response('core_app/crear_alarma.html', locals(),
                         RequestContext(request))
@@ -418,7 +424,7 @@ class AlarmsView(TemplateView):
         else:
             
             i = alarmas.Alarma()
-            sensores = i.consul_elementos_sensor( tipo_sensor = tipo_alarma)
+            sensores = i.consul_sensores_inmb( inmueb_id = inmueble_id,tipo_sensor = tipo_alarma)
             
             return  render_to_response('core_app/crear_alarma.html', locals(),
                     RequestContext(request))
@@ -460,6 +466,7 @@ class AlarmsView(TemplateView):
                      inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
                 resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+                inmueble_actual = resultado['inmueble_actual'].id
 
             else:
         
@@ -467,6 +474,7 @@ class AlarmsView(TemplateView):
                 resultado['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
                 resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+                inmueble_actual = resultado['inmueble_actual'].id
 
         sensores = i.consul_sensores_inmb( inmueb_id = resultado['inmueble_actual'].id,tipo_sensor = tipo_alarma)
 
@@ -576,8 +584,12 @@ class AlarmReportsView(ListView):
                     eventos = i.consul_history(user_id = user.id, fech_1 = fecha1, fech_2 = fecha2)
                     resultado['elementos'] = Elemento.objects.all().filter(user_id = user.id).order_by('-estado')
         
-        resultado['reporte'] = eventos    
-        
+        resultado['reporte'] = eventos
+        maxdatetime = datetime.datetime.today()
+        for evento in eventos:
+            if evento.get('fecha_hora').date() > maxdatetime.date():
+                maxdatetime = evento.get('fecha_hora')
+        resultado['maxdatetime'] = maxdatetime
         return resultado
 
 

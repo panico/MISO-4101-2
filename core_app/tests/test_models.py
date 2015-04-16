@@ -5,7 +5,7 @@ from django.core import mail
 from core_app.models import HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor, AlarmaEstado, AlarmaAcceso, AlarmaHumo
 from django.core.urlresolvers import reverse
 import datetime
-#from core_app.functional_test.base import FunctionalTest
+#from .base import FunctionalTest
 
 class HistoryAlarmasTest(TestCase):
 
