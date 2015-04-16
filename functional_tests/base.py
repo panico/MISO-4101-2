@@ -10,7 +10,6 @@ from selenium.webdriver.common.keys import Keys
 import sys
 
 # Create your tests here.
-
 class FunctionalTest(StaticLiveServerTestCase):
     username = 'hernan'
     password = '000000'
