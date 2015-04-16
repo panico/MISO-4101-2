@@ -24,10 +24,9 @@ class InmuebleTest(FunctionalTest):
     nom_elm = "Elemento test"
     estado_inicial_elemento = 2
     estado_final_elemento = 1
-#    def test_inmueble(self):
+
     def test_Inmueble(self):
-#        self.client = Client()        
-#        self.user = User.objects.create_user(self.username, self.email, self.password)
+
         self.proyecto = Proyecto.objects.create(nombre="Proyecto_test")
         self.activo_to_inmueble = Activo.objects.create(user=self.user)
         self.activo_to_elemento = Activo.objects.create(user=self.user)
