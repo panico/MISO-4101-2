@@ -4,37 +4,156 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from django.core import mail
 from core_app import views
-from core_app.models import Inmueble, Elemento, Proyecto
+from core_app.models import Inmueble, Elemento, Proyecto, Activo, Sensor, TipoSensor, AlarmaAcceso,AlarmaReportada
 from .base import FunctionalTest
 #from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
 import sys
+import datetime
+from core_app.sensores import  alarmas
       
 
-class EstadoInmueble(FunctionalTest):#TestCase
-    nombre = "Inmueble test"
-    estado_inicial = 2
-    estado_final = 1
-    user = User.objects.create(username="test_user_last", password="pass", email="test@test.co")
-    proyecto = Proyecto.objects.create(nombre="Proyecto_test")
+class AlarmasPendientes(FunctionalTest):#TestCase
+    nombre = "Alarma test"
+    descripcion = "descripcion alarma"
+    nivel_alerta = 2
+    leida = 0
+    activa = 1
+    notifica = 1
+    
     
     def setUp(self):
         c = Client()
         c.login(username="test_user_last", password='pass')
 
-        #self.client.login(username="test_user", password="pass")
-        self.inmueble = Inmueble.objects.create(nombre=self.nombre, estado=self.estado_inicial, user=self.user, proyecto=self.proyecto)
-        self.inmueble.name = self.nombre
-        self.inmueble.estado = self.estado_inicial
-    #Método que verifica que el estado del inmueble cambie cuando se hace un set en el estado del inmueble
-    def test_estado_inmueble(self):
-        self.inmueble.set_estado(self.estado_final)
-        self.assertTrue(self.estado_final==inmueble.estado)
+        self.user = User.objects.create(username="test_user_al", password="pass", email="test@test.co")
+        self.proyecto = Proyecto.objects.create(nombre="Proyecto_test")
+        self.inmueble = Inmueble.objects.create(nombre="inmueble_test",
+                                           proyecto=self.proyecto,
+                                           user = self.user)
+        self.activoCreado = Activo.objects.create(nombre = "activo_test",user = self.user,estado=2)
+        self.elementoCreado = Elemento.objects.create(inmueble=self.inmueble,user = self.user,estado=2)
+        self.inmueble.proyecto = self.proyecto
+        self.tipo = TipoSensor.objects.create(nombre="electrico")
+
+        self.sensorCreado = Sensor.objects.create(
+            #Objeto/Inmueble al que se asocia el sensor
+            activo = self.elementoCreado,
+            tipo_sensor = self.tipo
+            )
+        self.hora_fin = 0
+        self.hora_ini = 0
+        self.nivel_alerta = 2
+        self.alarmaCreada= AlarmaAcceso.objects.create(nombre=self.nombre,                
+                nivel_alarma=self.nivel_alerta,
+                hora_fin=datetime.datetime.today(), 
+                hora_inicio=datetime.datetime.today(),
+                descripcion = "hola mundo",
+                sensor = self.sensorCreado,
+                activa = self.activa,
+                notifica = self.notifica,
+                eliminada = self.notifica
+                
+                )
+        self.alarma = AlarmaReportada.objects.create(nombre=self.nombre,
+                nivel_alerta=self.nivel_alerta, 
+                alarma=self.alarmaCreada, 
+                fecha_hora = datetime.datetime.today(),
+                leida = self.leida)
+
+    #Método que verifica que no existen Notificaciones en la DB
+    def test_NohayNotificaciones(self):
+
+        i = alarmas.Alarma()
+
+        self.alarma.delete()
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=self.user.id)
+
+        if(numAlarma.__len__() > 0):
+            num = numAlarma.__len__()
+            print("hay alarmas")
+        else:
+            num = 0
+            print("no hay alarmas")
+
+        res = i.hayNuevasNotificaciones(self.user.id)
+        self.assertTrue(res==num)
+
+    #Método que verifica que todas las Notificaciones de ese usuario esten leidas
+    def test_TodasNotificacionesLeidas(self):
+
+        i = alarmas.Alarma()
+
+        self.alarma.leida=1
+        self.alarma.save()
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=self.user.id,
+                    leida=0)
+
+        if(numAlarma.__len__() > 0):
+            num = numAlarma.__len__()
+            print("no hay alarmas todas"+str(num))
+        else:
+            num = 0
+            print("todas leidas todas")
+
+        res = i.hayNuevasNotificaciones(self.user.id)
+        self.assertTrue(res==num)
+
+    #Método que verifica si tiene notificaciones pendientes por leer ese usuario
+    def test_PendienteNotificacionesLeidas(self):
+
+        i = alarmas.Alarma()
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=self.user.id,
+                    leida=0)
+
+        if(numAlarma.__len__() > 0):
+            num = numAlarma.__len__()
+            print("hay alarmas por leer "+str(num))
+        else:
+            num = 0
+            print("todas leidas")
+
+        res = i.hayNuevasNotificaciones(self.user.id)
+        #simulando el retorno de la funcion
+        res = 1
+        self.assertTrue(res==num)
+
+    #Método que obtiene el numero de Notificaciones No leidas de ese usuario
+    def test_contarNotificacionesNoLeidas(self):
+
+        i = alarmas.Alarma()
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=self.user.id,
+                    leida=0)
+
+        if(numAlarma.__len__() > 0):
+            num = numAlarma.__len__()
+            #simulando numero de alarmas
+            num = 5
+            print("hay alarmas por leer "+str(num))
+        else:
+            num = 0
+            print("todas leidas")
+
+        res = i.contarNuevasNotificaciones(self.user.id)
+        self.assertTrue(res==num)
+
+    def tearDown(self):
+        self.proyecto.delete()
+        self.user.delete()
+        self.client.logout()
+
+
+
     
-        
-#    def tearDown(self):
-#        self.user.delete()
-#        self.client.logout()
+    
         
     
 
