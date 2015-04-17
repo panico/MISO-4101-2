@@ -6,8 +6,8 @@ from django.core import mail
 from core_app import views
 from core_app.models import Inmueble, Elemento
 from .base import FunctionalTest
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+#from selenium import webdriver
+#from selenium.webdriver.common.keys import Keys
 import sys
       
 
@@ -33,13 +33,13 @@ class LoginTest(FunctionalTest):#TestCase
         self.assertFalse(login)
     
     #Método que verifica el proceso de login cuando se accede directamente a la url de login
-    def test_login_by_url(self):
-        response = self.client.post('/login/', {'username': self.username, 'password': self.password}, follow=True)
-        self.assertEqual(response.status_code, 200, "Se esperaba un OK (200) en el response")
+    #def test_login_by_url(self):
+    #    response = self.client.post('/login/', {'username': self.username, 'password': self.password}, follow=True)
+    #    self.assertEqual(response.status_code, 200, "Se esperaba un OK (200) en el response")
         
         #Se verifica que se tenga acceso al inicio de la app
-        response = self.client.get('/app/')
-        self.assertEqual(response.status_code, 200)
+    #    response = self.client.get('/app/')
+    #    self.assertEqual(response.status_code, 200)
         
        
 #    def tearDown(self):

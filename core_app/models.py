@@ -133,6 +133,7 @@ class AlarmaReportada(GenericModelWithName):
     alarma = models.ForeignKey(Alarma)
     fecha_hora = models.DateTimeField(datetime.datetime.today())
     nivel_alerta = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
+    leida = models.BooleanField(default=False)
 
 ##Otras clases
 class HistoryAlarmas(GenericModel):
