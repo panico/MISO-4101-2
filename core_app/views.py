@@ -1,9 +1,13 @@
 #from django.shortcuts import render
+
+from django.core.urlresolvers import reverse
 from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView, UpdateView
+
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSensor
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
+from django.shortcuts import redirect
 import psycopg2
 import datetime
 from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm, EventoForm
@@ -128,16 +132,21 @@ class EventosView(ListView):
 
 class ElemCreateView(CreateView):
     model = Elemento
+    fields = ['nombre', 'estado']
+    success_url = '/app/'
+
     obj=10
     #fields = ['nombre', 'estado']
     success_url = '/core_app/'
+
     
     
     def form_valid(self, form):
         #user = self.request.user
-        user = self.request.user
-        form.instance.user = self.request.user
-        form.instance.inmueble_id = self.request.GET['inmueble_id']
+        form.instance.user      = self.request.user
+        inmb_id = self.request.session['inmueble_id']
+        form.instance.inmueble = Inmueble.objects.get(pk=inmb_id)
+        
         return super(ElemCreateView, self).form_valid(form)
     
 class ElemDetailView(DetailView):
@@ -147,7 +156,7 @@ class ElemUpdateView(UpdateView):
     model = Elemento
     
     def get_success_url(self):
-        return reverse('core_app:elem_detail', kwargs={'pk': self.object.pk,})
+        return reverse('app:elem_detail', kwargs={'pk': self.object.pk,})
     
 #Este es un cambio de prueba para el Codeship
 class CodeShipTest(ListView):
