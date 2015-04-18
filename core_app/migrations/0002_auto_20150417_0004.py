@@ -15,19 +15,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='alarmareportada',
             name='fecha_hora',
-            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 16, 20, 37, 26, 686180)),
+            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 17, 0, 4, 8, 249254)),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='evento',
             name='fecha_hora_evento',
-            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 16, 20, 37, 26, 683294)),
+            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 17, 0, 4, 8, 246385)),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='evento',
             name='fecha_hora_sistema',
-            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 16, 20, 37, 26, 683330)),
+            field=models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 17, 0, 4, 8, 246420)),
             preserve_default=True,
         ),
     ]
