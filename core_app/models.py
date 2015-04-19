@@ -7,7 +7,7 @@ import datetime
 
 
 class GenericModel(models.Model):
-    #Representación como cadena del objeto
+    #Representacion como cadena del objeto
     def __str__(self):
         return 'Objeto {className} con Id[{modelId}]'.format(
             className=self.__class__.__name__, modelId=self.id)
