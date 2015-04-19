@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from enum import IntEnum
 
 from django.contrib.auth.models import User
