@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import datetime
 import django.core.validators
+import datetime
 from django.conf import settings
 
 
@@ -17,9 +17,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Activo',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
-                ('estado', models.IntegerField(default=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)])),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
+                ('estado', models.IntegerField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)], default=2)),
             ],
             options={
                 'ordering': ['estado'],
@@ -29,13 +29,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Alarma',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
-                ('descripcion', models.CharField(default='', max_length=512)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
+                ('descripcion', models.CharField(max_length=512, default='')),
                 ('activa', models.BooleanField(default=True)),
                 ('notifica', models.BooleanField(default=True)),
                 ('eliminada', models.BooleanField(default=False)),
-                ('nivel_alarma', models.IntegerField(default=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)])),
+                ('nivel_alarma', models.IntegerField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)], default=2)),
             ],
             options={
                 'abstract': False,
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AlarmaAcceso',
             fields=[
-                ('alarma_ptr', models.OneToOneField(to='core_app.Alarma', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
+                ('alarma_ptr', models.OneToOneField(serialize=False, primary_key=True, to='core_app.Alarma', parent_link=True, auto_created=True)),
                 ('hora_inicio', models.TimeField(help_text='hh:mm:ss')),
                 ('hora_fin', models.TimeField(help_text='hh:mm:ss')),
             ],
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AlarmaEstado',
             fields=[
-                ('alarma_ptr', models.OneToOneField(to='core_app.Alarma', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
+                ('alarma_ptr', models.OneToOneField(serialize=False, primary_key=True, to='core_app.Alarma', parent_link=True, auto_created=True)),
                 ('estado_sensor', models.BooleanField(default=True)),
                 ('hora_inicio', models.TimeField(help_text='hh:mm:ss')),
                 ('hora_fin', models.TimeField(help_text='hh:mm:ss')),
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AlarmaHumo',
             fields=[
-                ('alarma_ptr', models.OneToOneField(to='core_app.Alarma', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
+                ('alarma_ptr', models.OneToOneField(serialize=False, primary_key=True, to='core_app.Alarma', parent_link=True, auto_created=True)),
             ],
             options={
                 'abstract': False,
@@ -80,11 +80,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AlarmaReportada',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
-                ('descripcion', models.CharField(default='', max_length=512)),
-                ('fecha_hora', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 9, 23, 26, 40, 403701))),
-                ('nivel_alerta', models.IntegerField(default=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)])),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
+                ('descripcion', models.CharField(max_length=512, default='')),
+                ('fecha_hora', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 20, 2, 13, 1, 663558))),
+                ('nivel_alerta', models.IntegerField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(2)], default=2)),
                 ('alarma', models.ForeignKey(to='core_app.Alarma')),
             ],
             options={
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Elemento',
             fields=[
-                ('activo_ptr', models.OneToOneField(to='core_app.Activo', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
+                ('activo_ptr', models.OneToOneField(serialize=False, primary_key=True, to='core_app.Activo', parent_link=True, auto_created=True)),
             ],
             options={
                 'abstract': False,
@@ -105,12 +105,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Evento',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
                 ('codigo', models.CharField(max_length=10)),
                 ('trama', models.CharField(max_length=1000)),
-                ('fecha_hora_evento', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 9, 23, 26, 40, 400683))),
-                ('fecha_hora_sistema', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 9, 23, 26, 40, 400723))),
+                ('fecha_hora_evento', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 20, 2, 13, 1, 659652))),
+                ('fecha_hora_sistema', models.DateTimeField(verbose_name=datetime.datetime(2015, 4, 20, 2, 13, 1, 659720))),
             ],
             options={
                 'abstract': False,
@@ -120,7 +120,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HistoryAlarmas',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
                 ('estado', models.BooleanField(default=True)),
                 ('fecha', models.DateTimeField()),
                 ('alarma', models.ForeignKey(to='core_app.Alarma')),
@@ -134,7 +134,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Inmueble',
             fields=[
-                ('activo_ptr', models.OneToOneField(to='core_app.Activo', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
+                ('activo_ptr', models.OneToOneField(serialize=False, primary_key=True, to='core_app.Activo', parent_link=True, auto_created=True)),
             ],
             options={
                 'abstract': False,
@@ -144,8 +144,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Proyecto',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
             ],
             options={
                 'abstract': False,
@@ -155,8 +155,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Sensor',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
                 ('activo', models.ForeignKey(to='core_app.Elemento')),
             ],
             options={
@@ -167,9 +167,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TipoSensor',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('nombre', models.CharField(default='', max_length=255)),
-                ('descripcion', models.CharField(default='', max_length=255)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('nombre', models.CharField(max_length=255, default='')),
+                ('descripcion', models.CharField(max_length=255, default='')),
             ],
             options={
                 'abstract': False,
