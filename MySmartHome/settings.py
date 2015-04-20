@@ -64,16 +64,16 @@ WSGI_APPLICATION = 'MySmartHome.wsgi.application'
 #HOST_DB = 'localhost'
 
 #desa
-NAME_DB='dmbjrbf5tui1k'
-USER_DB = 'czkxlkptpfljhy'
-PWD_DB = 'UMq60bMuvQrXN0Ie9oJojMr5Yf'
-HOST_DB = 'ec2-50-19-236-178.compute-1.amazonaws.com'
+#NAME_DB='dmbjrbf5tui1k'
+#USER_DB = 'czkxlkptpfljhy'
+#PWD_DB = 'UMq60bMuvQrXN0Ie9oJojMr5Yf'
+#HOST_DB = 'ec2-50-19-236-178.compute-1.amazonaws.com'
 
 #test
-#NAME_DB='d7rtbk4m2c6c3k'
-#USER_DB = 'qpdmestgkkdxhn'
-#PWD_DB = 'dHC9ClLm8wyX7vt6U6ZiEjzOlo'
-#HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
+NAME_DB='d7rtbk4m2c6c3k'
+USER_DB = 'qpdmestgkkdxhn'
+PWD_DB = 'dHC9ClLm8wyX7vt6U6ZiEjzOlo'
+HOST_DB = 'ec2-50-17-181-147.compute-1.amazonaws.com'
 
 #prod
 #NAME_DB='dce330ch6019n5'
