@@ -285,6 +285,11 @@
             </div>
         </header>
     {% endif %}
+    {% if info.pendientes %}
+        <div >
+            <h2>"numero de pendientes {{info.pendientes}}" </h2>
+        </div>
+    {% endif %}
         <div id="ger-master-container">
             {% block pretitle %}{% endblock %}
             {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}

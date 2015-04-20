@@ -71,6 +71,13 @@ class HomeListView(ListView):
         user = self.request.user
         inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
         resultado = {}
+
+        i = alarmas.Alarma()
+        res = i.hayNuevasNotificaciones(user)
+        print('resultado de la funcion '+str(res))
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            resultado['pendientes'] = numAlarmas
         
         if(inmuebles.__len__() > 0):
             resultado['inmuebles'] = inmuebles
@@ -104,6 +111,11 @@ class EventosView(ListView):
 #        end_date = datetime.date(2005, 3, 31)     
         resultado = {}
         i = alarmas.Alarma()
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            resultado['pendientes'] = numAlarmas
+
         resultado['inmuebles'] = inmuebles  
         if 'inmueble_id' in self.request.GET and self.request.GET['inmueble_id'] != "":
             inmb_id = self.request.GET['inmueble_id']
@@ -176,6 +188,11 @@ class AlarmsListView(TemplateView):
         i = alarmas.Alarma()
         info = {}
         
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
+
         if(inmuebles.__len__() > 0):
             info['inmuebles'] = inmuebles
             info['inmueble_actual'] = info['inmuebles'][0]
@@ -462,30 +479,34 @@ class AlarmsView(TemplateView):
         
         user = self.request.user
         inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
-        resultado = {}
+        info = {}
     
-        
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
+
         if(inmuebles.__len__() > 0):
-            resultado['inmuebles'] = inmuebles
+            info['inmuebles'] = inmuebles
             
             if 'inmueble_id' in self.request.GET:
         
                 inmueble_param_id = self.request.GET['inmueble_id']
-                resultado['elementos'] = Elemento.objects.all().filter(
+                info['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
-                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
-                inmueble_actual = resultado['inmueble_actual'].id
+                info['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+                inmueble_actual = info['inmueble_actual'].id
 
             else:
         
                 primer_inmueble = inmuebles[0]
-                resultado['elementos'] = Elemento.objects.all().filter(
+                info['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
-                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+                info['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
                 inmueble_actual = resultado['inmueble_actual'].id
 
-        sensores = i.consul_sensores_inmb( inmueb_id = resultado['inmueble_actual'].id,tipo_sensor = tipo_alarma)
+        sensores = i.consul_sensores_inmb( inmueb_id = info['inmueble_actual'].id,tipo_sensor = tipo_alarma)
 
         if tipo_alarma=='1' :
             AlarmFormSet = formset_factory(AlarmaHumoForm, extra=1, max_num=10, formset=RequiredFormSet)
@@ -520,6 +541,11 @@ class TipoAlarmsView(TemplateView):
         i = alarmas.Alarma()
         info = {}
         
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
+
         if(inmuebles.__len__() > 0):
             info['inmuebles'] = inmuebles
             
@@ -572,6 +598,11 @@ class AlarmReportsView(ListView):
 
         resultado = {}
         i = alarmas.Alarma()
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            resultado['pendientes'] = numAlarmas
+
         resultado['inmuebles'] = inmuebles  
         if 'inmueble_id' in self.request.GET and self.request.GET['inmueble_id'] != "":
             inmb_id = self.request.GET['inmueble_id']
@@ -614,16 +645,22 @@ class CrearElementoView(TemplateView):
                     form.empty_permitted = False
 
 
-        resultado = {}
+        info = {}
         user = self.request.user
+        i = alarmas.Alarma()
+
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
 
         if 'inmueble_id' in self.request.POST:
 
             inmueble_param_id = self.request.POST['inmueble_id']
-            resultado['elementos'] = Elemento.objects.all().filter(
+            info['elementos'] = Elemento.objects.all().filter(
                  inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
-            resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+            info['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
 
 
         else:
@@ -640,7 +677,7 @@ class CrearElementoView(TemplateView):
             for form in alarma_formset.forms:
 
                 nombre = form.cleaned_data['nombre']
-                elemento = Elemento(nombre = nombre,estado=0,inmueble=resultado['inmueble_actual'],user = self.request.user)
+                elemento = Elemento(nombre = nombre,estado=0,inmueble=info['inmueble_actual'],user = self.request.user)
                 elemento.save()
                 tipo = TipoSensor.objects.get(pk=2)
                 sensor = Sensor(nombre = nombre,activo=elemento,tipo_sensor=tipo)
@@ -667,23 +704,31 @@ class CrearElementoView(TemplateView):
     
         user = self.request.user
         inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
-        resultado = {}
+        info = {}
+
+        i = alarmas.Alarma()
+
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
+
     
         if(inmuebles.__len__() > 0):
-            resultado['inmuebles'] = inmuebles
+            info['inmuebles'] = inmuebles
             
             if 'inmueble_id' in self.request.GET:
                 inmueble_param_id = self.request.GET['inmueble_id']
-                resultado['elementos'] = Elemento.objects.all().filter(
+                info['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = inmueble_param_id, user_id = user.id).order_by('-estado')
 
-                resultado['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
+                info['inmueble_actual'] = Inmueble.objects.get(pk=inmueble_param_id)
 
             else:
                 primer_inmueble = inmuebles[0]
-                resultado['elementos'] = Elemento.objects.all().filter(
+                info['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
-                resultado['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
+                info['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
 
         alarma_formset = AlarmFormSet()
 

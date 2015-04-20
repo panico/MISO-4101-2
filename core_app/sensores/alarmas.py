@@ -355,8 +355,31 @@ class Alarma:
         
         return result
 
+    #metodo que verifica el estado de la notificacion si ya fue leida o no
     def hayNuevasNotificaciones(self,user):
-        return 0
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user.id)
+
+        if(numAlarma.__len__() > 0):
+            numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user.id,
+                    leida=0)
+            if(numAlarma.__len__() > 0):
+                res = True
+            else:
+                res = False
+        else:
+            res = False
+        return res
 
     def contarNuevasNotificaciones(self,user):
-        return 0
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user.id,
+                    leida=0)
+
+        if(numAlarma.__len__() > 0):
+            res = numAlarma.__len__()
+        else:
+            res = 0
+        return res

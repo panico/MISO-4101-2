@@ -142,6 +142,11 @@
 	                            <p><a id="ger-create-element" href="/app/create/?inmueble_id={{info.inmueble_actual.id}}">Agregar elemento</a></p>
 	                        </div>
 	                    {% endif %}
+	                    {% if info.pendientes %}
+	                    <div >
+	                         <h2>"numero de pendientes {{info.pendientes}}" </h2>
+	                    </div>
+	                    {% endif %}
                 	</div>
             	</div>
 
