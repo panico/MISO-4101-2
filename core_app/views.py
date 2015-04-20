@@ -419,6 +419,18 @@ class AlarmsView(TemplateView):
         inmueble_id = self.request.POST.get('inmueble_actual',0)
         
         #alarma.sensor = sensor[0]
+
+        i = alarmas.Alarma()
+        
+        user = self.request.user
+        inmuebles = Inmueble.objects.all().filter(user_id = user.id).order_by('-estado')
+        info = {}
+    
+        res = i.hayNuevasNotificaciones(user)
+        if(res == True):
+            numAlarmas = i.contarNuevasNotificaciones(user)
+            info['pendientes'] = numAlarmas
+
         
 
 
