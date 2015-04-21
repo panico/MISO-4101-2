@@ -206,7 +206,17 @@
         .red {background:red;}
         .yellow {background:yellow;}
         .green {background:green}
-
+        .ger-pending-counter {
+            background: red;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            border-radius: 17px;
+            text-align: center;
+        }
         @media (max-width: 600px) {
             #ger-header h1{
                 font-size: 1em;
@@ -264,6 +274,11 @@
                             <a title="Alarmas" href="/app/alarmas">
                                 <img src="{% static "core_app/icons/alert-icon.png"%}"/>
                             </a>
+                            {% if info.pendientes %}
+                                <div class="ger-pending-counter">
+                                    {{info.pendientes}}
+                                </div>
+                            {% endif %}
                         </li>
                         <li id="ger-item-alarm-history" class="ger-horizontal-menu-item pure-menu-item">
                             <a title="Historial de alarmas" href="/app/history">
@@ -285,11 +300,7 @@
             </div>
         </header>
     {% endif %}
-    {% if info.pendientes %}
-        <div >
-            <h2>"numero de pendientes {{info.pendientes}}" </h2>
-        </div>
-    {% endif %}
+    
         <div id="ger-master-container">
             {% block pretitle %}{% endblock %}
             {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
