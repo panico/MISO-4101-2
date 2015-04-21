@@ -146,3 +146,6 @@ class HistoryAlarmas(GenericModel):
     #parametro = models.ForeignKey(AlarmaParametro)
     sensor   = models.ForeignKey(Sensor)
     alarma   = models.ForeignKey(Alarma)
+    
+    def is_over(self):
+        return datetime.datetime.now() > self.fecha #<=
