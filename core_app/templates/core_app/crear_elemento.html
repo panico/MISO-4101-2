@@ -37,7 +37,7 @@
             <div class="ger-container-create-element">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <b>Agregar elemento al inmueble {{resultado.inmueble_actual.nombre}}</b>
+                        <b>Agregar elemento al inmueble {{info.inmueble_actual.nombre}}</b>
                     </div>
                 </div>
                 <div class="panel-body" >
@@ -45,7 +45,7 @@
                     {{ form.non_field_errors }}
 
                     <form action="" method="POST">{%csrf_token%}
-                    	<input type="hidden" name="inmueble_id" value={{ resultado.inmueble_actual.id }} >
+                    	<input type="hidden" name="inmueble_id" value={{ info.inmueble_actual.id }} >
                     	
                     	{{ alarma_formset.management_form }}
                     	

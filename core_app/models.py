@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from enum import IntEnum
 
 from django.contrib.auth.models import User
@@ -7,7 +8,7 @@ import datetime
 
 
 class GenericModel(models.Model):
-    #Representación como cadena del objeto
+    #Representacion como cadena del objeto
     def __str__(self):
         return 'Objeto {className} con Id[{modelId}]'.format(
             className=self.__class__.__name__, modelId=self.id)
@@ -133,6 +134,7 @@ class AlarmaReportada(GenericModelWithName):
     alarma = models.ForeignKey(Alarma)
     fecha_hora = models.DateTimeField(datetime.datetime.today())
     nivel_alerta = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
+    leida = models.BooleanField(default=False)
 
 ##Otras clases
 class HistoryAlarmas(GenericModel):

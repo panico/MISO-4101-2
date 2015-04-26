@@ -198,6 +198,7 @@ class Alarma:
         
 
         if (fech_1 != None and fech_2 == None):            
+            print('paso 3')
             for x in list(HistoryAlarmas.objects.all().filter(sensor__activo__id = elem_id, fecha__gte = fech_1
                         ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
@@ -207,33 +208,39 @@ class Alarma:
                 result.append(x)
                                                          
         else:
+            print('paso 4')
             if (fech_2 != None and fech_1 != None):
+                print('paso 5')
                 for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__range = [fech_1, fech_2]
                             ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
                 
+                    print('paso 6')
                     result.append(x)
             
             else:
+                print('paso 7')
                 if (fech_1 == None and fech_2 != None):
+                    print('paso 8')
                     for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__lte = fech_2
                                 ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
                     #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
+                        print('paso 9')
                         result.append(x)
                 
                 else:
-                    
+                    print('paso A')
                     for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id
                                 ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
-                        
+                        print('paso B')
                         result.append(x)
                         #'fecha', 'sensor__tipo_sensor__nombre', 
                         #                 'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
@@ -351,3 +358,32 @@ class Alarma:
                 print('id alarma '+ str(alarma.sensor.tipo_sensor.id))
         
         return result
+
+    #metodo que verifica el estado de la notificacion si ya fue leida o no
+    def hayNuevasNotificaciones(self,userId):
+
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=userId)
+
+        if(numAlarma.__len__() > 0):
+            numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=userId,
+                    leida=0)
+            if(numAlarma.__len__() > 0):
+                res = True
+            else:
+                res = False
+        else:
+            res = False
+        return res
+
+    def contarNuevasNotificaciones(self,userId):
+        numAlarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=userId,
+                    leida=0)
+
+        if(numAlarma.__len__() > 0):
+            res = numAlarma.__len__()
+        else:
+            res = 0
+        return res
