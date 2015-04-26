@@ -152,16 +152,12 @@ class Alarma:
                     ).order_by('-id')[:20]):
                 result.append(x)
         else:
-            print('paso 5 '+str(elem_id))
             for x in list(MyAlarm.objects.all().filter(sensor__activo__id = elem_id
                     ).select_related('alarma__sensor__activo__inmueble', 'alarma__sensor__tiposensor'
                     ).values('id','nombre', 'descripcion', 'sensor__tipo_sensor__nombre', 
                              'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre','nivel_alarma'
                     ).order_by('-id')[:20]):
                 result.append(x)
-                print('paso 6 '+str(elem_id))
-
-
 
         return result
 
@@ -171,8 +167,6 @@ class Alarma:
         result = []
 
         inmbs = Inmueble.objects.all().filter(user = user_id)
-
-        print('paso 1' +str(inmbs))
         
         for im in inmbs:
             result.extend(list(self.consul_history_inmb(inmueb_id = im.id, fecha1 = fech_1, fecha2 = fech_2)))
@@ -183,7 +177,6 @@ class Alarma:
         result = []
 
         elems = Elemento.objects.all().filter(inmueble = inmueb_id)
-        print('paso 2' +str(elems))
         if (elems.__len__() > 0):           
             for e in elems:
                 result.extend(list(self.consul_history_elem(elem_id = e.id , fech_1 = fecha1, fech_2 = fecha2)))                       
@@ -198,7 +191,6 @@ class Alarma:
         
 
         if (fech_1 != None and fech_2 == None):            
-            print('paso 3')
             for x in list(HistoryAlarmas.objects.all().filter(sensor__activo__id = elem_id, fecha__gte = fech_1
                         ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
@@ -208,39 +200,31 @@ class Alarma:
                 result.append(x)
                                                          
         else:
-            print('paso 4')
             if (fech_2 != None and fech_1 != None):
-                print('paso 5')
                 for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__range = [fech_1, fech_2]
                             ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
-                
-                    print('paso 6')
+            
                     result.append(x)
             
             else:
-                print('paso 7')
                 if (fech_1 == None and fech_2 != None):
-                    print('paso 8')
                     for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__lte = fech_2
                                 ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
                     #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
-                        print('paso 9')
                         result.append(x)
                 
                 else:
-                    print('paso A')
                     for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id
                                 ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
-                        print('paso B')
                         result.append(x)
                         #'fecha', 'sensor__tipo_sensor__nombre', 
                         #                 'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
@@ -306,6 +290,18 @@ class Alarma:
             c = correo.myCorreo()
             c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
                           destinatario=user.email,activo=alarma.sensor.activo.nombre)
+
+            connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
+            cursor=connection.cursor()
+            elemento_actual = Elemento.objects.get(pk=alarma.sensor.activo.id)
+            inmueble_actual = Inmueble.objects.get(pk=alarma.sensor.activo.inmueble.id)
+
+            if (elemento_actual.estado<alarma.nivel_alarma):
+                cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.id))
+                connection.commit()
+            if (inmueble_actual.estado<alarma.nivel_alarma):
+                cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.inmueble.id))
+                connection.commit()
         print('ya genero alarma '+str(registro))
 
         return 0
