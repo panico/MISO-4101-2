@@ -307,8 +307,13 @@ class Alarma:
             c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
                           destinatario=user.email,activo=alarma.sensor.activo.nombre)
             #    actualización de estado
-            elem = Elemento.objects.all().filter(sensor__id = evento.sensor).select_related('sensor__activo__elemento')
-            elem.set_estado(1)
+            #id = alarma.sensor
+            elem = Elemento.objects.all().filter(sensor__id = str(alarma.sensor.id)).select_related('sensor__activo__elemento')
+            
+            for x in elem:
+                x.set_estado(2)
+                x.save()
+            #    print('va la No: '+str(x.id))
             #    actualización de estado
         print('ya genero alarma '+str(registro))
 
