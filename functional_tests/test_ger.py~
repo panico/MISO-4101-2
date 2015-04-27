@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 from django.core import mail
 from core_app import views
 from core_app.models import Inmueble, Elemento, Proyecto, Activo
-from .base import FunctionalTest
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
+#from .base import FunctionalTest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 import sys
       
 
-class EstadoInmueble(FunctionalTest):#TestCase #FunctionalTest
+class EstadoInmueble(InmuebleTest):#TestCase #FunctionalTest
     nombre = "Inmueble test"
     estado_inicial_inmueble = 2
     estado_final_inmueble = 1
@@ -22,21 +22,18 @@ class EstadoInmueble(FunctionalTest):#TestCase #FunctionalTest
 
     #Método que verifica que el estado del inmueble cambie cuando se hace un set en el estado del inmueble
     def test_estado_inmueble(self):
-        return True
-        #self.inmueble.set_estado(self.estado_final_inmueble)
-        #self.assertTrue(self.estado_final_inmueble == self.inmueble.estado)
+        self.inmueble.set_estado(self.estado_final_inmueble)
+        self.assertTrue(self.estado_final_inmueble == self.inmueble.estado)
 
     #Método que verifica que el estado del elemento cambie cuando se hace un set en el estado del inmueble
     def test_estado_elemento(self):
-        return True
-        #self.elemento.set_estado(self.estado_final_elemento)
-        #self.assertTrue(self.estado_final_elemento == self.elemento.estado)
+        self.elemento.set_estado(self.estado_final_elemento)
+        self.assertTrue(self.estado_final_elemento == self.elemento.estado)
 
     #Método que verifica que el estado del elemento cambie cuando se hace un set en el estado del inmueble
     def test_estado_elemento_inmueble(self):
-        return True
-        #self.elemento.set_estado(self.estado_final_elemento)
-        #self.assertTrue(self.estado_final_inmueble <= self.elemento.inmueble.estado)
+        self.elemento.set_estado(self.estado_final_elemento)
+        self.assertTrue(self.estado_final_inmueble <= self.elemento.inmueble.estado)
     
         
 #    def tearDown(self):

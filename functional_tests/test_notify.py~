@@ -11,20 +11,20 @@ import sys
 #import FunctionalTest
 
 # Create your tests here.
-#class NotifyTest(FunctionalTest):    
-#    @classmethod
-#    def test_new_notify(self, a):
-#        if a:
-#            return self.assertEqual(a, 1)
-#        else:
-#            return self.assertEqual(a, 0)
+class NotifyTest(FunctionalTest):    
+    @classmethod
+    def test_new_notify(self, a):
+        if a:
+            return self.assertEqual(a, 1)
+        else:
+            return self.assertEqual(a, 0)
     
     
-#    def test_changeNotify(self):
-#        data = HistoryAlarmas()
+    def test_changeNotify(self):
+        data = HistoryAlarmas()
         
-#        if (data.estado == False):
-#            estado = True
-#            self.assertNotEqual(data.estado, estado)
+        if (data.estado == False):
+            estado = True
+            self.assertNotEqual(data.estado, estado)
 
   
