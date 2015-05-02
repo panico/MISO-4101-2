@@ -1,7 +1,7 @@
 import twilio
 import unittest
 from twilio.rest import TwilioRestClient
-from core_app.correo import sms_sender
+from core_app.correo.sms_sender import SMS_Sender
 
 #Class that group the JUnit test for SMS_Sender
 class SMS_Sender_Test(unittest.TestCase):
