@@ -48,6 +48,7 @@ class Proyecto(GenericModelWithName):
 #Clase que representa las propiedades del usuario fijas como Apto, Oficina, etc 
 class Inmueble(Activo):
     proyecto = models.ForeignKey(Proyecto)
+    embebido = models.CharField(max_length=1023, default='')
     def set_estado(self, estado):
         if(estado>=0 or estado<3):
             self.estado = estado
