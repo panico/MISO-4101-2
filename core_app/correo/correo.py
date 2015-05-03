@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 import smtplib 
 from email.mime.text import MIMEText
-
+from core_app.correo.sms_sender import SMS_Sender
 import mimetypes
 
 #from email.MIMEText import MIMEText
@@ -54,6 +54,10 @@ class myCorreo:
         mailServer.sendmail(miMensaje['From'],
 	                miMensaje['To'],
                      miMensaje.as_string())
+        
+        # Envio del sms
+        my_sms_client = SMS_Sender(testing_mode=False)
+        response = my_sms_client.send_sms(miMensaje.as_string(), "+573202192431")
 
         # Cierre de la conexion
         mailServer.close()
