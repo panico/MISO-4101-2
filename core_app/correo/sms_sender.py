@@ -1,5 +1,3 @@
-import twilio
-import unittest
 from twilio.rest import TwilioRestClient
 
 #This class needs to run this command to work: $ pip install twilio

@@ -1,15 +1,9 @@
-from django.test import TestCase, LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-from django.core import mail
-from core_app import views
 from core_app.models import Inmueble, Elemento, Proyecto, Activo
 from .base import FunctionalTest
 #from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-import sys
-      
+#from selenium.webdriver.common.keys import Keys      
 
 class EstadoInmueble(FunctionalTest):#TestCase
     nombre = "Inmueble test"

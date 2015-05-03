@@ -1,13 +1,8 @@
-from django.test import TestCase, LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-from django.core import mail
-from core_app import views
-from core_app.models import Inmueble, Elemento
 #from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
-import sys
 
 # Create your tests here.
 class FunctionalTest(StaticLiveServerTestCase):
