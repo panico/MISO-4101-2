@@ -47,7 +47,7 @@ class CorreoView(ListView):
                 c = correo.myCorreo()
                 c.enviarGmail(tipo_alarma=self.request.GET['alerta_id'],
                           destinatario=user.email,activo=primer_elemento.nombre,
-                          numero=user.last_name)
+                          user=user)
 
                 connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
                 cursor=connection.cursor()

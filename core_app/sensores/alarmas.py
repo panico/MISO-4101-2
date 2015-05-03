@@ -292,7 +292,7 @@ class Alarma:
             c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
                           destinatario=user.email,
                           activo=alarma.sensor.activo.nombre,
-                          numero=user.last_name)
+                          user=user,nombre_alarma=alarma.nombre)
 
             connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
             cursor=connection.cursor()
