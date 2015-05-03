@@ -1,10 +1,7 @@
-from django.test import TestCase, LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from core_app.models import Inmueble, Elemento, Proyecto, Activo, Sensor, TipoSensor, AlarmaAcceso,AlarmaReportada
 from .base import FunctionalTest
-import sys
 import datetime
 from core_app.sensores import  alarmas
       

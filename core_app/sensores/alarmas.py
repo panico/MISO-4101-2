@@ -1,6 +1,4 @@
-from core_app.models import HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor,Alarma as MyAlarm,AlarmaEstado,AlarmaAcceso,AlarmaHumo
-import getpass
-import datetime
+from core_app.models import HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor,Alarma as MyAlarm,AlarmaEstado,AlarmaAcceso #,AlarmaHumo
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
 import psycopg2
 from core_app.correo import  correo

@@ -1,9 +1,4 @@
-from django.test import TestCase
-from django.test.client import Client
-from django.contrib.auth.models import User
-from django.core import mail
-from core_app.models import Proyecto, Activo, HistoryAlarmas, AlarmaReportada, Inmueble, Elemento, Evento, Sensor, AlarmaEstado, AlarmaAcceso, AlarmaHumo
-from django.core.urlresolvers import reverse
+from core_app.models import Proyecto, Activo, HistoryAlarmas, Inmueble, Elemento
 import datetime
 from functional_tests.base import FunctionalTest
 

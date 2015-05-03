@@ -1,8 +1,5 @@
 from django import forms
-from django.forms.widgets import Widget, Select, MultiWidget
 from core_app.models import Alarma,AlarmaHumo,AlarmaEstado,AlarmaAcceso, Elemento, Evento
-from core_app.snipe import SelectTimeWidget
-import datetime
 
 
 #BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')

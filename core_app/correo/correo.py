@@ -2,7 +2,6 @@
 import smtplib 
 from email.mime.text import MIMEText
 from core_app.correo.sms_sender import SMS_Sender
-import mimetypes
 import datetime
 
 #from email.MIMEText import MIMEText
@@ -66,7 +65,7 @@ class myCorreo:
         # Envio del sms
         my_sms_client = SMS_Sender(testing_mode=False)
         #response = my_sms_client.send_sms(miMensaje.as_string(), "+573202192431")
-        response = my_sms_client.send_sms(smsMensaje, user.last_name)
+        my_sms_client.send_sms(smsMensaje, user.last_name)
 
         # Cierre de la conexion
         mailServer.close()

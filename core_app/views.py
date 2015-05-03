@@ -1,23 +1,21 @@
 #from django.shortcuts import render
 
 from django.core.urlresolvers import reverse
-from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, TemplateView, DetailView, UpdateView
 
 from core_app.correo import  correo
 from core_app.sensores import  alarmas
 from core_app.models import Inmueble, Elemento, Evento, Alarma, Sensor, TipoSensor
 from MySmartHome.settings import NAME_DB, USER_DB, HOST_DB, PWD_DB
-from django.shortcuts import redirect
 import psycopg2
 import datetime
-from core_app.forms import AlarmForm,AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm, EventoForm
+from core_app.forms import AlarmaHumoForm,AlarmaEstadoForm, AlarmaEstado2Form, AlarmaAccesoForm, ElementoForm, EventoForm
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from core_app.models import AlarmaHumo,AlarmaEstado,AlarmaAcceso
 from django.http import HttpResponseRedirect
 
-import datetime
 
 class CorreoListView(ListView):
     context_object_name = 'app_list' 
@@ -517,7 +515,7 @@ class AlarmsView(TemplateView):
                 info['elementos'] = Elemento.objects.all().filter(
                      inmueble_id = primer_inmueble.id, user_id = user.id).order_by('-estado')
                 info['inmueble_actual'] = Inmueble.objects.get(pk=primer_inmueble.id)
-                inmueble_actual = resultado['inmueble_actual'].id
+                inmueble_actual = info['inmueble_actual'].id
 
         sensores = i.consul_sensores_inmb( inmueb_id = info['inmueble_actual'].id,tipo_sensor = tipo_alarma)
 
@@ -757,8 +755,7 @@ class BorrarElementoView(TemplateView):
 
     def get(self,request):
         
-        resultado = {}
-    
+        
         if 'elemento_id' in self.request.GET:
             elemento_id = self.request.GET['elemento_id']
             elemento = Elemento.objects.get(pk=elemento_id)
