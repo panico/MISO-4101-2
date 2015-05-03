@@ -21,7 +21,7 @@ class SMS_Sender():
 			self.from_phone_number = from_number
 			self.client = TwilioRestClient(self.account_sid_test, self.auth_token_test)
 		else:
-			self.from_phone_number = FROM_PHONE_NUMBER_PROD
+			self.from_phone_number = self.FROM_PHONE_NUMBER_PROD
 			self.client = TwilioRestClient(self.account_sid_prod, self.auth_token_prod)
 	
 	#Method that sends a sms text message to a given number
