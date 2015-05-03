@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 import smtplib 
 from email.mime.text import MIMEText
-import SMS_Sender
+from core_app.correo.sms_sender import SMS_Sender
 import mimetypes
 
 #from email.MIMEText import MIMEText
