@@ -290,7 +290,9 @@ class Alarma:
         if alarma.notifica == 1 or alarma.notifica == '1' or alarma.notifica == True:
             c = correo.myCorreo()
             c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
-                          destinatario=user.email,activo=alarma.sensor.activo.nombre)
+                          destinatario=user.email,
+                          activo=alarma.sensor.activo.nombre,
+                          numero=user.last_name)
 
             connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
             cursor=connection.cursor()
@@ -369,7 +371,7 @@ class Alarma:
         else:
             res = False
         return res
-        
+
     #Método que obtiene el numero de Notificaciones No leidas de ese usuario
     def contarNuevasNotificaciones(self,userId):
         numAlarma = AlarmaReportada.objects.all().filter(

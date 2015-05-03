@@ -23,7 +23,7 @@ class myCorreo:
     def setDestinatario(self,dest):
         self.mensaje['To']=dest
 
-    def enviarGmail(self,tipo_alarma,destinatario,activo):
+    def enviarGmail(self,tipo_alarma,destinatario,activo,numero):
         
         miMensaje= self.mensaje
         mailServer = smtplib.SMTP('smtp.gmail.com',587)
@@ -57,7 +57,8 @@ class myCorreo:
         
         # Envio del sms
         my_sms_client = SMS_Sender(testing_mode=False)
-        response = my_sms_client.send_sms(miMensaje.as_string(), "+573202192431")
+        #response = my_sms_client.send_sms(miMensaje.as_string(), "+573202192431")
+        response = my_sms_client.send_sms(miMensaje.as_string(), numero)
 
         # Cierre de la conexion
         mailServer.close()

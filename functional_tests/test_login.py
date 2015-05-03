@@ -16,11 +16,11 @@ class LoginTest(FunctionalTest):#TestCase
     password = '000000'
     email = 'hernan@uniandes.com'
         
-#    def setUp(self):
-#        # Cada uno de los test necesita ser ejecutado en un cliente
-#        self.client = Client()
-#        #Para verificar el login, se debe primero crea el usuario con el que se va a probar
-#        self.user = User.objects.create_user(self.username, self.email, self.password)
+    def setUp(self):
+        # Cada uno de los test necesita ser ejecutado en un cliente
+        self.client = Client()
+        #Para verificar el login, se debe primero crea el usuario con el que se va a probar
+        self.user = User.objects.create_user(self.username, self.email, self.password)
     
     #Método que verifica el proceso de login cuando se accede al API directo del cliente
     def test_login_by_client(self):
