@@ -22,9 +22,8 @@ class EstadoInmueble(FunctionalTest):#TestCase #FunctionalTest
 
     #Método que verifica que el estado del inmueble cambie cuando se hace un set en el estado del inmueble
     def test_estado_inmueble(self):
-        return True
-        #self.inmueble.set_estado(self.estado_final_inmueble)
-        #self.assertTrue(self.estado_final_inmueble == self.inmueble.estado)
+        self.inmueble.set_estado(self.estado_final_inmueble)
+        self.assertTrue(self.estado_final_inmueble == self.inmueble.estado)
 
     #Método que verifica que el estado del elemento cambie cuando se hace un set en el estado del inmueble
     def test_estado_elemento(self):
