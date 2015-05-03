@@ -119,7 +119,7 @@ class AlarmasPendientes(FunctionalTest):#TestCase
 
         i = alarmas.Alarma()
 
-        self.alarma.leida=1
+        #self.alarma.leida=1
         self.alarma.save()
 
         numAlarma = AlarmaReportada.objects.all().filter(
@@ -129,7 +129,7 @@ class AlarmasPendientes(FunctionalTest):#TestCase
         if(numAlarma.__len__() > 0):
             num = numAlarma.__len__()
             #simulando numero de alarmas
-            num = 5
+            #num = 5
         else:
             num = 0
 

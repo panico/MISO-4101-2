@@ -268,7 +268,8 @@ class Alarma:
 
 
 
-
+    #Método que genera la 
+    #notificacion de alarma y cambia el estado del activo
     def GeneraAlarma(self,alarma,evento,user):
         print('genera alarma ')
         ##Otras clases
@@ -368,7 +369,8 @@ class Alarma:
         else:
             res = False
         return res
-
+        
+    #Método que obtiene el numero de Notificaciones No leidas de ese usuario
     def contarNuevasNotificaciones(self,userId):
         numAlarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=userId,
