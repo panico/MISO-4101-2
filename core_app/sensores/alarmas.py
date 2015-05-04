@@ -102,7 +102,6 @@ class Alarma:
         return result
 
 
-
     def consul_sensores(self, user_id, tipo_sensor):
         result = []
 
@@ -110,7 +109,6 @@ class Alarma:
         
         for im in inmbs:
             result.extend(list(self.consul_sensores_inmb(inmueb_id = im.id, tipo_sensor = tipo_sensor)))
-
         
         return result 
 
