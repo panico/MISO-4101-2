@@ -25,54 +25,79 @@ class Alarma:
         result = []
 
         elems = Elemento.objects.all().filter(inmueble = inmueb_id)
-        if (elems.__len__() > 0):           
+        if elems.__len__() > 0:           
             for e in elems:
                 result.extend(list(self.consul_events_elem(elem_id = e.id , fech_1 = fecha1, fech_2 = fecha2)))                       
-#        else:
-#            if (sw == '1'):
-#                eventos = "Inmueble sin elementos"
-#                result.append(eventos)      
+
         return result
-    
-    def consul_events_elem(self, elem_id, fech_1, fech_2):
+
+    @staticmethod
+    def consultar_fecha_ini(elem_id, fech_1):
+
         result  = []
-        
-        if (fech_1 != None and fech_2 == None):            
-            for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__gte = fech_1
+        for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__gte = fech_1
                         ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
                         ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
                                  'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
                         ).order_by('-fecha_hora_evento')[:20]):
                         #'prioridad', 
                 result.append(x)
-                                                         
-        else:
-            if (fech_2 != None and fech_1 != None):
-                for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__range = [fech_1, fech_2]
+        return result
+
+    @staticmethod
+    def consultar_fecha_fin(elem_id, fech_2):
+
+        result  = []
+        for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__lte = fech_2
+                            ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
+                            ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
+                                     'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
+                            ).order_by('-fecha_hora_evento')[:20]):
+                #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
+                    result.append(x)
+        
+        return result
+
+    @staticmethod
+    def consultar_fecha_rango(elem_id, fech_1, fech_2):
+
+        result  = []
+        for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__range = [fech_1, fech_2]
                             ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
                             ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
                                      'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
                             ).order_by('-fecha_hora_evento')[:20]):
                 
                     result.append(x)
+        return result
+
+    @staticmethod
+    def consultar_sin_fecha(elem_id):
+
+        result  = []
+        for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id
+                            ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
+                            ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
+                                     'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
+                            ).order_by('-fecha_hora_evento')[:20]):
+                    result.append(x)
+        return result
+
+
+    @classmethod
+    def consul_events_elem(cls, elem_id, fech_1, fech_2):
+        result  = []
+        
+        if fech_1 != None and fech_2 == None:
+            result = cls.consultar_fecha_ini(elem_id=elem_id, fech_1=fech_1)
+                                                         
+        elif fech_2 != None and fech_1 != None:
+            result = cls.consultar_fecha_rango(elem_id=elem_id, fech_1=fech_1,fech_2=fech_2)
             
-            else:
-                if (fech_1 == None and fech_2 != None):
-                    for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id, fecha_hora_evento__lte = fech_2
-                                ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
-                                ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
-                                         'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
-                                ).order_by('-fecha_hora_evento')[:20]):
-                    #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
-                        result.append(x)
-                
-                else:
-                    for x in list(Evento.objects.all().filter(sensor__activo__id = elem_id
-                                ).select_related('evento__sensor__activo__inmueble', 'evento__sensor__tiposensor'
-                                ).values('nombre', 'fecha_hora_evento', 'codigo', 'sensor__tipo_sensor__nombre', 
-                                         'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
-                                ).order_by('-fecha_hora_evento')[:20]):
-                        result.append(x)
+        elif fech_1 == None and fech_2 != None:
+            result = cls.consultar_fecha_fin(elem_id=elem_id,fech_2=fech_2)
+        else:
+            result = cls.consultar_sin_fecha(elem_id=elem_id)
 
         return result
 
@@ -93,16 +118,14 @@ class Alarma:
         result = []
 
         elems = Elemento.objects.all().filter(inmueble = inmueb_id)
-        if (elems.__len__() > 0):           
+        if elems.__len__() > 0:
             for e in elems:
                 result.extend(list(self.consul_elementos_sensor(elem_id = e.id,  tipo_sensor = tipo_sensor)))
-#        else:
-#            if (sw == '1'):
-#                eventos = "Inmueble sin elementos"
-#                result.append(eventos)      
+
         return result
 
-    def consul_elementos_sensor(self, elem_id, tipo_sensor):
+    @staticmethod
+    def consul_elementos_sensor( elem_id, tipo_sensor):
         result  = []
         
         
@@ -116,29 +139,31 @@ class Alarma:
 
 
 
-
-    def consul_alarms(self, user_id,tipo_sensor_id):
+    @staticmethod
+    def consul_alarms( user_id,tipo_sensor_id):
         result = []
 
         inmbs = Inmueble.objects.all().filter(user = user_id)
         
         for im in inmbs:
-            result.extend(list(self.consul_alarms_inmb(inmueb_id = im.id, tipo_sensor_id = tipo_sensor_id)))
+            result.extend(list(consul_alarms_inmb(inmueb_id = im.id, tipo_sensor_id = tipo_sensor_id)))
         
         return result 
     
-    def consul_alarms_inmb(self, inmueb_id,tipo_sensor_id): 
+    @classmethod
+    def consul_alarms_inmb(cls, inmueb_id,tipo_sensor_id): 
         result = []
 
         elems = Elemento.objects.all().filter(inmueble = inmueb_id)
         
-        if (elems.__len__() > 0):           
+        if elems.__len__() > 0:
             for e in elems:
-                result.extend(list(self.consul_alarms_elem(elem_id = e.id,tipo_sensor_id=tipo_sensor_id )))
+                result.extend(list(cls.consul_alarms_elem(elem_id = e.id,tipo_sensor_id=tipo_sensor_id )))
 
         return result
 
-    def consul_alarms_elem(self, elem_id,tipo_sensor_id):
+    @staticmethod
+    def consul_alarms_elem( elem_id,tipo_sensor_id):
 
         result  = []
         if tipo_sensor_id != 0 and tipo_sensor_id != '' and tipo_sensor_id != '0':
@@ -175,100 +200,106 @@ class Alarma:
         result = []
 
         elems = Elemento.objects.all().filter(inmueble = inmueb_id)
-        if (elems.__len__() > 0):           
+        if elems.__len__() > 0:
             for e in elems:
                 result.extend(list(self.consul_history_elem(elem_id = e.id , fech_1 = fecha1, fech_2 = fecha2)))                       
-#        else:
-#            if (sw == '1'):
-#                eventos = "Inmueble sin elementos"
-#                result.append(eventos)      
+
         return result
     
-    def consul_history_elem(self, elem_id, fech_1, fech_2):
+    @staticmethod
+    def consul_history_elem( elem_id, fech_1, fech_2):
         result  = []
         
 
-        if (fech_1 != None and fech_2 == None):            
+        if fech_1 != None and fech_2 == None:
             for x in list(HistoryAlarmas.objects.all().filter(sensor__activo__id = elem_id, fecha__gte = fech_1
                         ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
                                 ).values( 'fecha_hora', 'alarma__sensor__tipo_sensor__nombre', 
                                          'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
                                 ).order_by('-fecha_hora')[:20]):
-                        #'prioridad', 
                 result.append(x)
                                                          
-        else:
-            if (fech_2 != None and fech_1 != None):
-                for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__range = [fech_1, fech_2]
-                            ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
-                                ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
-                                         'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
-                                ).order_by('-fecha_hora')[:20]):
+        elif fech_2 != None and fech_1 != None:
+            for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__range = [fech_1, fech_2]
+                        ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
+                            ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
+                                     'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
+                            ).order_by('-fecha_hora')[:20]):
+        
+                result.append(x)
+        
+        elif fech_1 == None and fech_2 != None:
+            for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__lte = fech_2
+                        ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
+                        ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
+                                 'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
+                        ).order_by('-fecha_hora')[:20]):
             
-                    result.append(x)
-            
-            else:
-                if (fech_1 == None and fech_2 != None):
-                    for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id, fecha_hora__lte = fech_2
-                                ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
-                                ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
-                                         'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
-                                ).order_by('-fecha_hora')[:20]):
-                    #Evento.objects.get(Q(question__startswith='Who'), Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)))
-                        result.append(x)
+                result.append(x)
                 
-                else:
-                    for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id
-                                ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
-                                ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
-                                         'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
-                                ).order_by('-fecha_hora')[:20]):
-                        result.append(x)
-                        #'fecha', 'sensor__tipo_sensor__nombre', 
-                        #                 'sensor__activo__inmueble__nombre', 'sensor__activo__nombre', 'sensor__nombre'
+        else:
+            for x in list(AlarmaReportada.objects.all().filter(alarma__sensor__activo__id = elem_id
+                        ).select_related('alarmaReportada__alarma__sensor__activo__inmueble', 'alarmaReportada__alarma__sensor__tiposensor'
+                        ).values( 'fecha_hora', 'alarma__nivel_alarma', 'alarma__nombre', 'alarma__descripcion', 'alarma__sensor__tipo_sensor__nombre', 
+                                 'alarma__sensor__activo__inmueble__nombre', 'alarma__sensor__activo__nombre', 'alarma__sensor__nombre'
+                        ).order_by('-fecha_hora')[:20]):
+                result.append(x)                    
 
         return result
 
-    def validaHorarios(self,alarma,alarmaEstado,evento):
+    @staticmethod
+    def get_sec(s):
+        
+        l = s.split(':')
+        return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
+
+
+    @classmethod
+    def valida_horarios(cls,alarma,alarma_estado,evento):
         ret = False
-        print('id alarma '+ str(alarma.sensor.tipo_sensor.id))
-        print('hora alarma '+ str(alarmaEstado.hora_inicio))
-        print('hora fin alarma '+ str(alarmaEstado.hora_fin))
-        print('hora evento '+ str(evento.fecha_hora_evento))
 
-        segMax = self.getSec(s='23:59:59')
-        segIni = self.getSec(s=str(alarmaEstado.hora_inicio))
-        segFin = self.getSec(s=str(alarmaEstado.hora_fin))
-        segEve = self.getSec(s=str(str(evento.fecha_hora_evento.hour)+':'+str(evento.fecha_hora_evento.minute)+':'+str(evento.fecha_hora_evento.second)))
+        seg_max = cls.get_sec(s='23:59:59')
+        seg_ini = cls.get_sec(s=str(alarma_estado.hora_inicio))
+        seg_fin = cls.get_sec(s=str(alarma_estado.hora_fin))
+        seg_eve = cls.get_sec(s=str(str(evento.fecha_hora_evento.hour)+':'+str(evento.fecha_hora_evento.minute)+':'+str(evento.fecha_hora_evento.second)))
 
-        print('seg max '+ str(segMax))
-        print('seg ini '+ str(segIni))
-        print('seg fin '+ str(segFin))
-        print('seg act '+ str(segEve))
 
-        if segIni > segFin:
-            if (segEve>=segIni and segEve<=segMax):
+        if seg_ini > seg_fin:
+            if seg_eve>=seg_ini and seg_eve<=seg_max:
                 print('entra a horario noche')
                 ret = True
-            elif (segEve>=0 and segEve<=segFin):
+            elif seg_eve>=0 and seg_eve<=seg_fin:
                 print('entra a horario nocturno')
                 ret = True
-        elif segIni < segFin:
-            if (segEve>=segIni and segEve<=segFin):
+        elif seg_ini < seg_fin:
+            if seg_eve>=seg_ini and seg_eve<=seg_fin:
                 print('entra a horario diurno')
                 ret = True
-        elif segIni == segFin:
-            if (segEve==segIni):
+        elif seg_ini == seg_fin and seg_eve==seg_ini:
                 print('entra a horario fijo')
                 ret = True
 
         return ret
 
+    #metodo que actualiza los estados de inmueble y activo
+    @staticmethod
+    def actualizar_datos(alarma):
+        connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
+        cursor=connection.cursor()
+        elemento_actual = Elemento.objects.get(pk=alarma.sensor.activo.id)
+        inmueble_actual = Inmueble.objects.get(pk=alarma.sensor.activo.inmueble.id)
 
+        if elemento_actual.estado<alarma.nivel_alarma:
+            cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.id))
+            connection.commit()
+        if inmueble_actual.estado<alarma.nivel_alarma:
+            cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.inmueble.id))
+            connection.commit()
 
     #Método que genera la 
     #notificacion de alarma y cambia el estado del activo
-    def GeneraAlarma(self,alarma,evento,user):
+    @classmethod
+    def genera_alarma(cls,alarma,evento,user):
         print('genera alarma ')
         ##Otras clases
         if alarma.activa == False or alarma.activa == 0 or alarma.activa == '0':
@@ -277,42 +308,25 @@ class Alarma:
 
         registro = AlarmaReportada(
             fecha_hora     = evento.fecha_hora_evento,
-            #user      = models.ForeignKey(User)
-            #elemento  = alarma.sensor.activo ,
-            #inmueble  = alarma.sensor.activo.inmueble,
-            #sensor   = alarma.sensor,
             alarma   = alarma,
             nivel_alerta = alarma.nivel_alarma,
             descripcion = evento.nombre)
         registro.save()
         if alarma.notifica == 1 or alarma.notifica == '1' or alarma.notifica == True:
-            c = correo.myCorreo()
-            c.enviarGmail(tipo_alarma=alarma.nivel_alarma,
+            c = correo.MyCorreo()
+            c.enviar_gmail(tipo_alarma=alarma.nivel_alarma,
                           destinatario=user.email,
                           activo=alarma.sensor.activo.nombre,
                           user=user,nombre_alarma=alarma.nombre)
 
-            connection=psycopg2.connect("host=" + HOST_DB + " dbname=" + NAME_DB + " user=" + USER_DB + " password=" + PWD_DB )
-            cursor=connection.cursor()
-            elemento_actual = Elemento.objects.get(pk=alarma.sensor.activo.id)
-            inmueble_actual = Inmueble.objects.get(pk=alarma.sensor.activo.inmueble.id)
-
-            if (elemento_actual.estado<alarma.nivel_alarma):
-                cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.id))
-                connection.commit()
-            if (inmueble_actual.estado<alarma.nivel_alarma):
-                cursor.execute("UPDATE core_app_activo SET estado =" + str(alarma.nivel_alarma) + " WHERE id =" + str(alarma.sensor.activo.inmueble.id))
-                connection.commit()
+            cls.actualizar_datos(alarma)
+            
         print('ya genero alarma '+str(registro))
 
         return 0
 
-    def getSec(self,s):
-        
-        l = s.split(':')
-        return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
-
-    def validarAlarma(self,evento,user):
+    @classmethod
+    def validar_alarma(cls,evento,user):
         result  = []
         print('entra a validar alarma '+str(evento.sensor))
 
@@ -323,29 +337,26 @@ class Alarma:
 
             if tipo_alarma == 1:
                 print('id alarma humo '+ str(alarma.sensor.tipo_sensor.id))
-                self.GeneraAlarma(alarma,evento,user)
+                cls.genera_alarma(alarma,evento,user)
             elif tipo_alarma == 2:
-                alarmaEstado = AlarmaEstado.objects.get(pk = alarma.id)
-                ret = self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
-                if ret == True :
-                    if int(evento.codigo) == int(alarmaEstado.estado_sensor):
-                        self.GeneraAlarma(alarma,evento,user)
+                alarma_estado = AlarmaEstado.objects.get(pk = alarma.id)
+                ret = cls.valida_horarios(alarma=alarma,alarma_estado=alarma_estado,evento=evento)
+                if ret == True and (int(evento.codigo) == int(alarma_estado.estado_sensor)):
+                        cls.genera_alarma(alarma,evento,user)
 
             elif tipo_alarma == 3:
                 print('id alarma ingreso '+ str(alarma.sensor.tipo_sensor.id))
-                alarmaAcceso = AlarmaAcceso.objects.get(pk = alarma.id)
-                ret =  self.validaHorarios(alarma=alarma,alarmaEstado=alarmaAcceso,evento=evento)
+                alarma_acceso = AlarmaAcceso.objects.get(pk = alarma.id)
+                ret =  cls.valida_horarios(alarma=alarma,alarma_estado=alarma_acceso,evento=evento)
                 if ret == True :
-                        self.GeneraAlarma(alarma,evento,user)
+                        cls.genera_alarma(alarma,evento,user)
             elif tipo_alarma == 4:
                 print('id alarma estado '+ str(alarma.sensor.tipo_sensor.id))
-                alarmaEstado = AlarmaEstado.objects.get(pk = alarma.id)
-                ret = self.validaHorarios(alarma=alarma,alarmaEstado=alarmaEstado,evento=evento)
-                if ret == True :
-                    print('id alarma estado '+ str(evento.codigo)+'--'+str(alarmaEstado.estado_sensor))
-                    if int(evento.codigo) == int(alarmaEstado.estado_sensor):
-                        self.GeneraAlarma(alarma,evento,user)
-
+                alarma_estado = AlarmaEstado.objects.get(pk = alarma.id)
+                ret = cls.valida_horarios(alarma=alarma,alarma_estado=alarma_estado,evento=evento)
+                if ret == True and (int(evento.codigo) == int(alarma_estado.estado_sensor)):
+                    print('id alarma estado '+ str(evento.codigo)+'--'+str(alarma_estado.estado_sensor))
+                    cls.genera_alarma(alarma,evento,user)
 
                 print('alarma '+ str(alarma))
                 print('id alarma '+ str(alarma.sensor.tipo_sensor.id))
@@ -353,16 +364,17 @@ class Alarma:
         return result
 
     #metodo que verifica el estado de la notificacion si ya fue leida o no
-    def hayNuevasNotificaciones(self,userId):
+    @staticmethod
+    def hay_nuevas_notificaciones(user_id):
 
-        numAlarma = AlarmaReportada.objects.all().filter(
-                    alarma__sensor__activo__user_id=userId)
+        num_alarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user_id)
 
-        if(numAlarma.__len__() > 0):
-            numAlarma = AlarmaReportada.objects.all().filter(
-                    alarma__sensor__activo__user_id=userId,
+        if num_alarma.__len__() > 0:
+            num_alarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user_id,
                     leida=0)
-            if(numAlarma.__len__() > 0):
+            if num_alarma.__len__() > 0:
                 res = True
             else:
                 res = False
@@ -371,13 +383,14 @@ class Alarma:
         return res
 
     #Método que obtiene el numero de Notificaciones No leidas de ese usuario
-    def contarNuevasNotificaciones(self,userId):
-        numAlarma = AlarmaReportada.objects.all().filter(
-                    alarma__sensor__activo__user_id=userId,
+    @staticmethod
+    def contar_nuevas_notificaciones(user_id):
+        num_alarma = AlarmaReportada.objects.all().filter(
+                    alarma__sensor__activo__user_id=user_id,
                     leida=0)
 
-        if(numAlarma.__len__() > 0):
-            res = numAlarma.__len__()
+        if num_alarma.__len__() > 0:
+            res = num_alarma.__len__()
         else:
             res = 0
         return res

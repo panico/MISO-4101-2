@@ -1,7 +1,7 @@
 from twilio.rest import TwilioRestClient
 
 #This class needs to run this command to work: $ pip install twilio
-class SMS_Sender():
+class SenderSMS():
 	FROM_PHONE_NUMBER_PROD = "+15208674780"
 	# ======================== 	Production credentials	=========================
 	account_sid_prod = "AC66c4bbcc65f97595ea05b798e366e92c"
@@ -15,7 +15,7 @@ class SMS_Sender():
 		self.testing_mode = True
 		self.testing_mode = testing_mode		
 		
-		if(testing_mode):
+		if testing_mode:
 			self.from_phone_number = from_number
 			self.client = TwilioRestClient(self.account_sid_test, self.auth_token_test)
 		else:

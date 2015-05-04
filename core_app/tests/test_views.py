@@ -5,7 +5,7 @@ from django.core import mail
 from core_app.models import Inmueble, Elemento
 
 class CorreoTest(TestCase):    
-    def test_enviarGmail(self):
+    def test_enviar_gmail(self):
         # Send message.
         mail.send_mail('Correo de pruebas', 'Here is the message.',
             'mysmarthome4101@gmail.com', ['jhonyt37@gmail.com'],
@@ -30,14 +30,10 @@ class HomeListTest(TestCase):
         
     def test_displays_all_items(self):
         items = Inmueble.objects.first()
-#        items = Inmueble.objects.all()
-#        print(items.values())
-#        defer(None)#
         self.assertEqual(items, None) #assertTrue(items == None)
         
     def test_displays_all_elems(self):
         elems = Elemento.objects.first()  
-#        print(elems)      
         self.assertEqual(elems, None)        
         
     def tearDown(self):

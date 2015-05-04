@@ -1,8 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
 
 # Create your tests here.
 class FunctionalTest(StaticLiveServerTestCase):
@@ -12,12 +10,10 @@ class FunctionalTest(StaticLiveServerTestCase):
     
     @classmethod
     def setUpClass(cls):
-        #cls.wd = WebDriver()
         super(FunctionalTest, cls).setUpClass()
         
     @classmethod
-    def tearDownClass(cls):
-        #cls.wd.quit()
+    def tear_down_class(cls):
         super(FunctionalTest, cls).tearDownClass()
         
     #Método que se ejecuta al inicio de cada uno de los métodos de prueba

@@ -55,82 +55,80 @@ class AlarmasPendientes(FunctionalTest):#TestCase
                 leida = self.leida)
 
     #Método que verifica que no existen Notificaciones en la DB
-    def test_NohayNotificaciones(self):
+    def test_no_hay_notificaciones(self):
 
         i = alarmas.Alarma()
 
         self.alarma.delete()
 
-        numAlarma = AlarmaReportada.objects.all().filter(
+        num_alarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=self.user.id)
 
-        if(numAlarma.__len__() > 0):
-            num = numAlarma.__len__()
+        if num_alarma.__len__() > 0:
+            num = num_alarma.__len__()
         else:
             num = 0
 
-        res = i.hayNuevasNotificaciones(self.user.id)
+        res = i.hay_nuevas_notificaciones(self.user.id)
         self.assertTrue(res==num)
 
     #Método que verifica que todas las Notificaciones de ese usuario esten leidas
-    def test_TodasNotificacionesLeidas(self):
+    def test_todas_noti_leidas(self):
 
         i = alarmas.Alarma()
 
         self.alarma.leida=1
         self.alarma.save()
 
-        numAlarma = AlarmaReportada.objects.all().filter(
+        num_alarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=self.user.id,
                     leida=0)
 
-        if(numAlarma.__len__() > 0):
-            num = numAlarma.__len__()
+        if num_alarma.__len__() > 0:
+            num = num_alarma.__len__()
         else:
             num = 0
 
-        res = i.hayNuevasNotificaciones(self.user.id)
+        res = i.hay_nuevas_notificaciones(self.user.id)
         self.assertTrue(res==num)
 
     #Método que verifica si tiene notificaciones pendientes por leer ese usuario
-    def test_PendienteNotificacionesLeidas(self):
+    def test_pendiente_notifica_leidas(self):
 
         i = alarmas.Alarma()
 
-        numAlarma = AlarmaReportada.objects.all().filter(
+        num_alarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=self.user.id,
                     leida=0)
 
-        if(numAlarma.__len__() > 0):
-            num = numAlarma.__len__()
+        if num_alarma.__len__() > 0:
+            num = num_alarma.__len__()
         else:
             num = 0
 
-        res = i.hayNuevasNotificaciones(self.user.id)
-        #simulando el retorno de la funcion
-        res = 1
+        res = i.hay_nuevas_notificaciones(self.user.id)
+        #simulando el retorno de la funcion res = 1
         self.assertTrue(res==num)
 
     #Método que obtiene el numero de Notificaciones No leidas de ese usuario
-    def test_contarNotificacionesNoLeidas(self):
+    def test_contar_no_leidas(self):
 
         i = alarmas.Alarma()
 
-        #self.alarma.leida=1
+        self.alarma.leida=1
         self.alarma.save()
 
-        numAlarma = AlarmaReportada.objects.all().filter(
+        num_alarma = AlarmaReportada.objects.all().filter(
                     alarma__sensor__activo__user_id=self.user.id,
                     leida=0)
 
-        if(numAlarma.__len__() > 0):
-            num = numAlarma.__len__()
-            #simulando numero de alarmas
-            #num = 5
+        if num_alarma.__len__() > 0:
+            num = num_alarma.__len__()
+            #simulando numero de alarmas num = 5
         else:
             num = 0
 
-        res = i.contarNuevasNotificaciones(self.user.id)
+        res = i.contar_nuevas_notificaciones(self.user.id)
         self.assertTrue(res==num)
 
     def tearDown(self):

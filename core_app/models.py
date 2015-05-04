@@ -50,12 +50,11 @@ class Inmueble(Activo):
     proyecto = models.ForeignKey(Proyecto)
     embebido = models.CharField(max_length=1023, default='')
     def set_estado(self, estado):
-        if(estado>=0 or estado<3):
+        if estado>=0 or estado<3:
             self.estado = estado
             return True
         else:
             return False
-    #activos = models.ManyToManyField(Activo, related_name='inmuebles_activos_type', null=True)
     
 #Clase que representa los electrodomésticos y demás elementos dentro de un inmueble
 class Elemento(Activo):
@@ -90,23 +89,18 @@ class Sensor(GenericModelWithName):
 
 #Clase que representa los eventos generados por un sensor
 class Evento(GenericModelWithName): #GenericModel
-#    id = models.AutoField(primary_key=True)
     codigo  = models.CharField(max_length=10)
-#    descripcion = models.CharField(max_length=1000)
     trama   = models.CharField(max_length=1000)
     fecha_hora_evento = models.DateTimeField(datetime.datetime.today())
     fecha_hora_sistema = models.DateTimeField(datetime.datetime.today())
     sensor   = models.ForeignKey(Sensor,default='')
-#    inmueble = models.ForeignKey(Inmueble)
-# agregado 14/03/2015
-#    inmueble = models.ForeignKey(Inmueble)
+
     
 
 #Clase que representa las alarmas que pueden ser configuradas para un sensor/evento
 class Alarma(GenericModelWithName):
     #Determina si la alarma se encuentra activada
     descripcion = models.CharField(max_length=512,default='')
-    #usuario = models.ForeignKey(User)
     sensor = models.ForeignKey(Sensor)
     activa = models.BooleanField(default=True)
     notifica = models.BooleanField(default=True)
@@ -131,7 +125,6 @@ class AlarmaEstado(Alarma):
 #Alarmas reportadas
 class AlarmaReportada(GenericModelWithName):
     descripcion = models.CharField(max_length=512,default='')
-    #usuario = models.ForeignKey(User)
     alarma = models.ForeignKey(Alarma)
     fecha_hora = models.DateTimeField(datetime.datetime.today())
     nivel_alerta = models.IntegerField(default=2, validators=[MinValueValidator(0), MaxValueValidator(2)])
@@ -141,10 +134,8 @@ class AlarmaReportada(GenericModelWithName):
 class HistoryAlarmas(GenericModel):
     estado    = models.BooleanField(default=True)
     fecha     = models.DateTimeField()
-    #user      = models.ForeignKey(User)
     elemento  = models.ForeignKey(Elemento)
     inmueble  = models.ForeignKey(Inmueble)
-    #parametro = models.ForeignKey(AlarmaParametro)
     sensor   = models.ForeignKey(Sensor)
     alarma   = models.ForeignKey(Alarma)
     

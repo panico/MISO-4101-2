@@ -2,8 +2,6 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from core_app.models import Inmueble, Elemento, Proyecto, Activo
 from .base import FunctionalTest
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys      
 
 class EstadoInmueble(FunctionalTest):#TestCase
     nombre = "Inmueble test"
@@ -15,7 +13,6 @@ class EstadoInmueble(FunctionalTest):#TestCase
     username = "user_test"
     password = "pass"
     email = "test"
-    #user = User.objects.create(username="test_user_last2", password="pass", email="test@test.co")
     
     
     def setUp(self):
@@ -50,7 +47,7 @@ class EstadoInmueble(FunctionalTest):#TestCase
         self.assertTrue(self.estado_final_inmueble <= self.elemento.inmueble.estado)
     
         
-    def tearDown(self):
+    def tear_down(self):
         self.user.delete()
         self.proyecto.delete()
         self.inmueble.delete()

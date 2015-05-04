@@ -1,10 +1,6 @@
-#from django.test import TestCase, LiveServerTestCase
-#from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from .base import FunctionalTest
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
       
 
 class LoginTest(FunctionalTest):#TestCase
@@ -37,10 +33,7 @@ class LoginTest(FunctionalTest):#TestCase
         response = self.client.get('/app/')
         self.assertEqual(response.status_code, 200)
         
-       
-#    def tearDown(self):
-#        self.user.delete()
-#        self.client.logout()
+    
         
     
 
